@@ -1,45 +1,71 @@
 package com.me.modules.battle;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.me.mygdxgame.Assets;
-import com.me.mygdxgame.Object;
 
-public class BattlePanel {
-	static final int NOTHING = -1;
-	static final int SHIELD = 0;
-	static final int BOOK = 1;
+public class BattlePanel {	
 	
-	Object shield;
-	Object magic_book;
+	/** Square size */
+	static final float SIZE_H = 40.0f;
+	static final float SIZE_W = BattleScreen.SIZE_W;
 	
-	List<Object> objects_list = new ArrayList<Object>();
+	Button shield;
+	Button magic_book;
+	Button settings;
 	
-	public BattlePanel() {
-		shield = new Object( new Vector2( 80, 5 ), 40f, 30f );
-		magic_book = new Object( new Vector2( 120, 5 ), 40f, 30f );
+	Image background;
+	
+	public BattlePanel( Stage stage ) {
+		background = new Image( Assets.getTextureRegion( "number" ) );
+		background.height = SIZE_H;
+		background.width = SIZE_W;
 		
-		shield.setActualTexture( Assets.getTexture( "shield" ) );
-		magic_book.setActualTexture( Assets.getTexture( "magicBook" ) );
+		shield = new Button(Assets.getTextureRegion( "shield" ), Assets.getTextureRegion( "number" ));
+		shield.height = 30;
+		shield.width = 35;
+		shield.x = 80;
+		shield.y = 5;
 		
-		objects_list.add( shield );
-		objects_list.add( magic_book );
-	}
-	
-	public boolean isShieldTouch(  ) {
-		return false;
-	}
-	
-	public List<Object> getObjects() {
-		return objects_list;
-	}
-	
-	public int getTouch( Vector2 touch ) {
-		if( shield.getBounds().contains( touch.x, touch.y) )
-			return SHIELD;
-		else
-			return NOTHING;
+		shield.setClickListener( new ClickListener() 
+		{	
+			public void click(Actor actor, float x, float y) {
+				BattleController.addEvent( BattleController.SHIELD, null );	
+			}
+		});
+		
+		magic_book = new Button( Assets.getTextureRegion( "magicBook" ), Assets.getTextureRegion( "number" ) );
+		magic_book.height = 30;
+		magic_book.width = 35;
+		magic_book.x = 140;
+		magic_book.y = 5;
+		
+		magic_book.setClickListener( new ClickListener() 
+		{
+			public void click( Actor actor, float x, float y ) {
+				BattleController.addEvent( BattleController.MAGIC, null );	
+			}
+		} );
+		
+		settings = new Button( Assets.getTextureRegion( "settings" ), Assets.getTextureRegion( "number" ) );
+		settings.height = 30;
+		settings.width = 35;
+		settings.x = 370;
+		settings.y = 5;
+		
+		settings.setClickListener( new ClickListener() 
+		{
+			public void click( Actor actor, float x, float y ) {
+				BattleController.addEvent( BattleController.SETTINGS, null );	
+			}
+		} );
+		
+		stage.addActor( background );
+		stage.addActor( shield );
+		stage.addActor( magic_book );
+		stage.addActor( settings );
 	}
 }

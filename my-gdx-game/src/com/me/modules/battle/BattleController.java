@@ -7,14 +7,30 @@ import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Sine;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.me.mygdxgame.Assets;
 import com.me.mygdxgame.Player;
 import com.me.mygdxgame.Unit;
 import com.me.mygdxgame.UnitAccessor;
 import com.me.utils.Vector2i;
 
-public class BattleController implements InputProcessor {
+public class BattleController {
+	
+	/* EVENTS TYPES */
+	static final int NONE = -1;
+	static final int SQUARE = 0;
+	static final int UNIT = 1;
+	static final int SHIELD = 2;
+	static final int MAGIC = 3;
+	static final int SETTINGS = 4;
 	
 	static final int NOTHING = 0;
 	static final int ATTACK_POSITION = 1;
@@ -22,15 +38,19 @@ public class BattleController implements InputProcessor {
 	Board board;
 	Player players [];
 	TweenManager manager;
-	BattleRenderer renderer;
+	Stage stage;
 	BattlePanel panel;
+	BattleMenu menu;
 	
 	int turn;
 	
-	boolean mutex = false;
+	static boolean mutex = false;
 	
 	int status = NOTHING;
-	Vector2i enemy_position = null;
+	Vector2i enemy_square_number = null;
+	
+	static Object objectEvent = null;
+	static int typeEvent = -1;
 	
 	/**
 	 * Class constructor
@@ -39,46 +59,53 @@ public class BattleController implements InputProcessor {
 	 * @param manager
 	 * @param renderer
 	 */
-	public BattleController(Board board, Player players[], TweenManager manager, BattlePanel panel, BattleRenderer renderer) {
+	public BattleController( Board board, Player players[], TweenManager manager, BattlePanel panel, Stage stage, BattleMenu menu ) {
 		this.board    = board;
 		this.players  = players;
 		this.manager  = manager;
-		this.renderer = renderer;
-		this.panel = panel;
-
-		initBattle();
-		
-		// Update board with available squares for select Unit
-		board.selectUnit( players[turn].getSelectedUnit().getSquare().getNumber(), 
-				players[turn].getSelectedUnit().getActualMovility(), players[turn].getUnitsId() );
+		this.panel    = panel;
+		this.stage 	  = stage;
+		this.menu 	  = menu;
+	}
+	
+	static void addEvent( int type, Object object ) {
+		if( typeEvent == NONE ) {
+			typeEvent = type;
+			objectEvent = object;
+		}
+	}
+	
+	public void update() {
+		if( typeEvent == SQUARE && objectEvent != null ) {
+			checkSquareEvent( (SquareBoard) objectEvent );
+			
+			objectEvent = null;
+			typeEvent = NONE;
+		}
+		else if( typeEvent == SHIELD ) {
+			board.resetSquares();
+			passTurn();
+			
+			typeEvent = NONE;
+		}
+		else if( typeEvent == SETTINGS ) {
+			menu.setVisible( true );
+			
+			typeEvent = NONE;
+		}
+	}
+	
+	public void checkSquareEvent( SquareBoard square ) {
+		if( square.isAvailable() )
+			moveUnit( square.getNumber() );
+		else if( square.hasEnemyOn() ) {
+			board.showAttackPositions( square.getNumber(), players[ turn ].getSelectedUnit().getSquare().getNumber() );
+			status = ATTACK_POSITION;
+			enemy_square_number = square.getNumber();
+		}
 	}
 
-	@Override
-	public boolean keyDown(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean keyUp(int keycode) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean keyTyped(char character) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchDown(int x, int y, int pointer, int button) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchUp(int x, int y, int pointer, int button) {
+	/*public boolean touchUp(int x, int y, int pointer, int button) {
 		if( mutex == false ) {
 			Vector2 aux = renderer.unproject(x, y);
 			
@@ -103,25 +130,7 @@ public class BattleController implements InputProcessor {
 		}
 		
 		return false;
-	}
-
-	@Override
-	public boolean touchDragged(int x, int y, int pointer) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean touchMoved(int x, int y) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean scrolled(int amount) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+	} */
 
 	/**
 	 * Move unit selected to selected square
@@ -147,7 +156,7 @@ public class BattleController implements InputProcessor {
 				
 				// Add tween to move unit, square to square
 				for(int i = board.getWayList().size() - 2; i >= 0; i--) {
-					Vector2 aux = board.getWayList().get(i).getPosition();
+					Vector2 aux = new Vector2( board.CORRECT_X, board.CORRECT_Y ).add( board.getWayList().get(i).getPosition() );
 					
 					line.push( Tween.to(players[turn].getSelectedUnit(), 
 							UnitAccessor.POSITION_XY, 0.8f).target(aux.x, aux.y).ease(Sine.IN) );
@@ -178,7 +187,7 @@ public class BattleController implements InputProcessor {
 						players[turn].getSelectedUnit().setShowNumber( true );				
 						
 						if( status == ATTACK_POSITION ) {
-							atackEnemy( enemy_position );
+							attackEnemy( enemy_square_number );
 							
 							status = NOTHING;
 						}
@@ -211,7 +220,7 @@ public class BattleController implements InputProcessor {
 	 * Attack enemy with selected unit
 	 * @param position enemy position
 	 */
-	public void atackEnemy( Vector2i position ) {
+	public void attackEnemy( Vector2i position ) {
 		Vector2i init = players[turn].getSelectedUnit().getSquare().getNumber();
 		
 		if( players[turn].getSelectedUnit().getActualRange() > 0 || 
@@ -222,6 +231,7 @@ public class BattleController implements InputProcessor {
 			
 			if( target.receiveDamage( attacker.getAttackDamage() ) == false ) {
 				target.getSquare().setFree();
+				stage.removeActor( target );
 				players[ getNextTurn() ].deleteUnit( target );
 			}
 		}
@@ -256,6 +266,15 @@ public class BattleController implements InputProcessor {
 		placeUnits( players[1] );
 		
 		players[turn].getSelectedUnit().getSquare().setStatus( SquareBoard.SELECTED_UNIT );
+
+		for( Unit unit : players[0].getUnits() )
+			stage.addActor( unit );
+		for( Unit unit : players[1].getUnits() )
+			stage.addActor( unit );	
+				
+		// Update board with available squares for select Unit
+		board.selectUnit( players[turn].getSelectedUnit().getSquare().getNumber(), 
+		players[turn].getSelectedUnit().getActualMovility(), players[turn].getUnitsId() );
 	}
 	
 	/**
@@ -271,7 +290,7 @@ public class BattleController implements InputProcessor {
 			
 		for( Unit u : player.getUnits() ) {
 			u.setSquare( board.getSquareFromNumber(x, y), player.getUnitsId() );
-			u.setPosition( board.getSquareFromNumber( x, y ).getPosition() );
+			u.setPosition( new Vector2( board.CORRECT_X, board.CORRECT_Y ).add( board.getSquareFromNumber( x, y ).getPosition() ) );
 				
 			y++;
 		}
@@ -298,23 +317,5 @@ public class BattleController implements InputProcessor {
 	 */
 	public int getNextTurn() {
 		return ( turn + 1 ) % 2;
-	}
-	
-	/**
-	 * Control touch in the panel
-	 * @param touch touch position
-	 */
-	public void touchPanel( Vector2 touch ) {
-		switch( panel.getTouch( touch ) ) 
-		{
-			case BattlePanel.SHIELD:
-				board.resetSquares();
-				
-				passTurn();
-				
-				break;
-			default:
-				break;
-		}
 	}
 }

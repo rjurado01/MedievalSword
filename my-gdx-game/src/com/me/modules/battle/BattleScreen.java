@@ -6,47 +6,60 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.me.mygdxgame.*;
 
 public class BattleScreen implements Screen {
 
 	static final int SIZE_W = 480;
-	static final int SIZE_H = 280;
+	static final int SIZE_H = 320;
 	
-	private Board board;
-	private Player players [];
-	private BattleRenderer renderer;
-	private BattlePanel panel;
+	Board board;
+	Player players [];
+	BattlePanel panel;
+	BattleController controller;
+	BattleMenu menu;
+	
+	private static Stage stage;	
+	
 	TweenManager manager;
 	
 	@Override
 	public void show() {
-		// TODO Auto-generated method stub
-		board = new Board();
+		stage = new Stage( BattleScreen.SIZE_W, BattleScreen.SIZE_H, true);
+
+		board = new Board( stage );
 		
 		players = new Player[2];
 		
 		players[0] = new Player( board );
 		players[1] = new Player( board );
 		
-		panel = new BattlePanel();
+		panel = new BattlePanel( stage );
 		
-		renderer = new BattleRenderer( board, players, panel );
+		menu = new BattleMenu( stage );
 		
 		manager = new TweenManager();
 		Tween.registerAccessor(Unit.class, new UnitAccessor());
 		
-		Gdx.input.setInputProcessor( new BattleController( board, players, manager, panel, renderer ) );
+		Gdx.input.setInputProcessor( stage );
+		
+		controller = new BattleController( board, players, manager, panel, stage, menu );
+		controller.initBattle();
 	}
 	
 	@Override
 	public void render(float delta) {
 		manager.update(Gdx.graphics.getDeltaTime());
+		controller.update();
 		
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		renderer.render();
+		stage.act(Gdx.graphics.getDeltaTime());
+		
+		stage.draw();
 	}
 
 	@Override

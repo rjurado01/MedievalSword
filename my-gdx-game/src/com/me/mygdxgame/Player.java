@@ -26,7 +26,7 @@ public class Player {
 		level = 0;
 		
 		units = new Array<Unit>();
-		units.add( new Unit1( 12 ) );
+		units.add( new Unit1( 120 ) );
 		units.add( new Unit1( 4 ) );
 		
 		selected = units.get(0);
@@ -80,6 +80,11 @@ public class Player {
 		if( inverse == true) {
 			for( Unit u : units) {
 				u.setOrientation( Unit.XL );
+			}
+		}
+		else {
+			for( Unit u: units ) {
+				u.setOrientation( Unit.XR );
 			}
 		}
 	}

@@ -5,8 +5,6 @@ import java.util.Hashtable;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.me.mygdxgame.Assets;
 import com.me.mygdxgame.Unit;
 
@@ -20,16 +18,15 @@ public class Unit1 extends Unit{
 	static final int TOTAL_MOVILITY = 2;
 
 	public Unit1( int number ) {
-		super( 35f, 35f );
-		
+		super( 35f, 35f, number );
+
 		initial_life = 		8;
 		initial_shield = 	3;
 		initial_range = 	0;
 		initial_velocity = 	3;
-		initial_damage = 	10;
+		initial_damage = 	5;
 		initial_mobility =  6;
 		
-		this.number = number;
 		this.name = "unit1";
 		
 		initActualValues();
@@ -41,9 +38,9 @@ public class Unit1 extends Unit{
 	public void loadTextures() {
 		textures = new Hashtable<String, TextureRegion>();
 		
-		textures.put( "normal_xr", Assets.getTexture(name) );
+		textures.put( "normal_xr", Assets.getTextureRegion(name) );
 		
-		TextureRegion aux = new TextureRegion( Assets.getTexture(name));
+		TextureRegion aux = new TextureRegion( Assets.getTextureRegion(name));
 		aux.flip(true, false);
 		
 		textures.put( "normal_xl", aux );

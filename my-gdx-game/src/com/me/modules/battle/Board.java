@@ -3,6 +3,9 @@ package com.me.modules.battle;
 import java.util.ArrayList;
 import java.util.List;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.me.mygdxgame.Assets;
 import com.me.utils.Vector2i;
 
 /**
@@ -15,6 +18,9 @@ public class Board
 	static final int NS_X = 12;
 	static final int NS_Y = 6;
 	
+	static final int CORRECT_Y = 12;
+	static final int CORRECT_X = 0;
+	
 	SquareBoard matrix [][];	// squares matrix
 	
 	Vector2 pos;	// board initial position
@@ -26,12 +32,27 @@ public class Board
 	List<SquareBoard> close_list = new ArrayList<SquareBoard>();
 	List<SquareBoard> way_list = new ArrayList<SquareBoard>();
 	
+	Stage stage;
+	
+	Image background;
+	
 	
 	/** 
 	 * Class constructor.
 	 */
-	public Board() {
-		pos = new Vector2(0, BattleScreen.SIZE_H - SquareBoard.SIZE_H);
+	public Board( Stage stage ) {
+		this.stage = stage;
+		
+		pos = new Vector2( 30, BattleScreen.SIZE_H - SquareBoard.SIZE_H - 15);
+		
+		background = new Image( Assets.getTextureRegion( "grass2" ) );
+		background.width = BattleScreen.SIZE_W;
+		background.height = BattleScreen.SIZE_H - BattlePanel.SIZE_H;
+		background.x = 0;
+		background.y = BattlePanel.SIZE_H;		
+		
+		stage.addActor( background );
+		
 		createSquares();
 	}
 	
@@ -78,22 +99,6 @@ public class Board
 	}
 	
 	/**
-	 * Calculate the number of square witch this position
-	 * @param x x position
-	 * @param y y position
-	 * @return square witch this position
-	 */
-	public Vector2i getSquareNumber(float x, float y) {
-		
-		for (SquareBoard square : squares_list) {
-			if(square.getBounds().contains(x, y))
-				return square.getNumber();
-		}
-		
-		return null;
-	}
-	
-	/**
 	 * @return square list
 	 */
 	public List<SquareBoard> getSquaresList() {
@@ -118,9 +123,14 @@ public class Board
 		for(int i=0;i<NS_Y;i++)
 			for(int j=0;j<NS_X;j++) 
 			{
-				matrix[i][j] = new SquareBoard( new Vector2( pos.x + ( j * SquareBoard.SIZE_W ), pos.y - ( i  * SquareBoard.SIZE_H ) ), j, i, null);
+				matrix[i][j] = new SquareBoard( 
+						new Vector2( pos.x + ( j * SquareBoard.SIZE_W ), pos.y - ( i  * SquareBoard.SIZE_H ) ), 
+						new Vector2i( j, i ) );
 				
 				squares_list.add(matrix[i][j]);
+				//matrix[i][j].visible = false;
+				
+				stage.addActor( matrix[i][j] );
 			}
 	}
 	
@@ -139,24 +149,18 @@ public class Board
 		close_list.clear();
 		way_list.clear();
 		
-		// Set all squares visited status to false
-		/*for( SquareBoard aux : squares_list ) {
-			aux.setVisited(false);
-			aux.setAvaibleOff();
-		}*/
-		
 		// First father is origin square
 		SquareBoard father = matrix[yo][xo];
 		father.setVisited(true);
 		
 		// Apply A* algorithm
-		while(father.getX() != xf || father.getY() != yf) 
+		while(father.getNumber().x != xf || father.getNumber().y != yf) 
 		{
 			// Add new adjacent squares to open list and calculate its values
-			check(father.getY() + 1, father.getX(), yf, xf, father);
-			check(father.getY() - 1, father.getX(), yf, xf, father);
-			check(father.getY(), father.getX() + 1, yf, xf, father);
-			check(father.getY(), father.getX() - 1, yf, xf, father);
+			check(father.getNumber().y + 1, father.getNumber().x, yf, xf, father);
+			check(father.getNumber().y - 1, father.getNumber().x, yf, xf, father);
+			check(father.getNumber().y, father.getNumber().x + 1, yf, xf, father);
+			check(father.getNumber().y, father.getNumber().x - 1, yf, xf, father);
 			
 			father = getFather(); 
 
@@ -235,15 +239,43 @@ public class Board
 			{
 				if( isValidDestination( number, new Vector2i(x, y), radius ) ) 
 				{
-						
 					if( matrix[y][x].hasEnemy( player ) )
-						matrix[y][x].texture_status = SquareBoard.T_ENEMY;
+						matrix[y][x].setEnemyOn( player );
 					else
 						matrix[y][x].setAvailableOn();
 				}
 			}
 		
-		matrix[ number.y ][ number.x ].texture_status = SquareBoard.T_SELECTED_UNIT;
+		for( int y = number.y - radius; y < number.y + radius + 1; y++ )
+			for( int x = number.x - radius; x < number.x + radius + 1; x++ )
+			{
+				if( isValidDestination( number, new Vector2i(x, y), radius ) ) 
+				{
+					if( !checkDestination( x, y, number, player ) )
+						matrix[y][x].setNormalOn();
+				}
+			}
+
+		matrix[ number.y ][ number.x ].setSelectedUnitOn();
+	}
+	
+	public boolean checkDestination( int x, int y, Vector2i number, int player_code ) {
+		// Check if square has player unit
+		if( matrix[y][x].status == player_code || matrix[y][x].status == SquareBoard.SELECTED_UNIT )
+			return false;
+				
+		// Check if exist valid way to square from unit
+		if( x - 1 >= 0 && matrix[y][x-1].isAvailable() || ( x-1 == number.x && y == number.y)  )
+			return true;
+		else if( x + 1 < NS_X && matrix[y][x+1].isAvailable() || ( x+1 == number.x && y == number.y)  )
+			return true;
+		else if( y + 1 < NS_Y && matrix[y+1][x].isAvailable() || ( x == number.x && y+1 == number.y)  )
+			return true;
+		else if( y - 1 >= 0 && matrix[y-1][x].isAvailable() || ( x == number.x && y-1 == number.y)  ) {
+			return true;
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -284,10 +316,21 @@ public class Board
 		}
 	}
 	
-	public void printMatrix() {
+	public void printMatrixStatus() {
 		for(int i=0;i<NS_Y;i++) {
 			for(int j=0;j<NS_X;j++) {
 				System.out.print( "[ " + matrix[i][j].status + " ]" );
+			}
+			System.out.println();
+		}
+		
+		System.out.println();
+	}
+	
+	public void printMatrixTextureStatus() {
+		for(int i=0;i<NS_Y;i++) {
+			for(int j=0;j<NS_X;j++) {
+				System.out.print( "[ " + matrix[i][j].texture_status + " ]" );
 			}
 			System.out.println();
 		}
@@ -301,7 +344,7 @@ public class Board
 	 * @param unit unit square number
 	 * @param movility unit movility
 	 */
-	public void showAtackPositions(Vector2i enemy, Vector2i unit, int movility ) 
+	/*public void showAtackPositions(Vector2i enemy, Vector2i unit, int movility ) 
 	{
 		for( int y = unit.y - movility; y < unit.y + movility + 1; y++ )
 			for( int x = unit.x - movility; x < unit.x + movility + 1; x++ )
@@ -315,5 +358,17 @@ public class Board
 		
 		if( Math.abs( unit.y - enemy.y ) + Math.abs( unit.x - enemy.x ) > 1 )
 			matrix[unit.y][unit.x].texture_status = SquareBoard.T_AVAILABLE;
+	}*/
+	
+	public void showAttackPositions( Vector2i enemy, Vector2i me ) {
+		for( int y = 0; y < NS_Y; y++ )
+			for( int x = 0; x < NS_X; x++ ) {
+				if( matrix[y][x].isAvailable() && Math.abs( y - enemy.y ) + Math.abs( x - enemy.x ) > 1 )
+					matrix[y][x].setTexture( SquareBoard.T_NORMAL );
+			}
+		
+		if( Math.abs( enemy.y - me.y ) + Math.abs( enemy.x - me.x ) == 1 ) {
+			matrix[me.y][me.x].setAvailableOn();
+		}
 	}
 }

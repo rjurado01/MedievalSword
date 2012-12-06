@@ -6,17 +6,29 @@ import java.util.Hashtable;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.me.modules.battle.IndicatorUnits;
 import com.me.modules.battle.SquareBoard;
 
-public abstract class Unit extends Object {
+public abstract class Unit extends Group {
 
 	/* ORIENTATIONS */
-	static final int XR = 0;
-	static final int XL = 1;
+	public static final int XR = 0;
+	public static final int XL = 1;
 	
 	/* ANIMATIONS */
 	public static final String RUN_XR = "run_xr";
 	public static final String RUN_XL = "run_xl";
+	
+	/* Properties */
+	boolean show_number = true;
+	protected int orientation;
+	
+	SquareBoard square;
 	
 	protected String name;
 	protected int number;		// number of unit of this type
@@ -36,22 +48,21 @@ public abstract class Unit extends Object {
 	protected int initial_velocity;
 	protected int initial_damage;
 	
-	/* Animations */
-	protected String actual_texture;
+	/* Textures */
+	String actual_texture;
 	protected Hashtable<String, TextureRegion> textures;
+	
+	/* Animations */
 	protected Hashtable<String, Animation> animations  = new Hashtable<String, Animation>();
 	
 	ArrayList<Action> actions_queue;
-	ArrayList<Vector2> movements;
 	
 	float animation_init_time;
 	float animation_actual_time;
 	float animation_duration;
 	
-	boolean show_number = true;
-	int orientation;
-	
-	SquareBoard square;
+	Image unit_image;
+	IndicatorUnits indicator;
 	
 	/**
 	 * Class constructor
@@ -59,11 +70,24 @@ public abstract class Unit extends Object {
 	 * @param width
 	 * @param height
 	 */
-	public Unit( float width, float height ) {
-		super( width, height );
+	public Unit( float width, float height, int number ) {
+		super();
 		
-		number = 1;
+		this.width = width;
+		this.height = height;
+
+		this.number = number;
 		actions_queue = new ArrayList<Action>();
+		
+		unit_image = new Image();
+		unit_image.width = width;
+		unit_image.height = height;
+		
+		indicator = new IndicatorUnits( number );
+		indicator.y = -12;
+		
+		this.addActor( unit_image );
+		addActor( indicator );
 	}
 	
 	public abstract void loadAnimations();
@@ -75,8 +99,6 @@ public abstract class Unit extends Object {
 		actual_mobility = initial_mobility;
 		actual_velocity = initial_velocity;
 		actual_damage = initial_damage;
-		
-		actual_texture = "normal_xr";
 	}
 	
 	public int getActualMovility() {
@@ -87,6 +109,15 @@ public abstract class Unit extends Object {
 		this.actual_mobility = actual_mobility;
 	}
 
+	public Vector2 getPosition() {
+		return new Vector2(x, y);
+	}
+	
+	public void setPosition( Vector2 pos ) {
+		this.x = pos.x;
+		this.y = pos.y;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -101,46 +132,41 @@ public abstract class Unit extends Object {
 	
 	public void setOrientation( int orientation ) {
 		this.orientation = orientation;
-		
-		if( orientation == XR )
+
+		if( orientation == XR ) {
 			actual_texture = "normal_xr";
-		else
+			indicator.x = SquareBoard.SIZE_W - indicator.width;
+		}
+		else {
 			actual_texture = "normal_xl";
-	}
-	
-	public int getOrientation() {
-		return orientation;
+			indicator.x = 0;
+		}
+
+		unit_image.setRegion( textures.get( actual_texture ) );
 	}
 	
 	public TextureRegion getFrameAnimation(String animation, int time) {
 		return animations.get(animation).getKeyFrame(time);
 	}
 	
-	public TextureRegion getRenderFrame(float time) {
-		if(actions_queue.size() > 0) {
-			return actions_queue.get(0).getCurrentFrame();
-		}
-		else
-			return textures.get( actual_texture );
-	}
-	
-	
 	public int getAttackDamage() {
 		return number * actual_damage;
 	}
 	
 	public boolean receiveDamage(int damage) {
-		if(damage > actual_life) {
-			number -= damage / initial_life;
+		if( damage > ( actual_life + actual_shield ) ) {
+			number -= damage / ( initial_life + actual_shield );
 
 			if( number > 0 )
-				actual_life = damage % initial_life;
+				actual_life = damage % ( initial_life + actual_shield );
 			else
 				return false;
 		}
-		else {
-			actual_life -= damage;
+		else if ( damage > actual_shield ) {
+			actual_life -= ( damage - actual_shield );
 		}
+		
+		indicator.updateTextNumber( number );
 		
 		return true;
 	}
@@ -176,11 +202,16 @@ public abstract class Unit extends Object {
 	
 	public void update( float time ) {
 		// Update actions
-		if( actions_queue.size() > 0 ) {
+		if( actions_queue.size() > 0 ) {			
 			if( actions_queue.get( 0 ).isFinished() )
 				actions_queue.remove(0);
 			else
 				actions_queue.get( 0 ).increaseTime( time );
+		
+			if( actions_queue.size() > 0 )
+				unit_image.setRegion( actions_queue.get(0).getCurrentFrame() );
+			else
+				unit_image.setRegion( Assets.getTextureRegion("normal") );
 		}
 	}
 }

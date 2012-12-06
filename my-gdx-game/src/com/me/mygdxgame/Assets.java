@@ -7,13 +7,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets {
 	/** Textures **/
 	static TextureAtlas atlas;
 	static protected Hashtable<String, TextureRegion> inverses;
 	
-	public static Texture aux = new Texture(Gdx.files.internal("fonts/font.png"));
+	public static Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 	
 	public Assets() {
 		load();
@@ -21,10 +22,13 @@ public class Assets {
 	
 	public void load() {
 		atlas = new TextureAtlas(Gdx.files.internal("images/pack"));
+		
 		inverses = new Hashtable<String, TextureRegion>();
+		
+		skin.getFont( "default-font" ).setScale( 0.6f, 0.6f);
 	}
 	
-	public static TextureRegion getTexture(String name) {
+	public static TextureRegion getTextureRegion(String name) {
 		return atlas.findRegion(name);
 	}
 	
@@ -59,5 +63,9 @@ public class Assets {
 		aux.flip(true, false);
 		
 		return aux;
+	}
+	
+	public Skin getSkin() {
+		return skin;
 	}
 }
