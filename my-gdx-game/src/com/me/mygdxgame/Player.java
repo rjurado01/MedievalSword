@@ -1,6 +1,7 @@
 package com.me.mygdxgame;
 
 import com.badlogic.gdx.utils.Array;
+import com.me.modules.battle.Archer;
 import com.me.modules.battle.Board;
 import com.me.modules.battle.SquareBoard;
 import com.me.modules.battle.Unit1;
@@ -21,15 +22,17 @@ public class Player {
 	/** 
 	 * Class constructor.
 	 */
-	public Player(Board board) {
+	public Player(Board board, int units_id ) {
 		gold = 0;
 		level = 0;
 		
 		units = new Array<Unit>();
-		units.add( new Unit1( 120 ) );
-		units.add( new Unit1( 4 ) );
+		units.add( new Unit1( 120, units_id ) );
+		units.add( new Archer( 4, units_id ) );
 		
 		selected = units.get(0);
+		
+		this.units_id = units_id;
 	}
 	
 	/**
@@ -103,5 +106,11 @@ public class Player {
 
 	public void deleteUnit(Unit unit) {
 		units.removeValue( unit, true );
+	}
+	
+	public void update( float time ) {
+		for( Unit unit : units ) {
+			unit.update( time );
+		}
 	}
 }

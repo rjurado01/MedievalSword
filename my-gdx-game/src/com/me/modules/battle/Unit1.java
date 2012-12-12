@@ -1,23 +1,32 @@
 package com.me.modules.battle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.me.mygdxgame.CustomAnimation;
 import com.me.mygdxgame.Assets;
 import com.me.mygdxgame.Unit;
+import com.me.utils.CallBack;
 
 public class Unit1 extends Unit{
 	
-	static final int TOTAL_LIFE = 3;
-	static final int TOTAL_SHIELD = 3;
-	static final int TOTAL_RANGE = 3;
-	static final int TOTAL_VELOCITY = 3;
-	static final int TOTAL_DAMAGE = 3;
-	static final int TOTAL_MOVILITY = 2;
-
-	public Unit1( int number ) {
+	/* ANIMATIONS */
+	public static final String WALK_XR = "run_xr";
+	public static final String WALK_XL = "run_xl";
+	
+	public static final String ATTACK_XR = "attack_xr";
+	public static final String ATTACK_XL = "attack_xl";
+	
+	/**
+	 * Class constructor
+	 * @param number
+	 * @param player
+	 */
+	public Unit1( int number, int player ) {
 		super( 35f, 35f, number );
 
 		initial_life = 		8;
@@ -27,7 +36,10 @@ public class Unit1 extends Unit{
 		initial_damage = 	5;
 		initial_mobility =  6;
 		
-		this.name = "unit1";
+		if( player == SquareBoard.UNIT_P1 )
+			this.name = "P1Piqueman";
+		else
+			this.name = "P2Piqueman";
 		
 		initActualValues();
 		
@@ -36,38 +48,59 @@ public class Unit1 extends Unit{
 	}
 	
 	public void loadTextures() {
-		textures = new Hashtable<String, TextureRegion>();
+		textures = new HashMap<String, TextureRegion>();
 		
-		textures.put( "normal_xr", Assets.getTextureRegion(name) );
-		
-		TextureRegion aux = new TextureRegion( Assets.getTextureRegion(name));
-		aux.flip(true, false);
-		
-		textures.put( "normal_xl", aux );
+		textures.put( "normal_xr", Assets.getTextureRegion( name ) );
+		textures.put( "normal_xl", Assets.getFlipTextureRegion( name ) );
 	}
 	
 	public void loadAnimations() {
-		// Right run animation
-		ArrayList<TextureRegion> runFramesXR = new ArrayList<TextureRegion>();
+		int [] frames1 = { 1, 2 };
 		
-		for( int i = 1; i < 3; i++ )
-			runFramesXR.add( Assets.getFrame( "unit1", i ) );
+		loadAnimation( WALK_XR, frames1, false, true, 0.4f );
+		loadAnimation( WALK_XL, frames1, true, true, 0.4f );
 		
-		Animation run_xr = new Animation( 0.4f, runFramesXR );
-		run_xr.setPlayMode( Animation.LOOP );
+		int [] frames2 = { 1, 3, 1 };
 		
-		animations.put( RUN_XR, run_xr );
+		loadAnimation( ATTACK_XR, frames2, false, false, 0.2f );
+		loadAnimation( ATTACK_XL, frames2, true, false, 0.2f );
+	}
+
+	/**
+	 * Add walk action to actions queue
+	 * @param direction animation direction
+	 */
+	public void walkAction() {
+		CustomAnimation aux;
 		
-		// Left run animation
-		ArrayList<TextureRegion> runFramesXL = new ArrayList<TextureRegion>();
+		if( orientation == Unit.XR )
+			aux = new CustomAnimation( animations.get( WALK_XR ), 0.8f );
+		else
+			aux = new CustomAnimation( animations.get( WALK_XL ), 0.8f );
 		
-		for( int i = 1; i < 3; i++ ) {
-			runFramesXL.add( Assets.getFlipFrame( "unit1", i ) );
-		}
+		actions_queue.add( aux );
+	}
+
+	/**
+	 * Add attack action to actions queue
+	 */
+	public void attackAction() {
+		CustomAnimation aux;
 		
-		Animation run_xl = new Animation( 0.4f, runFramesXL );
-		run_xl.setPlayMode( Animation.LOOP );
+		if( orientation == Unit.XR )
+			aux = new CustomAnimation( animations.get( ATTACK_XR ), 1);
+		else
+			aux = new CustomAnimation( animations.get( ATTACK_XL ), 1);
 		
-		animations.put( RUN_XL, run_xl );
+		aux.addCallBack( new CallBack() {
+			
+			public void completed() {
+				BattleController.attack();
+				
+				BattleController.passTurn();
+			}
+		});
+		
+		actions_queue.add( aux );
 	}	
 }

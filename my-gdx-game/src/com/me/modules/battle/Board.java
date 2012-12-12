@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.me.mygdxgame.Assets;
+import com.me.mygdxgame.Unit;
 import com.me.utils.Vector2i;
 
 /**
@@ -233,7 +234,9 @@ public class Board
 	 * @param radius movement radius of selected unit
 	 * @param player units id of player
 	 */
-	public void selectUnit( Vector2i number, int radius, int player ) {
+	public void selectUnit( Unit unit, int radius, int player ) {
+		Vector2i number = unit.getSquare().getNumber();
+		
 		for( int y = number.y - radius; y < number.y + radius + 1; y++ )
 			for( int x = number.x - radius; x < number.x + radius + 1; x++ )
 			{
@@ -255,13 +258,16 @@ public class Board
 						matrix[y][x].setNormalOn();
 				}
 			}
+		
+		if( unit.getActualRange() > 0 )
+			setAllEnemyOn( player );
 
 		matrix[ number.y ][ number.x ].setSelectedUnitOn();
 	}
 	
 	public boolean checkDestination( int x, int y, Vector2i number, int player_code ) {
 		// Check if square has player unit
-		if( matrix[y][x].status == player_code || matrix[y][x].status == SquareBoard.SELECTED_UNIT )
+		if( matrix[y][x].status == player_code )
 			return false;
 				
 		// Check if exist valid way to square from unit
@@ -370,5 +376,12 @@ public class Board
 		if( Math.abs( enemy.y - me.y ) + Math.abs( enemy.x - me.x ) == 1 ) {
 			matrix[me.y][me.x].setAvailableOn();
 		}
+	}
+	
+	public void setAllEnemyOn( int player ) {
+		for( int y = 0; y < NS_Y; y++ )
+			for( int x = 0; x < NS_X; x++ ) {
+				matrix[y][x].setEnemyOn( player );
+			}
 	}
 }

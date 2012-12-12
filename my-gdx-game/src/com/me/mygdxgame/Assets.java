@@ -1,10 +1,9 @@
 package com.me.mygdxgame;
 
 import java.util.Hashtable;
+import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -12,14 +11,20 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 public class Assets {
 	/** Textures **/
 	static TextureAtlas atlas;
-	static protected Hashtable<String, TextureRegion> inverses;
+	static protected Map<String, TextureRegion> inverses;
 	
 	public static Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 	
+	/**
+	 * Class constructor
+	 */
 	public Assets() {
 		load();
 	}
 	
+	/**
+	 * Load atlas and skin
+	 */
 	public void load() {
 		atlas = new TextureAtlas(Gdx.files.internal("images/pack"));
 		
@@ -28,12 +33,23 @@ public class Assets {
 		skin.getFont( "default-font" ).setScale( 0.6f, 0.6f);
 	}
 	
+	/**
+	 * Return 'name' TextureRegion
+	 * @param name TextureRegion name
+	 * @return TextureRegion
+	 */
 	public static TextureRegion getTextureRegion(String name) {
 		return atlas.findRegion(name);
 	}
 	
-	public static TextureRegion getFlipTexture(String name) {
+	/**
+	 * Flip horizontally and return TextureRegion
+	 * @param name texture name
+	 * @return TextureRegion
+	 */
+	public static TextureRegion getFlipTextureRegion(String name) {
 		if( inverses.get( name ) == null ) {
+
 			TextureRegion aux = new TextureRegion( atlas.findRegion(name) );
 			aux.flip(true, false);
 			
@@ -43,12 +59,19 @@ public class Assets {
 		return inverses.get( name );
 	}
 	
+	/**
+	 * Get frame texture
+	 * @param name texture name
+	 * @param frame frame number of texture
+	 * @return TextureRegion
+	 */
 	public static TextureRegion getFrame(String name, int frame) {
 		return atlas.findRegion(name, frame);
 	}
 	
 	public static TextureRegion getFlipFrame(String name, int frame) {
-		if( inverses.get( name ) == null ) {
+		if( inverses.get( name + "_" + frame ) == null ) {
+
 			TextureRegion aux = new TextureRegion( atlas.findRegion(name, frame) );
 			aux.flip(true, false);
 			

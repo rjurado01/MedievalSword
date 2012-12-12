@@ -8,6 +8,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.me.mygdxgame.*;
 
 public class BattleScreen implements Screen {
@@ -33,26 +34,32 @@ public class BattleScreen implements Screen {
 		
 		players = new Player[2];
 		
-		players[0] = new Player( board );
-		players[1] = new Player( board );
+		players[0] = new Player( board, SquareBoard.UNIT_P1 );
+		players[1] = new Player( board, SquareBoard.UNIT_P2 );
 		
 		panel = new BattlePanel( stage );
 		
-		menu = new BattleMenu( stage );
-		
 		manager = new TweenManager();
 		Tween.registerAccessor(Unit.class, new UnitAccessor());
+		Tween.registerAccessor(Image.class, new ImageAccessor());
 		
 		Gdx.input.setInputProcessor( stage );
 		
+		menu = new BattleMenu( stage );
+		
 		controller = new BattleController( board, players, manager, panel, stage, menu );
+		
 		controller.initBattle();
 	}
 	
 	@Override
 	public void render(float delta) {
 		manager.update(Gdx.graphics.getDeltaTime());
+		
 		controller.update();
+		
+		players[ 0 ].update( Gdx.graphics.getDeltaTime() );
+		players[ 1 ].update( Gdx.graphics.getDeltaTime() ); 
 		
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);

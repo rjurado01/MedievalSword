@@ -2,6 +2,9 @@ package com.me.mygdxgame;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.Map;
+
+import aurelienribon.tweenengine.TweenCallback;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -11,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.me.modules.battle.BattleController;
 import com.me.modules.battle.IndicatorUnits;
 import com.me.modules.battle.SquareBoard;
 
@@ -19,10 +23,6 @@ public abstract class Unit extends Group {
 	/* ORIENTATIONS */
 	public static final int XR = 0;
 	public static final int XL = 1;
-	
-	/* ANIMATIONS */
-	public static final String RUN_XR = "run_xr";
-	public static final String RUN_XL = "run_xl";
 	
 	/* Properties */
 	boolean show_number = true;
@@ -50,12 +50,12 @@ public abstract class Unit extends Group {
 	
 	/* Textures */
 	String actual_texture;
-	protected Hashtable<String, TextureRegion> textures;
+	protected Map<String, TextureRegion> textures;
 	
 	/* Animations */
 	protected Hashtable<String, Animation> animations  = new Hashtable<String, Animation>();
 	
-	ArrayList<Action> actions_queue;
+	protected ArrayList<CustomAnimation> actions_queue;
 	
 	float animation_init_time;
 	float animation_actual_time;
@@ -77,7 +77,7 @@ public abstract class Unit extends Group {
 		this.height = height;
 
 		this.number = number;
-		actions_queue = new ArrayList<Action>();
+		actions_queue = new ArrayList<CustomAnimation>();
 		
 		unit_image = new Image();
 		unit_image.width = width;
@@ -179,8 +179,8 @@ public abstract class Unit extends Group {
 		this.number = number;
 	}
 	
-	public void addAction(String animation_name, float duration) {		
-		actions_queue.add( new Action( animations.get(animation_name), duration) );
+	public void addAction(String animation_name, float duration, BattleController battleController) {		
+		actions_queue.add( new CustomAnimation( animations.get(animation_name), duration) );
 	}
 	
 	public SquareBoard getSquare() {
@@ -197,12 +197,12 @@ public abstract class Unit extends Group {
 	}
 	
 	public void setShowNumber(boolean x) {
-		show_number = x;
+		indicator.visible = x;
 	}
 	
 	public void update( float time ) {
 		// Update actions
-		if( actions_queue.size() > 0 ) {			
+		if( actions_queue.size() > 0 ) {
 			if( actions_queue.get( 0 ).isFinished() )
 				actions_queue.remove(0);
 			else
@@ -210,8 +210,28 @@ public abstract class Unit extends Group {
 		
 			if( actions_queue.size() > 0 )
 				unit_image.setRegion( actions_queue.get(0).getCurrentFrame() );
-			else
-				unit_image.setRegion( Assets.getTextureRegion("normal") );
 		}
 	}
+	
+	public void loadAnimation( String animation_name, int [] nframes, boolean flip, boolean loop, float time ) {
+		ArrayList<TextureRegion> frames = new ArrayList<TextureRegion>();
+		
+		for( int i = 0; i < nframes.length; i++ ) {
+			if( flip )
+				frames.add( Assets.getFlipFrame( name, nframes[i] ) );
+			else
+				frames.add( Assets.getFrame( name, nframes[i] ) );
+		}
+		
+		Animation animation = new Animation( time, frames );
+		
+		if( loop )
+			animation.setPlayMode( Animation.LOOP );
+		
+		animations.put( animation_name, animation );
+	}
+	
+	public abstract void walkAction();
+
+	public abstract void attackAction();
 }

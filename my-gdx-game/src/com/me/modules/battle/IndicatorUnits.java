@@ -57,7 +57,6 @@ public class IndicatorUnits extends Group {
 	 * @param number
 	 */
 	public void updateTextNumber( int number ) {
-		System.out.println(square.width);
 		text.setText( Integer.toString( number ) );
 		text.width = text.getTextBounds().width;
 		

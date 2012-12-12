@@ -7,15 +7,9 @@ import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Sine;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.me.mygdxgame.Assets;
 import com.me.mygdxgame.Player;
 import com.me.mygdxgame.Unit;
@@ -35,19 +29,20 @@ public class BattleController {
 	static final int NOTHING = 0;
 	static final int ATTACK_POSITION = 1;
 	
-	Board board;
-	Player players [];
-	TweenManager manager;
-	Stage stage;
-	BattlePanel panel;
-	BattleMenu menu;
+	static Board board;
+	static Player players [];
+	static Stage stage;
+	static BattlePanel panel;
+	static BattleMenu menu;
 	
-	int turn;
+	static TweenManager manager;
+	
+	static int turn;
 	
 	static boolean mutex = false;
 	
-	int status = NOTHING;
-	Vector2i enemy_square_number = null;
+	static int status = NOTHING;
+	static SquareBoard enemy_square = null;
 	
 	static Object objectEvent = null;
 	static int typeEvent = -1;
@@ -76,32 +71,48 @@ public class BattleController {
 	}
 	
 	public void update() {
-		if( typeEvent == SQUARE && objectEvent != null ) {
-			checkSquareEvent( (SquareBoard) objectEvent );
-			
-			objectEvent = null;
-			typeEvent = NONE;
-		}
-		else if( typeEvent == SHIELD ) {
-			board.resetSquares();
-			passTurn();
-			
-			typeEvent = NONE;
-		}
-		else if( typeEvent == SETTINGS ) {
-			menu.setVisible( true );
-			
-			typeEvent = NONE;
+		if( !mutex ) 
+		{
+			if( typeEvent == SQUARE && objectEvent != null ) {
+				checkSquareEvent( (SquareBoard) objectEvent );
+				
+				objectEvent = null;
+				typeEvent = NONE;
+			}
+			else if( typeEvent == SHIELD ) {
+				board.resetSquares();
+				passTurn();
+				
+				typeEvent = NONE;
+			}
+			else if( typeEvent == SETTINGS ) {
+				menu.setVisible( true );
+				
+				mutex = true;
+				typeEvent = NONE;
+			}
 		}
 	}
 	
 	public void checkSquareEvent( SquareBoard square ) {
-		if( square.isAvailable() )
+		if( square.isAvailable() ) {
 			moveUnit( square.getNumber() );
-		else if( square.hasEnemyOn() ) {
-			board.showAttackPositions( square.getNumber(), players[ turn ].getSelectedUnit().getSquare().getNumber() );
-			status = ATTACK_POSITION;
-			enemy_square_number = square.getNumber();
+		}
+		else if( square.hasEnemyOn() ) 
+		{
+			if( players[ turn ].getSelectedUnit().getActualRange() > 0 ) {
+				enemy_square = square;
+				players[turn].getSelectedUnit().attackAction();
+				status = NOTHING;
+				
+				board.resetSquares();
+			}
+			else {
+				board.showAttackPositions( square.getNumber(), players[ turn ].getSelectedUnit().getSquare().getNumber() );
+			
+				status = ATTACK_POSITION;
+				enemy_square = square;
+			}
 		}
 	}
 
@@ -155,7 +166,7 @@ public class BattleController {
 				Timeline line = Timeline.createSequence();
 				
 				// Add tween to move unit, square to square
-				for(int i = board.getWayList().size() - 2; i >= 0; i--) {
+				for( int i = board.getWayList().size() - 2; i >= 0; i--) {
 					Vector2 aux = new Vector2( board.CORRECT_X, board.CORRECT_Y ).add( board.getWayList().get(i).getPosition() );
 					
 					line.push( Tween.to(players[turn].getSelectedUnit(), 
@@ -170,14 +181,7 @@ public class BattleController {
 						aux_init = board.getWayList().get( i + 1 ).getPosition();
 					
 					// Init animation
-					if( aux.x > aux_init.x )
-						players[turn].getSelectedUnit().addAction( Unit.RUN_XR, 0.8f );
-					else if( aux.x < aux_init.x )
-						players[turn].getSelectedUnit().addAction( Unit.RUN_XL, 0.8f );
-					else if( players[turn].isInverse() )
-						players[turn].getSelectedUnit().addAction( Unit.RUN_XL, 0.8f );
-					else
-						players[turn].getSelectedUnit().addAction( Unit.RUN_XR, 0.8f );
+					players[turn].getSelectedUnit().walkAction();
 				}
 				
 				// When animation has finished, set mutex to 'false'
@@ -187,14 +191,14 @@ public class BattleController {
 						players[turn].getSelectedUnit().setShowNumber( true );				
 						
 						if( status == ATTACK_POSITION ) {
-							attackEnemy( enemy_square_number );
+							players[turn].getSelectedUnit().attackAction();
 							
 							status = NOTHING;
+						} 
+						else {
+							mutex = false;
+							passTurn();
 						}
-
-						mutex = false;
-							
-						passTurn();
 					}
 				}));
 				
@@ -216,11 +220,15 @@ public class BattleController {
 			mutex = false;
 	}
 	
+	public static void attack() {
+		attackEnemy( enemy_square.getNumber() );
+	}
+	
 	/**
 	 * Attack enemy with selected unit
 	 * @param position enemy position
 	 */
-	public void attackEnemy( Vector2i position ) {
+	public static void attackEnemy( Vector2i position ) {
 		Vector2i init = players[turn].getSelectedUnit().getSquare().getNumber();
 		
 		if( players[turn].getSelectedUnit().getActualRange() > 0 || 
@@ -228,7 +236,7 @@ public class BattleController {
 		{	
 			Unit target = players[ getNextTurn() ].getUnitFromSquare( board.getSquareFromNumber(position.x, position.y) );
 			Unit attacker = players[ turn ].getSelectedUnit();
-			
+
 			if( target.receiveDamage( attacker.getAttackDamage() ) == false ) {
 				target.getSquare().setFree();
 				stage.removeActor( target );
@@ -241,31 +249,24 @@ public class BattleController {
 	 * Random first turn and position of players ( right / left )
 	 */
 	public void initBattle() {
-		turn = (int) (Math.random() * 2); 
+		// Random player side
+		int side = (int) (Math.random() * 2); 
 		
-		if( turn == 0 ) {
+		if( side == 0 ) {
 			players[0].setInverse( false );
 			players[1].setInverse( true );
-			
-			players[1].selectLastUnit();
-			
-			players[0].setUnitsId( SquareBoard.UNIT_P1 );
-			players[1].setUnitsId( SquareBoard.UNIT_P2 );
 		}
 		else {
 			players[0].setInverse( true );
 			players[1].setInverse( false );
-			
-			players[0].selectLastUnit();
-			
-			players[0].setUnitsId( SquareBoard.UNIT_P2 );
-			players[1].setUnitsId( SquareBoard.UNIT_P1 );
 		}
+		
+		// Random turn
+		turn = (int) (Math.random() * 2); 
+		players[ turn ].selectLastUnit();
 		
 		placeUnits( players[0] );
 		placeUnits( players[1] );
-		
-		players[turn].getSelectedUnit().getSquare().setStatus( SquareBoard.SELECTED_UNIT );
 
 		for( Unit unit : players[0].getUnits() )
 			stage.addActor( unit );
@@ -273,8 +274,8 @@ public class BattleController {
 			stage.addActor( unit );	
 				
 		// Update board with available squares for select Unit
-		board.selectUnit( players[turn].getSelectedUnit().getSquare().getNumber(), 
-		players[turn].getSelectedUnit().getActualMovility(), players[turn].getUnitsId() );
+		board.selectUnit( players[turn].getSelectedUnit(),
+				players[turn].getSelectedUnit().getActualMovility(), players[turn].getUnitsId() );
 	}
 	
 	/**
@@ -299,7 +300,7 @@ public class BattleController {
 	/**
 	 * Go to next turn, select new turn unit and update board.
 	 */
-	public void passTurn() {
+	public static void passTurn() {		
 		// Pass turn
 		turn = ( turn + 1 ) % 2;
 		
@@ -307,15 +308,17 @@ public class BattleController {
 		players[turn].nexUnit();
 		
 		// Update board with available squares (textures) from new unit
-		board.selectUnit( players[turn].getSelectedUnit().getSquare().getNumber(), 
+		board.selectUnit( players[turn].getSelectedUnit(), 
 				players[turn].getSelectedUnit().getActualMovility(), players[turn].getUnitsId() );
+		
+		mutex = false;
 	}
 	
 	/**
 	 * Calculate next turn
 	 * @return next turn
 	 */
-	public int getNextTurn() {
+	public static int getNextTurn() {
 		return ( turn + 1 ) % 2;
 	}
 }

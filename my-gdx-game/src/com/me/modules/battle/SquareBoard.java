@@ -25,7 +25,6 @@ public class SquareBoard extends Image {
 	static final int FREE = 0;
 	static final int UNIT_P1 = 1;
 	static final int UNIT_P2 = 2;
-	static final int SELECTED_UNIT = 4;
 	
 	/** Square TEXTURES */
 	static final String T_NORMAL 		= "normalCell";
@@ -189,18 +188,6 @@ public class SquareBoard extends Image {
 		else
 			return false;
 	}
-	
-	/**
-	 * Check if contains selected unit
-	 * @return true if contains selected unit and false otherwhise
-	 */
-	public boolean isSelectedUnit() {
-		if( status == SELECTED_UNIT ) 
-			return true;
-		else
-			return false;
-	}
-
 	
 	/******** A* Functions ************/
 	

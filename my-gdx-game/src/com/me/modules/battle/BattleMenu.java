@@ -61,12 +61,16 @@ public class BattleMenu extends Group {
 		this.x = ( BattleScreen.SIZE_W - this.width ) / 2;
 		this.y = ( BattleScreen.SIZE_H - this.height ) / 2;
 		
-		this.visible = false;
-		
-		stage.addActor( this );
+		this.stage = stage;
 	}
 
-	public void setVisible(boolean visible) {
-		this.visible = visible;
+	public void setVisible( boolean visible ) {
+		if( visible ) {
+			stage.addActor( this );
+		}
+		else {
+			stage.removeActor( this );
+			BattleController.mutex = false;
+		}
 	}
 }

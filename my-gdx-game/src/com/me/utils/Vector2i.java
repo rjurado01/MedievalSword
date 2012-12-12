@@ -1,5 +1,8 @@
 package com.me.utils;
 
+import com.badlogic.gdx.scenes.scene2d.Action;
+import com.badlogic.gdx.scenes.scene2d.OnActionCompleted;
+
 public class Vector2i {
 	public int x;
 	public int y;
