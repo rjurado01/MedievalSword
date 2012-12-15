@@ -1,11 +1,7 @@
 package com.me.modules.battle;
 
-import java.util.Hashtable;
-
 import com.me.mygdxgame.Assets;
-import com.me.mygdxgame.Object;
 import com.me.utils.Vector2i;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
@@ -23,8 +19,8 @@ public class SquareBoard extends Image {
 	
 	/** Square STATUS */
 	static final int FREE = 0;
-	static final int UNIT_P1 = 1;
-	static final int UNIT_P2 = 2;
+	public static final int UNIT_P1 = 1;
+	public static final int UNIT_P2 = 2;
 	
 	/** Square TEXTURES */
 	static final String T_NORMAL 		= "normalCell";

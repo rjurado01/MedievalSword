@@ -1,11 +1,13 @@
 package com.me.mygdxgame;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.me.modules.battle.BattleScreen;
 
+/**
+ * Principal class that create and change between screens.
+ * Also load assets when start.
+ */
 public class MyGdxGame  extends Game {
 
 	Screen menuScreen;
@@ -15,8 +17,6 @@ public class MyGdxGame  extends Game {
 	
 	@Override
 	public void create() {
-		//Assets.load();
-		
 		Assets assets = new Assets();
 		
 		battleScreen = new BattleScreen();
@@ -24,7 +24,7 @@ public class MyGdxGame  extends Game {
 		//inputGame = new InputGame((GameScreen) gameScreen);
 		
 		//Gdx.input.setInputProcessor(inputMenu);
-		setScreen(battleScreen);
+		setScreen( battleScreen );
 	}
 	
 	/*public void changeScreen(int op) {

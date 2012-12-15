@@ -5,6 +5,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.me.mygdxgame.Assets;
 
+/**
+ * Indicator with number of units for this type
+ */
 public class IndicatorUnits extends Group {
 	Image square;
 	Label text;

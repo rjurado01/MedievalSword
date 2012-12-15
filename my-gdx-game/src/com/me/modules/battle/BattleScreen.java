@@ -6,11 +6,13 @@ import aurelienribon.tweenengine.TweenManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.me.mygdxgame.*;
 
+/**
+ * Principal class of battle module that implements screen
+ */
 public class BattleScreen implements Screen {
 
 	static final int SIZE_W = 480;
@@ -22,11 +24,12 @@ public class BattleScreen implements Screen {
 	BattleController controller;
 	BattleMenu menu;
 	
-	private static Stage stage;	
-	
+	Stage stage;	
 	TweenManager manager;
 	
-	@Override
+	/**
+	 * Initialize battle screen
+	 */
 	public void show() {
 		stage = new Stage( BattleScreen.SIZE_W, BattleScreen.SIZE_H, true);
 
@@ -52,19 +55,21 @@ public class BattleScreen implements Screen {
 		controller.initBattle();
 	}
 	
-	@Override
+	/**
+	 * Update the game
+	 */
 	public void render(float delta) {
-		manager.update(Gdx.graphics.getDeltaTime());
+		manager.update( Gdx.graphics.getDeltaTime() );
 		
 		controller.update();
 		
-		players[ 0 ].update( Gdx.graphics.getDeltaTime() );
-		players[ 1 ].update( Gdx.graphics.getDeltaTime() ); 
+		players[0].update( Gdx.graphics.getDeltaTime() );
+		players[1].update( Gdx.graphics.getDeltaTime() ); 
 		
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
-		stage.act(Gdx.graphics.getDeltaTime());
+		stage.act( Gdx.graphics.getDeltaTime() );
 		
 		stage.draw();
 	}

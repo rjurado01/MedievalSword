@@ -7,6 +7,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.me.mygdxgame.Assets;
 
+/**
+ * Panel at the bottom of the screen.
+ * It has options button, magic book button and pass turn button.
+ */
 public class BattlePanel {	
 	
 	/** Square size */
@@ -19,6 +23,10 @@ public class BattlePanel {
 	
 	Image background;
 	
+	/**
+	 * Class constructor
+	 * @param stage
+	 */
 	public BattlePanel( Stage stage ) {
 		background = new Image( Assets.getTextureRegion( "number" ) );
 		background.height = SIZE_H;
@@ -30,8 +38,7 @@ public class BattlePanel {
 		shield.x = 80;
 		shield.y = 5;
 		
-		shield.setClickListener( new ClickListener() 
-		{	
+		shield.setClickListener( new ClickListener() {	
 			public void click(Actor actor, float x, float y) {
 				BattleController.addEvent( BattleController.SHIELD, null );	
 			}
@@ -43,8 +50,7 @@ public class BattlePanel {
 		magic_book.x = 140;
 		magic_book.y = 5;
 		
-		magic_book.setClickListener( new ClickListener() 
-		{
+		magic_book.setClickListener( new ClickListener() {
 			public void click( Actor actor, float x, float y ) {
 				BattleController.addEvent( BattleController.MAGIC, null );	
 			}
@@ -56,8 +62,7 @@ public class BattlePanel {
 		settings.x = 370;
 		settings.y = 5;
 		
-		settings.setClickListener( new ClickListener() 
-		{
+		settings.setClickListener( new ClickListener() {
 			public void click( Actor actor, float x, float y ) {
 				BattleController.addEvent( BattleController.SETTINGS, null );	
 			}

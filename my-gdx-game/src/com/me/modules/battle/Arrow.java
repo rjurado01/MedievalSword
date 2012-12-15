@@ -1,14 +1,18 @@
 package com.me.modules.battle;
 
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.me.mygdxgame.Assets;
 import com.me.mygdxgame.Unit;
+import com.me.units.Archer;
 
+/**
+ * Create new arrow from archer and add it to stage
+ * @author drinor
+ */
 public class Arrow extends Image {
 	
-	Arrow( float x, float y, int orientation, Stage stage ) {
+	public Arrow( float x, float y, int orientation, Stage stage ) {
 		this.x = x;
 		this.y = y + Archer.HEIGHT / 2;
 		this.stage = stage;
@@ -24,6 +28,9 @@ public class Arrow extends Image {
 		stage.addActor( this );
 	}
 	
+	/**
+	 * Remove arrow from stage
+	 */
 	public void remove() {
 		stage.removeActor( this );
 	}

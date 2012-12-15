@@ -4,13 +4,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
+/**
+ * Class that let to Tween Engine to move Images
+ */
 public class ImageAccessor implements TweenAccessor<Image> {
 
 	public static final int POSITION_X = 1;
     public static final int POSITION_Y = 2;
     public static final int POSITION_XY = 3;
     
-	@Override
 	public int getValues( Image target, int tweenType, float[] returnValues ) {
 		switch (tweenType) {
 	        case POSITION_X: returnValues[0] = target.x; return 1;
@@ -23,7 +25,6 @@ public class ImageAccessor implements TweenAccessor<Image> {
 		}
 	}
 
-	@Override
 	public void setValues( Image target, int tweenType, float[] newValues ) {
         switch (tweenType) {
 	        case POSITION_X: target.x = newValues[0]; break;

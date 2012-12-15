@@ -1,6 +1,6 @@
 package com.me.mygdxgame;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
@@ -8,12 +8,19 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+/**
+ * Contain all textures of game and skins
+ */
 public class Assets {
-	/** Textures **/
+
+	// Texture atlas with battle textures
 	static TextureAtlas atlas;
+	
+	// Save inverses textures, for next petition
 	static protected Map<String, TextureRegion> inverses;
 	
-	public static Skin skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+	// Skin with font
+	public static Skin skin = new Skin( Gdx.files.internal( "skin/uiskin.json" ) );
 	
 	/**
 	 * Class constructor
@@ -28,7 +35,7 @@ public class Assets {
 	public void load() {
 		atlas = new TextureAtlas(Gdx.files.internal("images/pack"));
 		
-		inverses = new Hashtable<String, TextureRegion>();
+		inverses = new HashMap<String, TextureRegion>();
 		
 		skin.getFont( "default-font" ).setScale( 0.6f, 0.6f);
 	}
@@ -60,7 +67,7 @@ public class Assets {
 	}
 	
 	/**
-	 * Get frame texture
+	 * Get frame texture region
 	 * @param name texture name
 	 * @param frame frame number of texture
 	 * @return TextureRegion
@@ -69,6 +76,12 @@ public class Assets {
 		return atlas.findRegion(name, frame);
 	}
 	
+	/**
+	 * Get flip frame texture region
+	 * @param name texture name
+	 * @param frame texture frame
+	 * @return texture region
+	 */
 	public static TextureRegion getFlipFrame(String name, int frame) {
 		if( inverses.get( name + "_" + frame ) == null ) {
 
@@ -81,13 +94,10 @@ public class Assets {
 		return inverses.get( name + "_" + frame );
 	}
 	
-	public static TextureRegion getFlip() {
-		TextureRegion aux = atlas.findRegion("unit1");
-		aux.flip(true, false);
-		
-		return aux;
-	}
-	
+	/**
+	 * Get skin
+	 * @return skin
+	 */
 	public Skin getSkin() {
 		return skin;
 	}

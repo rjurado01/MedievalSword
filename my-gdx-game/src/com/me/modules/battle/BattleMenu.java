@@ -9,6 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.me.mygdxgame.Assets;
 
+/**
+ * Represent options menu in battle screen.
+ * It show when user touch options button.
+ */
 public class BattleMenu extends Group {
 	
 	static final int SIZE_H = 224;
@@ -19,6 +23,10 @@ public class BattleMenu extends Group {
 	Button exit_btn;
 	Button resume_btn;
 	
+	/**
+	 * Class constructor
+	 * @param stage
+	 */
 	public BattleMenu( Stage stage ) {
 		background = new Image( Assets.getTextureRegion( "menu" ) );
 		background.height = SIZE_H;
@@ -64,12 +72,16 @@ public class BattleMenu extends Group {
 		this.stage = stage;
 	}
 
+	/**
+	 * Add and remove menu from window
+	 * @param visible
+	 */
 	public void setVisible( boolean visible ) {
 		if( visible ) {
-			stage.addActor( this );
+			BattleController.stage.addActor( this );
 		}
 		else {
-			stage.removeActor( this );
+			BattleController.stage.removeActor( this );
 			BattleController.mutex = false;
 		}
 	}

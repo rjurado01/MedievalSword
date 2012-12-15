@@ -1,8 +1,10 @@
 package com.me.utils;
 
-import com.me.mygdxgame.Unit;
-
+/**
+ * Interface for add callback to CustomAnimations
+ */
 public interface CallBack {
 
 	public void completed ();
+	
 }

@@ -9,13 +9,15 @@ import aurelienribon.tweenengine.equations.Sine;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.me.mygdxgame.Assets;
+import com.me.mygdxgame.ImageAccessor;
 import com.me.mygdxgame.Player;
 import com.me.mygdxgame.Unit;
 import com.me.mygdxgame.UnitAccessor;
 import com.me.utils.Vector2i;
 
+/**
+ * Control the battle turns, events and all battle.
+ */
 public class BattleController {
 	
 	/* EVENTS TYPES */
@@ -26,24 +28,39 @@ public class BattleController {
 	static final int MAGIC = 3;
 	static final int SETTINGS = 4;
 	
+	/* CONTROLLER STATUS */
 	static final int NOTHING = 0;
 	static final int ATTACK_POSITION = 1;
 	
+	/* BATTLE SIDES */
+	public static final boolean RIGHT = true;
+	public static final boolean LEFT = false;
+	
+	/* VARIABLES */
 	static Board board;
 	static Player players [];
-	static Stage stage;
 	static BattlePanel panel;
 	static BattleMenu menu;
 	
-	static TweenManager manager;
+	public static Stage stage;
+	public static TweenManager manager;
 	
-	static int turn;
+	// Battle turn
+	static int turn;	
 	
+	// Semaphore
 	static boolean mutex = false;
 	
+	// Controller status
 	static int status = NOTHING;
-	static SquareBoard enemy_square = null;
 	
+	// Square from enemy attacked
+	public static SquareBoard enemy_square = null;
+	
+	// Objects
+	static Arrow arrow = null;
+	
+	/* EVENTS INFO */
 	static Object objectEvent = null;
 	static int typeEvent = -1;
 	
@@ -63,6 +80,11 @@ public class BattleController {
 		this.menu 	  = menu;
 	}
 	
+	/**
+	 * Add new event to process in update
+	 * @param type event type
+	 * @param object object that received the event
+	 */
 	static void addEvent( int type, Object object ) {
 		if( typeEvent == NONE ) {
 			typeEvent = type;
@@ -70,8 +92,12 @@ public class BattleController {
 		}
 	}
 	
+	/**
+	 * Update battle controller
+	 * Check if exist some event and process it
+	 */
 	public void update() {
-		if( !mutex ) 
+		if( !mutex )	// check semaphore 
 		{
 			if( typeEvent == SQUARE && objectEvent != null ) {
 				checkSquareEvent( (SquareBoard) objectEvent );
@@ -94,12 +120,17 @@ public class BattleController {
 		}
 	}
 	
+	/**
+	 * Check events on square: ( move unit, attack enemy )
+	 * @param square square that received event
+	 */
 	public void checkSquareEvent( SquareBoard square ) {
 		if( square.isAvailable() ) {
 			moveUnit( square.getNumber() );
 		}
-		else if( square.hasEnemyOn() ) 
+		else if( square.hasEnemyOn() )
 		{
+			// Check if unit can attack from a distance
 			if( players[ turn ].getSelectedUnit().getActualRange() > 0 ) {
 				enemy_square = square;
 				players[turn].getSelectedUnit().attackAction();
@@ -116,35 +147,8 @@ public class BattleController {
 		}
 	}
 
-	/*public boolean touchUp(int x, int y, int pointer, int button) {
-		if( mutex == false ) {
-			Vector2 aux = renderer.unproject(x, y);
-			
-			// Check if user has touch in board or in panel
-			Vector2i position = board.getSquareNumber(aux.x, aux.y);
-			
-			if( position != null ) {
-				if( board.getSquareFromNumber(position.x, position.y).isAvailable() )
-					moveUnit( position );
-				else if( board.getSquareFromNumber(position.x, position.y).hasEnemy( players[ turn ].getUnitsId() ) ) {
-					board.showAtackPositions( position, players[turn].getSelectedUnit().getSquare().getNumber(), 
-							players[turn].getSelectedUnit().getActualMovility() );
-					
-					status = ATTACK_POSITION;
-					enemy_position = position;
-				}
-				
-			}
-			else {
-				touchPanel( aux );
-			}
-		}
-		
-		return false;
-	} */
-
 	/**
-	 * Move unit selected to selected square
+	 * Move selected unit to selected square
 	 * @param touch touch position
 	 */
 	public void moveUnit( Vector2i end ) {
@@ -167,20 +171,13 @@ public class BattleController {
 				
 				// Add tween to move unit, square to square
 				for( int i = board.getWayList().size() - 2; i >= 0; i--) {
-					Vector2 aux = new Vector2( board.CORRECT_X, board.CORRECT_Y ).add( board.getWayList().get(i).getPosition() );
+					Vector2 aux = new Vector2( Board.CORRECT_X, Board.CORRECT_Y ).add(
+							board.getWayList().get(i).getPosition() );
 					
 					line.push( Tween.to(players[turn].getSelectedUnit(), 
 							UnitAccessor.POSITION_XY, 0.8f).target(aux.x, aux.y).ease(Sine.IN) );
 					
-					// Calculate init position for animation
-					Vector2 aux_init;
-					
-					if( i == board.getWayList().size() - 1)
-						aux_init = players[turn].getSelectedUnit().getPosition();
-					else
-						aux_init = board.getWayList().get( i + 1 ).getPosition();
-					
-					// Init animation
+					// Initialize animation
 					players[turn].getSelectedUnit().walkAction();
 				}
 				
@@ -210,7 +207,8 @@ public class BattleController {
 				board.getSquareFromNumber(end.x, end.y).setUnit( players[turn].getUnitsId() );
 				
 				// Set end square like unit's square
-				players[turn].getSelectedUnit().setSquare( board.getSquareFromNumber(end.x, end.y), players[turn].getUnitsId() );
+				players[turn].getSelectedUnit().setSquare(
+						board.getSquareFromNumber(end.x, end.y), players[turn].getUnitsId() );
 				
 				// Reset squares's attributes for find way
 				board.resetSquares();
@@ -220,21 +218,22 @@ public class BattleController {
 			mutex = false;
 	}
 	
-	public static void attack() {
-		attackEnemy( enemy_square.getNumber() );
-	}
-	
 	/**
 	 * Attack enemy with selected unit
 	 * @param position enemy position
 	 */
-	public static void attackEnemy( Vector2i position ) {
+	public static void attack() {
+		Vector2i position = enemy_square.getNumber();
+		
 		Vector2i init = players[turn].getSelectedUnit().getSquare().getNumber();
 		
+		// Check that unit can attack enemy position
 		if( players[turn].getSelectedUnit().getActualRange() > 0 || 
 				( Math.abs(init.x - position.x) == 1 || Math.abs(init.y - position.y) == 1 )) 
 		{	
-			Unit target = players[ getNextTurn() ].getUnitFromSquare( board.getSquareFromNumber(position.x, position.y) );
+			Unit target = players[ getNextTurn() ].getUnitFromSquare(
+					board.getSquareFromNumber(position.x, position.y) );
+			
 			Unit attacker = players[ turn ].getSelectedUnit();
 
 			if( target.receiveDamage( attacker.getAttackDamage() ) == false ) {
@@ -253,12 +252,12 @@ public class BattleController {
 		int side = (int) (Math.random() * 2); 
 		
 		if( side == 0 ) {
-			players[0].setInverse( false );
-			players[1].setInverse( true );
+			players[0].setBattleSide( LEFT );
+			players[1].setBattleSide( RIGHT );
 		}
 		else {
-			players[0].setInverse( true );
-			players[1].setInverse( false );
+			players[0].setBattleSide( RIGHT );
+			players[1].setBattleSide( LEFT );
 		}
 		
 		// Random turn
@@ -282,18 +281,19 @@ public class BattleController {
 	 * Place units in the board when initialize battle
 	 * @param player
 	 */
-	public void placeUnits( Player player) {
+	public void placeUnits( Player player ) {
 		int x = 0;
 		int y = 0;
 		
-		if( player.isInverse() )
-			x = board.NS_X - 1;
+		if( player.getBattleSide() == RIGHT )
+			x = Board.NS_X - 1;
 			
 		for( Unit u : player.getUnits() ) {
 			u.setSquare( board.getSquareFromNumber(x, y), player.getUnitsId() );
-			u.setPosition( new Vector2( board.CORRECT_X, board.CORRECT_Y ).add( board.getSquareFromNumber( x, y ).getPosition() ) );
+			u.setPosition( new Vector2( Board.CORRECT_X, Board.CORRECT_Y ).add(
+					board.getSquareFromNumber( x, y ).getPosition() ) );
 				
-			y++;
+			y+= 2;
 		}
 	}
 	
@@ -320,5 +320,30 @@ public class BattleController {
 	 */
 	public static int getNextTurn() {
 		return ( turn + 1 ) % 2;
+	}
+	
+	/**
+	 * Add an arrow to stage when archer shoot to enemy and add tween to move it.
+	 */
+	public static void throwArrow( float x, float y, int orientation ) {
+		arrow = new Arrow( x + SquareBoard.SIZE_H / 2, y, orientation, BattleController.stage );
+		
+		Vector2 destination = BattleController.enemy_square.getPosition();
+		destination.y += SquareBoard.SIZE_H / 2;
+
+		Tween.to( arrow, ImageAccessor.POSITION_XY, Math.abs( x - destination.x ) / 700 )
+	    .target( destination.x, destination.y )
+	    .setCallback( new TweenCallback() {
+			
+			// When animation end, remove arrow and damage enemy
+			public void onEvent(int type, BaseTween<?> source) {
+				arrow.remove();
+				
+				BattleController.attack();
+				
+				BattleController.passTurn();	
+			}
+		})
+	    .start( BattleController.manager );
 	}
 }

@@ -265,6 +265,14 @@ public class Board
 		matrix[ number.y ][ number.x ].setSelectedUnitOn();
 	}
 	
+	/**
+	 * Check if destination is attainable
+	 * @param x x square to check
+	 * @param y y square to check
+	 * @param number square number of unit who want to move
+	 * @param player_code unit owner code
+	 * @return boolean ( true if is valid and false otherwise )
+	 */
 	public boolean checkDestination( int x, int y, Vector2i number, int player_code ) {
 		// Check if square has player unit
 		if( matrix[y][x].status == player_code )
@@ -322,6 +330,9 @@ public class Board
 		}
 	}
 	
+	/**
+	 * Print matrix status
+	 */
 	public void printMatrixStatus() {
 		for(int i=0;i<NS_Y;i++) {
 			for(int j=0;j<NS_X;j++) {
@@ -333,6 +344,9 @@ public class Board
 		System.out.println();
 	}
 	
+	/**
+	 * Print matrix texture status
+	 */
 	public void printMatrixTextureStatus() {
 		for(int i=0;i<NS_Y;i++) {
 			for(int j=0;j<NS_X;j++) {
@@ -347,25 +361,8 @@ public class Board
 	/**
 	 * Show the squares from which unit can attack the selected enemy
 	 * @param enemy enemy square number
-	 * @param unit unit square number
-	 * @param movility unit movility
+	 * @param me unit square number
 	 */
-	/*public void showAtackPositions(Vector2i enemy, Vector2i unit, int movility ) 
-	{
-		for( int y = unit.y - movility; y < unit.y + movility + 1; y++ )
-			for( int x = unit.x - movility; x < unit.x + movility + 1; x++ )
-			{
-				if( isValidDestination( unit, new Vector2i(x, y), movility ) )
-				{
-					if( Math.abs( y - enemy.y ) + Math.abs( x - enemy.x ) > 1 )
-						matrix[y][x].texture_status = null;
-				}
-			}
-		
-		if( Math.abs( unit.y - enemy.y ) + Math.abs( unit.x - enemy.x ) > 1 )
-			matrix[unit.y][unit.x].texture_status = SquareBoard.T_AVAILABLE;
-	}*/
-	
 	public void showAttackPositions( Vector2i enemy, Vector2i me ) {
 		for( int y = 0; y < NS_Y; y++ )
 			for( int x = 0; x < NS_X; x++ ) {
@@ -378,6 +375,10 @@ public class Board
 		}
 	}
 	
+	/**
+	 * Set all enemy squares available for attack
+	 * @param player player code
+	 */
 	public void setAllEnemyOn( int player ) {
 		for( int y = 0; y < NS_Y; y++ )
 			for( int x = 0; x < NS_X; x++ ) {

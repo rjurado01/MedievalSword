@@ -1,13 +1,18 @@
 package com.me.mygdxgame;
 
 import com.badlogic.gdx.utils.Array;
-import com.me.modules.battle.Archer;
+import com.me.modules.battle.BattleController;
 import com.me.modules.battle.Board;
 import com.me.modules.battle.SquareBoard;
-import com.me.modules.battle.Unit1;
+import com.me.units.Archer;
+import com.me.units.Villager;
 
+/**
+ * This class represent each player and all this features.
+ * Contain information about all his resources, units, experience, level...
+ */
 public class Player {
-	// resources
+
 	int gold;
 	
 	int level;
@@ -15,7 +20,7 @@ public class Player {
 	private Array<Unit> units;	// player units
 	private Unit selected;		// unit selected
 	
-	boolean inverse;
+	boolean battle_side;			// represent 
 	
 	int units_id = 0;
 	
@@ -27,26 +32,12 @@ public class Player {
 		level = 0;
 		
 		units = new Array<Unit>();
-		units.add( new Unit1( 120, units_id ) );
-		units.add( new Archer( 4, units_id ) );
+		units.add( new Villager( 120, units_id ) );
+		units.add( new Archer( 40, units_id ) );
 		
 		selected = units.get(0);
 		
 		this.units_id = units_id;
-	}
-	
-	/**
-	 * @return player units
-	 */
-	public Array<Unit> getUnits() {
-		return units;
-	}
-	
-	/**
-	 * @return player selected unit
-	 */
-	public Unit getSelectedUnit() {
-		return selected;
 	}
 
 	/**
@@ -68,19 +59,48 @@ public class Player {
 		selected = units.get( units.size - 1 );
 	}
 	
-	public Unit getUnitFromSquare(SquareBoard sq) {
+	/**
+	 * Get unit of player that is in specific square
+	 * @param square
+	 * @return unit
+	 */
+	public Unit getUnitFromSquare( SquareBoard square ) {
 		for(int i=0; i<units.size; i++)
-			if( units.get(i).getSquare() == sq )
+			if( units.get(i).getSquare() == square )
 				return units.get(i);
 		
 		return null;
 	}
 	
-	public void setInverse( boolean inverse ) {
-		this.inverse = inverse;
+	/**
+	 * Remove unit from player
+	 * @param unit
+	 */
+	public void deleteUnit(Unit unit) {
+		units.removeValue( unit, true );
+	}
+	
+	/**
+	 * Update unit
+	 * @param time current time
+	 */
+	public void update( float time ) {
+		for( Unit unit : units ) {
+			unit.update( time );
+		}
+	}
+	
+	/**
+	 * Set player battle side ( right / left )
+	 * Depending of side, set units textures.
+	 * 
+	 * @param side battle side
+	 */
+	public void setBattleSide( boolean side ) {
+		this.battle_side = side;
 		
 		// Update texture of units
-		if( inverse == true) {
+		if( battle_side == BattleController.RIGHT ) {
 			for( Unit u : units) {
 				u.setOrientation( Unit.XL );
 			}
@@ -92,25 +112,39 @@ public class Player {
 		}
 	}
 	
-	public boolean isInverse() {
-		return inverse;
+	/**
+	 * @return player units
+	 */
+	public Array<Unit> getUnits() {
+		return units;
 	}
 	
+	/**
+	 * @return player selected unit
+	 */
+	public Unit getSelectedUnit() {
+		return selected;
+	}
+	
+	/**
+	 * @return player side in actual battle
+	 */
+	public boolean getBattleSide() {
+		return battle_side;
+	}
+	
+	/**
+	 * Set units id for player ( all his units have this id in board )
+	 * @param id
+	 */
 	public void setUnitsId( int id ) {
 		this.units_id = id;
 	}
 	
+	/**
+	 * @return player units id
+	 */
 	public int getUnitsId() {
 		return units_id;
-	}
-
-	public void deleteUnit(Unit unit) {
-		units.removeValue( unit, true );
-	}
-	
-	public void update( float time ) {
-		for( Unit unit : units ) {
-			unit.update( time );
-		}
 	}
 }

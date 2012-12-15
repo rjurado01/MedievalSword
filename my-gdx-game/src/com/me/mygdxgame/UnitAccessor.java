@@ -2,6 +2,9 @@ package com.me.mygdxgame;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
+/**
+ * Class that let to Tween Engine to move Units
+ */
 public class UnitAccessor implements TweenAccessor<Unit> {
 
 	public static final int POSITION_X = 1;
