@@ -43,11 +43,10 @@ public class SquareBoard extends Image {
 	/**
 	 * Class constructor
 	 * @param pos
-	 * @param x
-	 * @param y
+	 * @param number
 	 * @param father
 	 */
-	public SquareBoard(Vector2 pos, Vector2i number ) {
+	public SquareBoard( Vector2 pos, Vector2i number ) {
 		super();
 		
 		this.number = number;
@@ -55,7 +54,7 @@ public class SquareBoard extends Image {
 		this.y = pos.y;
 		this.width = SIZE_W;
 		this.height = SIZE_H;
-		this.color.a = 0.6f;
+		this.color.a = 0.6f;	// set alpha value
 		
 		setRegion( Assets.getTextureRegion( texture_name ) );
 		

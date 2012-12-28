@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.me.modules.battle.BattleSummaryUnit;
 import com.me.modules.battle.IndicatorUnits;
 import com.me.modules.battle.SquareBoard;
 
@@ -59,6 +60,8 @@ public abstract class Unit extends Group {
 	Image unit_image;
 	IndicatorUnits indicator;
 	
+	BattleSummaryUnit summary = null;
+	
 	/**
 	 * Class constructor
 	 * @param square
@@ -93,7 +96,7 @@ public abstract class Unit extends Group {
 	/**
 	 * Define walk action
 	 */
-	public abstract void walkAction();
+	public abstract void walkAction( int x_direction );
 
 	/**
 	 * Define attack action
@@ -126,6 +129,10 @@ public abstract class Unit extends Group {
 		
 			if( actions_queue.size() > 0 )
 				unit_image.setRegion( actions_queue.get(0).getCurrentFrame() );
+			else if( orientation == XR)
+				unit_image.setRegion( textures.get( "normal_xr" ) );
+			else
+				unit_image.setRegion( textures.get( "normal_xl" ) );
 		}
 	}
 	
@@ -161,12 +168,30 @@ public abstract class Unit extends Group {
 	 * @return false if unit dead or true otherwise
 	 */
 	public boolean receiveDamage(int damage) {
-		if( damage > ( actual_life + actual_shield ) ) {
-			number -= damage / ( initial_life + actual_shield );
-
-			if( number > 0 )
-				actual_life = damage % ( initial_life + actual_shield );
+		if( damage >= ( actual_life + actual_shield ) ) 
+		{
+			// Dead first unit
+			int dead = 1;	
+			damage -= ( actual_life + actual_shield );
+			
+			// Dead units while damage > unit life + shield
+			while( damage >  ( initial_life + actual_shield ) ) {
+				damage -= ( initial_life + actual_shield );
+				dead++;
+			}
+			
+			// Check if last unit has been wound
+			if( damage > actual_shield )
+				actual_life = initial_life - ( damage - actual_shield );
 			else
+				actual_life = initial_life;
+			
+			// Update number and summary
+			number -= dead;
+			summary.addDead( dead );
+
+			// Check if all units are dead
+			if( number <= 0 )
 				return false;
 		}
 		else if ( damage > actual_shield ) {
@@ -213,6 +238,16 @@ public abstract class Unit extends Group {
 	 */
 	public TextureRegion getFrameAnimation(String animation, int time) {
 		return animations.get(animation).getKeyFrame(time);
+	}
+	
+	/**
+	 * Set summary to unit for update dead units
+	 * Also pass unit icon to summary 
+	 * @param summary
+	 */
+	public void setSummaryUnit( BattleSummaryUnit summary ) {
+		this.summary = summary;
+		this.summary.setIcon( textures.get( "icon" ) );
 	}
 	
 	/**
@@ -275,5 +310,9 @@ public abstract class Unit extends Group {
 	
 	public void setShowNumber(boolean x) {
 		indicator.visible = x;
+	}
+	
+	public int getOrientation() {
+		return orientation;
 	}
 }

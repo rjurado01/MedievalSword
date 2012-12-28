@@ -16,7 +16,7 @@ public class Knight extends Unit {
 	}
 
 	@Override
-	public void walkAction() {
+	public void walkAction( int x_direction ) {
 		// TODO Auto-generated method stub
 		
 	}

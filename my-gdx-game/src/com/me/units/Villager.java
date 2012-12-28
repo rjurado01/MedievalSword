@@ -30,7 +30,7 @@ public class Villager extends Unit{
 		initial_shield = 	3;
 		initial_range = 	0;
 		initial_velocity = 	3;
-		initial_damage = 	5;
+		initial_damage = 	7;
 		initial_mobility =  6;
 		
 		if( player == SquareBoard.UNIT_P1 )
@@ -52,6 +52,8 @@ public class Villager extends Unit{
 		
 		textures.put( "normal_xr", Assets.getTextureRegion( name ) );
 		textures.put( "normal_xl", Assets.getFlipTextureRegion( name ) );
+		
+		textures.put( "icon", Assets.getTextureRegion( name ) );
 	}
 	
 	/**
@@ -72,9 +74,9 @@ public class Villager extends Unit{
 	/**
 	 * Add walk action to actions queue
 	 */
-	public void walkAction() {	
+	public void walkAction( int x_direction ) {
 		actions_queue.add( new CustomAnimation(
-				getAnimation( WALK, orientation ), 0.8f, null ) );
+				getAnimation( WALK, x_direction ), 0.8f, null ) );		
 	}
 
 	/**

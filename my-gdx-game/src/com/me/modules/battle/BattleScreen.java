@@ -23,6 +23,7 @@ public class BattleScreen implements Screen {
 	BattlePanel panel;
 	BattleController controller;
 	BattleMenu menu;
+	BattleSummary summary;
 	
 	Stage stage;	
 	TweenManager manager;
@@ -50,7 +51,10 @@ public class BattleScreen implements Screen {
 		
 		menu = new BattleMenu( stage );
 		
-		controller = new BattleController( board, players, manager, panel, stage, menu );
+		summary = new BattleSummary( stage );
+		summary.setUnits( players[0].getUnits(), players[1].getUnits() );
+		
+		controller = new BattleController( board, players, manager, panel, stage, menu, summary );
 		
 		controller.initBattle();
 	}

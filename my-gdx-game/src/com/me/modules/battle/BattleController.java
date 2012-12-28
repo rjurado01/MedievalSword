@@ -41,6 +41,7 @@ public class BattleController {
 	static Player players [];
 	static BattlePanel panel;
 	static BattleMenu menu;
+	static BattleSummary summary;
 	
 	public static Stage stage;
 	public static TweenManager manager;
@@ -71,13 +72,15 @@ public class BattleController {
 	 * @param manager
 	 * @param renderer
 	 */
-	public BattleController( Board board, Player players[], TweenManager manager, BattlePanel panel, Stage stage, BattleMenu menu ) {
+	public BattleController( Board board, Player players[], TweenManager manager,
+			BattlePanel panel, Stage stage, BattleMenu menu, BattleSummary summary ) {
 		this.board    = board;
 		this.players  = players;
 		this.manager  = manager;
 		this.panel    = panel;
 		this.stage 	  = stage;
 		this.menu 	  = menu;
+		this.summary  = summary;
 	}
 	
 	/**
@@ -115,6 +118,9 @@ public class BattleController {
 				menu.setVisible( true );
 				
 				mutex = true;
+				typeEvent = NONE;
+			}
+			else if( typeEvent == MAGIC ) {
 				typeEvent = NONE;
 			}
 		}
@@ -170,22 +176,28 @@ public class BattleController {
 				Timeline line = Timeline.createSequence();
 				
 				// Add tween to move unit, square to square
-				for( int i = board.getWayList().size() - 2; i >= 0; i--) {
+				for( int i = board.getWayList().size() - 2; i >= 0; i-- ) {
 					Vector2 aux = new Vector2( Board.CORRECT_X, Board.CORRECT_Y ).add(
 							board.getWayList().get(i).getPosition() );
 					
-					line.push( Tween.to(players[turn].getSelectedUnit(), 
+					line.push( Tween.to( players[turn].getSelectedUnit(), 
 							UnitAccessor.POSITION_XY, 0.8f).target(aux.x, aux.y).ease(Sine.IN) );
 					
 					// Initialize animation
-					players[turn].getSelectedUnit().walkAction();
+					if( aux.x - players[turn].getSelectedUnit().getPosition().x < 0)
+						players[turn].getSelectedUnit().walkAction( Unit.XL );
+					else if( aux.x - players[turn].getSelectedUnit().getPosition().x > 0)
+						players[turn].getSelectedUnit().walkAction( Unit.XR );
+					else
+						players[turn].getSelectedUnit().walkAction(
+								players[turn].getSelectedUnit().getOrientation() );
 				}
 				
 				// When animation has finished, set mutex to 'false'
 				line.push( Tween.call( new TweenCallback() {
 					public void onEvent( int type, BaseTween<?> source ) {
 						// Hide number of units
-						players[turn].getSelectedUnit().setShowNumber( true );				
+						players[turn].getSelectedUnit().setShowNumber( true );
 						
 						if( status == ATTACK_POSITION ) {
 							players[turn].getSelectedUnit().attackAction();
@@ -226,7 +238,7 @@ public class BattleController {
 		Vector2i position = enemy_square.getNumber();
 		
 		Vector2i init = players[turn].getSelectedUnit().getSquare().getNumber();
-		
+
 		// Check that unit can attack enemy position
 		if( players[turn].getSelectedUnit().getActualRange() > 0 || 
 				( Math.abs(init.x - position.x) == 1 || Math.abs(init.y - position.y) == 1 )) 
@@ -266,11 +278,6 @@ public class BattleController {
 		
 		placeUnits( players[0] );
 		placeUnits( players[1] );
-
-		for( Unit unit : players[0].getUnits() )
-			stage.addActor( unit );
-		for( Unit unit : players[1].getUnits() )
-			stage.addActor( unit );	
 				
 		// Update board with available squares for select Unit
 		board.selectUnit( players[turn].getSelectedUnit(),
@@ -288,10 +295,12 @@ public class BattleController {
 		if( player.getBattleSide() == RIGHT )
 			x = Board.NS_X - 1;
 			
-		for( Unit u : player.getUnits() ) {
-			u.setSquare( board.getSquareFromNumber(x, y), player.getUnitsId() );
-			u.setPosition( new Vector2( Board.CORRECT_X, Board.CORRECT_Y ).add(
+		for( Unit unit : player.getUnits() ) {
+			unit.setSquare( board.getSquareFromNumber(x, y), player.getUnitsId() );
+			unit.setPosition( new Vector2( Board.CORRECT_X, Board.CORRECT_Y ).add(
 					board.getSquareFromNumber( x, y ).getPosition() ) );
+			
+			stage.addActor( unit );
 				
 			y+= 2;
 		}
@@ -304,14 +313,20 @@ public class BattleController {
 		// Pass turn
 		turn = ( turn + 1 ) % 2;
 		
-		// Set next unit turn
-		players[turn].nexUnit();
-		
-		// Update board with available squares (textures) from new unit
-		board.selectUnit( players[turn].getSelectedUnit(), 
-				players[turn].getSelectedUnit().getActualMovility(), players[turn].getUnitsId() );
-		
-		mutex = false;
+		// Check if player has any unit or battle is end
+		if( players[turn].getUnits().size == 0 ) {
+			summary.show( ( turn + 1 ) % 2 );			
+		}
+		else {
+			// Set next unit turn
+			players[turn].nexUnit();
+			
+			// Update board with available squares (textures) from new unit
+			board.selectUnit( players[turn].getSelectedUnit(), 
+					players[turn].getSelectedUnit().getActualMovility(), players[turn].getUnitsId() );
+			
+			mutex = false;
+		}
 	}
 	
 	/**

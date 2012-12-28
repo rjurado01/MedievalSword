@@ -20,7 +20,7 @@ public class Player {
 	private Array<Unit> units;	// player units
 	private Unit selected;		// unit selected
 	
-	boolean battle_side;			// represent 
+	boolean battle_side;		// represent 
 	
 	int units_id = 0;
 	
@@ -32,8 +32,8 @@ public class Player {
 		level = 0;
 		
 		units = new Array<Unit>();
-		units.add( new Villager( 120, units_id ) );
-		units.add( new Archer( 40, units_id ) );
+		units.add( new Villager( 1, units_id ) );
+		units.add( new Archer( 1, units_id ) );
 		
 		selected = units.get(0);
 		

@@ -39,7 +39,7 @@ public class Archer extends Unit {
 		initial_shield = 	3;
 		initial_range = 	3;
 		initial_velocity = 	2;
-		initial_damage = 	4;
+		initial_damage = 	14;
 		initial_mobility =  4;
 		
 		if( player == SquareBoard.UNIT_P1 )
@@ -59,8 +59,9 @@ public class Archer extends Unit {
 	public void loadTextures() {
 		textures = new Hashtable<String, TextureRegion>();
 		
-		textures.put( "normal_xr", Assets.getTextureRegion( name ) );
-		textures.put( "normal_xl", Assets.getFlipTextureRegion( name ) );
+		textures.put( "icon", 		Assets.getTextureRegion( name ) );
+		textures.put( "normal_xr", 	Assets.getTextureRegion( name ) );
+		textures.put( "normal_xl", 	Assets.getFlipTextureRegion( name ) );
 	}
 	
 	/**
@@ -86,9 +87,9 @@ public class Archer extends Unit {
 	/**
 	 * Add walk action to actions queue
 	 */
-	public void walkAction() {
+	public void walkAction( int x_direction ) {
 		actions_queue.add( new CustomAnimation(
-				getAnimation( WALK, orientation ), 0.8f, null ) );		
+				getAnimation( WALK, x_direction ), 0.8f, null ) );		
 	}
 
 	/**
