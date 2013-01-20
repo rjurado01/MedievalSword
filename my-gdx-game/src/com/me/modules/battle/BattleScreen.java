@@ -1,61 +1,49 @@
 package com.me.modules.battle;
 
-import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenManager;
-
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.me.mygdxgame.*;
 
 /**
  * Principal class of battle module that implements screen
  */
 public class BattleScreen implements Screen {
-
-	static final int SIZE_W = 480;
-	static final int SIZE_H = 320;
 	
-	Board board;
-	Player players [];
-	BattlePanel panel;
+	Army armies [];
 	BattleController controller;
-	BattleMenu menu;
-	BattleSummary summary;
+	Stage stage;
+	Game game;
 	
-	Stage stage;	
-	TweenManager manager;
+	/**
+	 * Class constructor
+	 */
+	public BattleScreen( Game game, Army player, Army enemy ) {
+		this.game = game;
+		
+		armies = new Army[2];
+		armies[0] = player;
+		armies[1] = enemy;
+	}
+	
+	private void addArmiesToStage() {
+		for( int i = 0; i < 2; i++ )
+			for( Stack stack : armies[i].getStacks() )
+				stage.addActor( stack.getView() );
+	}
 	
 	/**
 	 * Initialize battle screen
 	 */
 	public void show() {
-		stage = new Stage( BattleScreen.SIZE_W, BattleScreen.SIZE_H, true);
-
-		board = new Board( stage );
-		
-		players = new Player[2];
-		
-		players[0] = new Player( board, SquareBoard.UNIT_P1 );
-		players[1] = new Player( board, SquareBoard.UNIT_P2 );
-		
-		panel = new BattlePanel( stage );
-		
-		manager = new TweenManager();
-		Tween.registerAccessor(Unit.class, new UnitAccessor());
-		Tween.registerAccessor(Image.class, new ImageAccessor());
-		
+		stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true);	
 		Gdx.input.setInputProcessor( stage );
 		
-		menu = new BattleMenu( stage );
+		addArmiesToStage();
 		
-		summary = new BattleSummary( stage );
-		summary.setUnits( players[0].getUnits(), players[1].getUnits() );
-		
-		controller = new BattleController( board, players, manager, panel, stage, menu, summary );
-		
+		controller = new BattleController( armies, stage );		
 		controller.initBattle();
 	}
 	
@@ -63,18 +51,15 @@ public class BattleScreen implements Screen {
 	 * Update the game
 	 */
 	public void render(float delta) {
-		manager.update( Gdx.graphics.getDeltaTime() );
-		
 		controller.update();
 		
-		players[0].update( Gdx.graphics.getDeltaTime() );
-		players[1].update( Gdx.graphics.getDeltaTime() ); 
+		armies[0].update( Gdx.graphics.getDeltaTime() );
+		armies[1].update( Gdx.graphics.getDeltaTime() ); 
 		
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
 		stage.act( Gdx.graphics.getDeltaTime() );
-		
 		stage.draw();
 	}
 
@@ -101,5 +86,9 @@ public class BattleScreen implements Screen {
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
+	}
+	
+	public void setInput() {
+		Gdx.input.setInputProcessor( stage );
 	}
 }

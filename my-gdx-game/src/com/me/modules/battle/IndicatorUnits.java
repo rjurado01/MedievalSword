@@ -6,71 +6,50 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.me.mygdxgame.Assets;
 
 /**
- * Indicator with number of units for this type
+ * Indicator that show number of units in a stack
  */
 public class IndicatorUnits extends Group {
-	Image square;
+	Image box;
 	Label text;
 	
-	/**
-	 * Class constructor
-	 * @param number number of units
-	 * @param x x unit position
-	 * @param y y unit position
-	 */
-	public IndicatorUnits( int number, float x, float y, boolean inverse ) {
-		text = new Label( Integer.toString( number ), Assets.skin );
-		square = new Image( Assets.getTextureRegion( "number" ) );
-		
-		addActor( square );
-		addActor( text );
-		
-		this.x = x;
-		this.y = y;
-	}
-	
-	/**
-	 * Class constructor
-	 * @param number number of units
-	 */
+
 	public IndicatorUnits( int number ) {
-		text = new Label( Integer.toString( number ), Assets.skin );
-		square = new Image( Assets.getTextureRegion( "number" ) );
+		createTextLabel( number );
+		createBoxImage();
 		
-		square.width = text.width + 8;
-		text.x = ( square.width - text.width ) / 2;
-		this.width = square.width;
+		this.width = box.width;
 		
-		addActor( square );
+		addActor( box );
 		addActor( text );
 	}
 	
-	/**
-	 * Change Group position
-	 * @param x
-	 * @param y
-	 */
+	private void createTextLabel( int number ) {
+		text = new Label( Integer.toString( number ), Assets.skin );
+		text.x = 4;
+	}
+	
+	private void createBoxImage() {
+		box = new Image( Assets.getTextureRegion( "number" ) );
+		box.width = text.width + 8;
+	}
+	
 	public void setPosition( float x, float y ) {
 		this.x = x;
 		this.y = y;
 	}
 	
-	/**
-	 * Change text to new number
-	 * @param number
-	 */
+
 	public void updateTextNumber( int number ) {
 		text.setText( Integer.toString( number ) );
 		text.width = text.getTextBounds().width;
 		
 		removeActor(text);
-		removeActor( square );
+		removeActor( box );
 
-		square = new Image( Assets.getTextureRegion( "number" ) );		
-		square.width = text.width + 8;
-		text.x = ( square.width - text.width ) / 2;
+		createBoxImage();
+		text.x = ( box.width - text.width ) / 2;
 
-		addActor( square );
+		addActor( box );
 		addActor( text );
 	}
 }

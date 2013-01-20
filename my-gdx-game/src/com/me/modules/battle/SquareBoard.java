@@ -1,6 +1,8 @@
 package com.me.modules.battle;
 
 import com.me.mygdxgame.Assets;
+import com.me.mygdxgame.Constants;
+import com.me.mygdxgame.Stack;
 import com.me.utils.Vector2i;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -9,7 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 /**
  * Represents a square on the board. 
- * It is used for calculate way using A* algorithm
+ * It is used for calculate way using A* algorithm.
  */
 public class SquareBoard extends Image {
 	
@@ -19,8 +21,8 @@ public class SquareBoard extends Image {
 	
 	/** Square STATUS */
 	static final int FREE = 0;
-	public static final int UNIT_P1 = 1;
-	public static final int UNIT_P2 = 2;
+	public static final int STACK_P1 = 1;
+	public static final int STACK_P2 = 2;
 	
 	/** Square TEXTURES */
 	static final String T_NORMAL 		= "normalCell";
@@ -39,13 +41,10 @@ public class SquareBoard extends Image {
 	int F, G, H;
 	boolean visited = false;
 	SquareBoard father;
+	
+	Stack stack;
 
-	/**
-	 * Class constructor
-	 * @param pos
-	 * @param number
-	 * @param father
-	 */
+
 	public SquareBoard( Vector2 pos, Vector2i number ) {
 		super();
 		
@@ -58,20 +57,21 @@ public class SquareBoard extends Image {
 		
 		setRegion( Assets.getTextureRegion( texture_name ) );
 		
+		addClickEvent();
+	}
+	
+	private void addClickEvent() {
 		setClickListener( new ClickListener() {
-			
-			@Override
-			public void click(Actor actor, float x, float y) {
-				clickSquare();
-			}
+			public void click(Actor actor, float x, float y) { clickSquare(); }
 		});
 	}
 	
 	/**
-	 * Add to controller information about event for process it
+	 * Add SQUARE event to controller.
+	 * We need to pass this object.
 	 */
 	public void clickSquare() {
-		BattleController.addEvent( BattleController.SQUARE, this );
+		BattleController.addEvent( Constants.SQUARE, this );
 	}
 	
 	public boolean isFree() {
@@ -84,18 +84,15 @@ public class SquareBoard extends Image {
 	public void setFree() {
 		status = FREE;
 		texture_status = null;
+		stack = null;
 	}
 	
-	/**
-	 * Change status to UNIT ( P1ayer1 or Player2 )
-	 * @param type
-	 */
-	public void setUnit( int unit ) {
-		if( unit == UNIT_P1 || unit == UNIT_P2)
-			status = unit;
+	public void setStack( Stack stack ) {
+		this.stack = stack;
+		status = getStackId( stack.getBattleSide() );		
 	}
 	
-	public void setStatus(int st) {
+	public void setStatus( int st ) {
 		status = st;
 	}
 	
@@ -123,12 +120,12 @@ public class SquareBoard extends Image {
 	}
 	
 	public void setEnemyOn( int player ) {
-		if( status == UNIT_P1 && player == UNIT_P2 ) {
-			this.texture_status = T_ENEMY;			
+		if( status == STACK_P1 && player == STACK_P2 ) {
+			texture_status = T_ENEMY;			
 			setRegion( Assets.getTextureRegion( T_ENEMY ) );
 		}
-		else if( status == UNIT_P2 && player == UNIT_P1 ) {
-			this.texture_status = T_ENEMY;			
+		else if( status == STACK_P2 && player == STACK_P1 ) {
+			texture_status = T_ENEMY;			
 			setRegion( Assets.getTextureRegion( T_ENEMY ) );
 		}
 	}
@@ -149,11 +146,10 @@ public class SquareBoard extends Image {
 	}
 	
 	/**
-	 * Check if contains an unit
-	 * @return true if contains an unit and false otherwhise
+	 * Check if this square has a stack
 	 */
-	public boolean hasUnit() {
-		if( status == UNIT_P1 || status == UNIT_P2 )
+	public boolean hasStack() {
+		if( status == STACK_P1 || status == STACK_P2 )
 			return true;
 		else
 			return false;
@@ -161,13 +157,14 @@ public class SquareBoard extends Image {
 	
 	/**
 	 * Check if there is an enemy in this square
-	 * @param player id player units
-	 * @return true if there is an enemy in this square and false otherwise
+	 * @param stack_id id player units
 	 */
-	public boolean hasEnemy( int player ) {
-		if( player == UNIT_P1 && status == UNIT_P2 )
+	public boolean hasEnemy( int battle_side ) {
+		int stack_id = getStackId( battle_side );
+		
+		if( stack_id == STACK_P1 && status == STACK_P2 )
 			return true;
-		else if( player == UNIT_P2 && status == UNIT_P1 )
+		else if( stack_id == STACK_P2 && status == STACK_P1 )
 			return true;
 		else
 			return false;
@@ -175,13 +172,21 @@ public class SquareBoard extends Image {
 	
 	/**
 	 * Check if this square has enemy that can be attacked by current selected unit
-	 * @return true if has enemy on and false otherwise
 	 */
 	public boolean hasEnemyOn() {
 		if( texture_status == T_ENEMY )
 			return true;
 		else
 			return false;
+	}
+	
+	public Stack getStack() {
+		return stack;
+	}
+	
+	public Vector2 getStackPosition() {
+		return getPosition().add(
+				new Vector2( Board.CORRECT_X, Board.CORRECT_Y ) );
 	}
 	
 	/******** A* Functions ************/
@@ -214,32 +219,42 @@ public class SquareBoard extends Image {
 		return father;
 	}
 
-	/**
-	 * Calculate H and F (see A* algorithm)
-	 * @param xf x coordinate of the target cell
-	 * @param yf y coordinate of the target cell
-	 */
-	public void calculate(int xf, int yf) {
-		H = (Math.abs(xf - number.x) + Math.abs(yf - number.y)) * 10;
+	public void calculateH( Vector2i number_square ) {
+		H = ( Math.abs( number_square.x - number.x ) +
+				Math.abs( number_square.y - number.y ) ) * 10;
+	}
+	
+	public void calculateF() {
 		F = H + G;
+	}
+	
+	public void reset() {
+		resetWayValues();
+		
+		texture_status = T_NORMAL;
+		setRegion( Assets.getTextureRegion( T_NORMAL ) );
 	}
 	
 	/**
 	 * Reset all A* variables for new search
 	 */
-	public void reset() {
+	public void resetWayValues() {
 		G = 0;
 		F = 0;
 		H = 0;
 		
 		father = null;
 		visited = false;
-		
-		texture_status = T_NORMAL;
-		setRegion( Assets.getTextureRegion( T_NORMAL ) );
 	}
 
 	public void setTexture( String texture ) {
 		setRegion( Assets.getTextureRegion( texture ) );
+	}
+	
+	public int getStackId( int battle_side ) {
+		if( battle_side == Constants.LEFT_SIDE )
+			return STACK_P1;
+		else
+			return STACK_P2;
 	}
 }

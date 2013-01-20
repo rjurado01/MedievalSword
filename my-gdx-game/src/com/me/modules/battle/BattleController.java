@@ -7,12 +7,16 @@ import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Sine;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.me.mygdxgame.ImageAccessor;
-import com.me.mygdxgame.Player;
-import com.me.mygdxgame.Unit;
-import com.me.mygdxgame.UnitAccessor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.me.mygdxgame.Army;
+import com.me.mygdxgame.Constants;
+import com.me.mygdxgame.Stack;
+import com.me.utils.CallBack;
+import com.me.utils.ImageAccessor;
+import com.me.utils.StackViewAccessor;
 import com.me.utils.Vector2i;
 
 /**
@@ -20,345 +24,362 @@ import com.me.utils.Vector2i;
  */
 public class BattleController {
 	
-	/* EVENTS TYPES */
-	static final int NONE = -1;
-	static final int SQUARE = 0;
-	static final int UNIT = 1;
-	static final int SHIELD = 2;
-	static final int MAGIC = 3;
-	static final int SETTINGS = 4;
-	
 	/* CONTROLLER STATUS */
-	static final int NOTHING = 0;
-	static final int ATTACK_POSITION = 1;
+	final int NORMAL = 0;
+	final int ATTACKING = 1;
 	
-	/* BATTLE SIDES */
-	public static final boolean RIGHT = true;
-	public static final boolean LEFT = false;
+	Board board;
+	Army armies [];
+	BattlePanel panel;
+	BattleMenu menu;
+	BattleSummary summary;
 	
-	/* VARIABLES */
-	static Board board;
-	static Player players [];
-	static BattlePanel panel;
-	static BattleMenu menu;
-	static BattleSummary summary;
+	Stage stage;
+	TweenManager manager;
 	
-	public static Stage stage;
-	public static TweenManager manager;
+	int turn;
+	int status = NORMAL;
+	static boolean mutex = false; 	// Semaphore		 
 	
-	// Battle turn
-	static int turn;	
-	
-	// Semaphore
-	static boolean mutex = false;
-	
-	// Controller status
-	static int status = NOTHING;
-	
-	// Square from enemy attacked
-	public static SquareBoard enemy_square = null;
-	
-	// Objects
-	static Arrow arrow = null;
+	SquareBoard attacked_enemy_square = null;
+	Stack stack_selected;
+	Arrow arrow = null;
 	
 	/* EVENTS INFO */
 	static Object objectEvent = null;
 	static int typeEvent = -1;
 	
-	/**
-	 * Class constructor
-	 * @param board
-	 * @param player1
-	 * @param manager
-	 * @param renderer
-	 */
-	public BattleController( Board board, Player players[], TweenManager manager,
-			BattlePanel panel, Stage stage, BattleMenu menu, BattleSummary summary ) {
-		this.board    = board;
-		this.players  = players;
-		this.manager  = manager;
-		this.panel    = panel;
-		this.stage 	  = stage;
-		this.menu 	  = menu;
-		this.summary  = summary;
-	}
+
+	public BattleController( Army armies[], Stage stage ) {
+		this.armies = armies;
+		this.stage = stage;
+		
+		createBattleElements();
+		
+		manager = new TweenManager();
+		Tween.registerAccessor( StackView.class, new StackViewAccessor() );
+		Tween.registerAccessor( Image.class, new ImageAccessor() );
+	}	
 	
-	/**
-	 * Add new event to process in update
-	 * @param type event type
-	 * @param object object that received the event
-	 */
-	static void addEvent( int type, Object object ) {
-		if( typeEvent == NONE ) {
+	private void createBattleElements() {
+		board = new Board( stage );
+		panel = new BattlePanel( stage );
+		menu  = new BattleMenu();
+		
+		summary = new BattleSummary( stage );
+		summary.setSummaryStacks( armies[0].getStacks(), armies[1].getStacks() );
+	}
+
+	static void addEvent( int type, Object receiver ) {
+		if( typeEvent == Constants.NONE ) {
 			typeEvent = type;
-			objectEvent = object;
+			objectEvent = receiver;
 		}
 	}
 	
-	/**
-	 * Update battle controller
-	 * Check if exist some event and process it
-	 */
+	public void initBattle() {
+		randomSide();
+		randomTurn();
+		
+		placeArmyInBoard( armies[0] );
+		placeArmyInBoard( armies[1] );
+				
+		board.selectStack( stack_selected, armies[turn].getBattleSide() );
+	}
+	
+	public void randomSide() {
+		int side = (int) (Math.random() * 2); 
+		
+		if( side == 0 ) {
+			armies[0].setBattleSide( Constants.LEFT_SIDE );
+			armies[1].setBattleSide( Constants.RIGHT_SIDE );
+		}
+		else {
+			armies[0].setBattleSide( Constants.RIGHT_SIDE );
+			armies[1].setBattleSide( Constants.LEFT_SIDE );
+		}
+	}
+	
+	public void randomTurn() {
+		turn = (int) (Math.random() * 2); 
+		armies[ getNextTurn() ].selectLastStack();
+		armies[ turn ].selectFirstStack();
+		stack_selected = armies[ turn ].getSelectedStack();
+	}
+	
+	public int getNextTurn() {
+		return ( turn + 1 ) % 2;
+	}	
+	
+	public void placeArmyInBoard( Army army ) {
+		int number_square_x = 0;
+		int number_square_y = 0;
+		
+		if( army.getBattleSide() == Constants.RIGHT_SIDE )
+			number_square_x = Board.NS_X - 1;
+
+		for( Stack stack : army.getStacks() ) {
+			placeStackInBoard( stack, number_square_x, number_square_y );
+			number_square_y += 2;
+		}
+	}
+	
+	public void placeStackInBoard( Stack stack, int x, int y ) {
+		stack.setSquare( board.getSquare(x, y) );
+		stack.getSquare().setStack( stack );
+		
+		stack.getView().setPosition( new Vector2( Board.CORRECT_X, Board.CORRECT_Y ).add(
+				board.getSquare( x, y ).getPosition() ) );
+		
+		stage.addActor( stack.getView() );
+	}
+
 	public void update() {
+		manager.update( Gdx.graphics.getDeltaTime() );
+		checkEvents();
+	}	
+	
+	public void checkEvents() {
 		if( !mutex )	// check semaphore 
 		{
-			if( typeEvent == SQUARE && objectEvent != null ) {
+			if( typeEvent == Constants.SQUARE && objectEvent != null )
 				checkSquareEvent( (SquareBoard) objectEvent );
-				
-				objectEvent = null;
-				typeEvent = NONE;
-			}
-			else if( typeEvent == SHIELD ) {
-				board.resetSquares();
-				passTurn();
-				
-				typeEvent = NONE;
-			}
-			else if( typeEvent == SETTINGS ) {
-				menu.setVisible( true );
-				
-				mutex = true;
-				typeEvent = NONE;
-			}
-			else if( typeEvent == MAGIC ) {
-				typeEvent = NONE;
-			}
+			else if( typeEvent == Constants.SHIELD )
+				passTurnByEvent();
+			else if( typeEvent == Constants.SETTINGS )
+				showMenu();
+			else if( typeEvent == Constants.MAGIC )
+				typeEvent = Constants.NONE;
 		}
+	}	
+	
+	private void passTurnByEvent() {
+		typeEvent = Constants.NONE;
+		board.resetSquares();
+		passTurn();
 	}
 	
-	/**
-	 * Check events on square: ( move unit, attack enemy )
-	 * @param square square that received event
-	 */
+	public void passTurn() {	
+		turn = getNextTurn();
+		
+		// Check if player has any unit or battle has finished
+		if( armies[turn].getStacks().size() == 0 )
+			summary.show( getNextTurn() );			
+		else
+			selectNextStack();
+	}
+	
+	public void selectNextStack() {
+		armies[turn].selectNexStack();
+		stack_selected = armies[ turn ].getSelectedStack();
+		
+		// Update board with available squares (textures) from new unit
+		board.selectStack( stack_selected, armies[turn].getBattleSide() );
+		
+		mutex = false;
+	}
+	
+	private void showMenu() {
+		summary.show( 0 );
+		
+		mutex = true;
+		typeEvent = Constants.NONE;
+	}
+	
 	public void checkSquareEvent( SquareBoard square ) {
-		if( square.isAvailable() ) {
-			moveUnit( square.getNumber() );
-		}
+		if( square.isAvailable() )
+			processMoveEvent( square );
 		else if( square.hasEnemyOn() )
-		{
-			// Check if unit can attack from a distance
-			if( players[ turn ].getSelectedUnit().getActualRange() > 0 ) {
-				enemy_square = square;
-				players[turn].getSelectedUnit().attackAction();
-				status = NOTHING;
-				
-				board.resetSquares();
-			}
-			else {
-				board.showAttackPositions( square.getNumber(), players[ turn ].getSelectedUnit().getSquare().getNumber() );
-			
-				status = ATTACK_POSITION;
-				enemy_square = square;
-			}
-		}
+			processAttackEvent( square );
+		
+		objectEvent = null;
+		typeEvent = Constants.NONE;
+	}
+	
+	public void processAttackEvent( SquareBoard enemySquare ) {
+		if( stack_selected.getRange() > 0 )
+			shootToStack( enemySquare );
+		else
+			showAttackAvailablePositions( enemySquare);
+	}
+	
+	public void shootToStack( SquareBoard enemySquare ) {
+		attacked_enemy_square = enemySquare;
+		stack_selected.addAttackAction( getAttackOrientation(), attackRangeCallback() );
+		status = NORMAL;
+		
+		board.resetSquares();
+	}
+	
+	public void showAttackAvailablePositions( SquareBoard enemySquare ) {
+		board.showAttackPositions( enemySquare.getNumber(),
+				armies[ turn ].getSelectedStack().getSquare().getNumber() );
+	
+		status = ATTACKING;
+		attacked_enemy_square = enemySquare;
 	}
 
 	/**
 	 * Move selected unit to selected square
-	 * @param touch touch position
+	 * @param end_square selected square ( destiny )
 	 */
-	public void moveUnit( Vector2i end ) {
+	public void processMoveEvent( SquareBoard end_square ) {
 		mutex = true;	// block semaphore
+
+		SquareBoard init_square = stack_selected.getSquare();
 		
-		// Calcule init square
-		Vector2i init = players[turn].getSelectedUnit().getSquare().getNumber();
-		
-		if( board.isValidDestination(init, end, players[turn].getSelectedUnit().getActualMovility()) )
-		{
-			// Hide number of units
-			players[turn].getSelectedUnit().setShowNumber( false );
-		
-			// Find best way to destiny
-			board.findWay(init.x, init.y, end.x, end.y);
-			
-			if( board.getWayList().size() > 0 ) 
-			{	
-				Timeline line = Timeline.createSequence();
-				
-				// Add tween to move unit, square to square
-				for( int i = board.getWayList().size() - 2; i >= 0; i-- ) {
-					Vector2 aux = new Vector2( Board.CORRECT_X, Board.CORRECT_Y ).add(
-							board.getWayList().get(i).getPosition() );
-					
-					line.push( Tween.to( players[turn].getSelectedUnit(), 
-							UnitAccessor.POSITION_XY, 0.8f).target(aux.x, aux.y).ease(Sine.IN) );
-					
-					// Initialize animation
-					if( aux.x - players[turn].getSelectedUnit().getPosition().x < 0)
-						players[turn].getSelectedUnit().walkAction( Unit.XL );
-					else if( aux.x - players[turn].getSelectedUnit().getPosition().x > 0)
-						players[turn].getSelectedUnit().walkAction( Unit.XR );
-					else
-						players[turn].getSelectedUnit().walkAction(
-								players[turn].getSelectedUnit().getOrientation() );
-				}
-				
-				// When animation has finished, set mutex to 'false'
-				line.push( Tween.call( new TweenCallback() {
-					public void onEvent( int type, BaseTween<?> source ) {
-						// Hide number of units
-						players[turn].getSelectedUnit().setShowNumber( true );
-						
-						if( status == ATTACK_POSITION ) {
-							players[turn].getSelectedUnit().attackAction();
-							
-							status = NOTHING;
-						} 
-						else {
-							mutex = false;
-							passTurn();
-						}
-					}
-				}));
-				
-				// Init movement animation
-				line.start(manager);
-				
-				// Free origin square and occupies end square
-				board.getSquareFromNumber(init.x, init.y).setFree();
-				board.getSquareFromNumber(end.x, end.y).setUnit( players[turn].getUnitsId() );
-				
-				// Set end square like unit's square
-				players[turn].getSelectedUnit().setSquare(
-						board.getSquareFromNumber(end.x, end.y), players[turn].getUnitsId() );
-				
-				// Reset squares's attributes for find way
-				board.resetSquares();
-			}
-		}
+		if( board.isAchievable( init_square, end_square, stack_selected.getMovility() ) )
+			checkWayAndMoveStack( init_square, end_square );
 		else
 			mutex = false;
 	}
 	
+	public void checkWayAndMoveStack( SquareBoard init_square, SquareBoard end_square ) {
+		stack_selected.getView().showIndicator( false );
+
+		if( status == ATTACKING && init_square == end_square ) {
+			stack_selected.getView().showIndicator( true );
+			attackFromNormalUnit();
+		}
+		else if( board.findWay( init_square, end_square ) ) 
+			moveStack( init_square, end_square );
+		
+		board.resetSquares();
+	}
+
+	public void moveStack( SquareBoard init_square, SquareBoard end_square ) {
+		createMoveStackTween();
+		
+		init_square.setFree();
+		end_square.setStack( stack_selected );
+		stack_selected.setSquare( end_square );
+	}
+	
+	public void createMoveStackTween() {
+		Timeline line = Timeline.createSequence();		
+		moveStack( line );
+		
+		// Add callback for when animation has finished'
+		line.push( Tween.call( new TweenCallback() {
+			public void onEvent( int type, BaseTween<?> source ) {
+				stack_selected.getView().showIndicator( true );
+				
+				if( status == ATTACKING )
+					attackFromNormalUnit();
+				else
+					passTurn();
+			}
+		}));
+		
+		line.start( manager );
+	}
+	
+	public void attackFromNormalUnit() {
+		stack_selected.addAttackAction( getAttackOrientation(), getNormalAttackCallback() );
+		status = NORMAL;
+	}
+	
 	/**
-	 * Attack enemy with selected unit
+	 * Move stack from actual square to end square of board.wayList
+	 * Adds a walk action for each element of wayList ( for each square )
+	 * @param line line of animations
+	 */
+	public void moveStack( Timeline line ) {
+		for( SquareBoard next_square : board.getLastWay() ) {
+			Vector2 next_position = next_square.getStackPosition();
+			
+			line.push( Tween.to( stack_selected.getView(), 
+					StackViewAccessor.POSITION_XY, 0.8f ).target(
+							next_position.x, next_position.y ).ease( Sine.IN ) );
+			
+			stack_selected.setOrientationByFocus( next_position );
+			stack_selected.addWalkAction();
+		}
+	}
+	
+	/**
+	 * Attack enemy with selected stack of units
 	 * @param position enemy position
 	 */
-	public static void attack() {
-		Vector2i position = enemy_square.getNumber();
-		
-		Vector2i init = players[turn].getSelectedUnit().getSquare().getNumber();
-
-		// Check that unit can attack enemy position
-		if( players[turn].getSelectedUnit().getActualRange() > 0 || 
-				( Math.abs(init.x - position.x) == 1 || Math.abs(init.y - position.y) == 1 )) 
-		{	
-			Unit target = players[ getNextTurn() ].getUnitFromSquare(
-					board.getSquareFromNumber(position.x, position.y) );
+	public void makeDamage() {
+		if( canAttackEnemyStack() ) {	
+			Stack target = attacked_enemy_square.getStack();			
+			target.receiveDamage( stack_selected.getAttackDamage() );
 			
-			Unit attacker = players[ turn ].getSelectedUnit();
-
-			if( target.receiveDamage( attacker.getAttackDamage() ) == false ) {
+			if(  target.isDead() ) {
 				target.getSquare().setFree();
-				stage.removeActor( target );
-				players[ getNextTurn() ].deleteUnit( target );
+				stage.removeActor( target.getView() );
+				armies[ getNextTurn() ].deleteStack( target );
 			}
 		}
 	}
 	
-	/**
-	 * Random first turn and position of players ( right / left )
-	 */
-	public void initBattle() {
-		// Random player side
-		int side = (int) (Math.random() * 2); 
+	private boolean canAttackEnemyStack() {
+		Vector2i position = attacked_enemy_square.getNumber();		
+		Vector2i init = stack_selected.getSquare().getNumber();
 		
-		if( side == 0 ) {
-			players[0].setBattleSide( LEFT );
-			players[1].setBattleSide( RIGHT );
-		}
-		else {
-			players[0].setBattleSide( RIGHT );
-			players[1].setBattleSide( LEFT );
-		}
+		if( stack_selected.getRange() > 0 )
+			return true;
+		if( Math.abs(init.x - position.x) == 1 )
+			return true;
+		if( Math.abs(init.y - position.y) == 1 )
+			return true;
 		
-		// Random turn
-		turn = (int) (Math.random() * 2); 
-		players[ turn ].selectLastUnit();
-		
-		placeUnits( players[0] );
-		placeUnits( players[1] );
-				
-		// Update board with available squares for select Unit
-		board.selectUnit( players[turn].getSelectedUnit(),
-				players[turn].getSelectedUnit().getActualMovility(), players[turn].getUnitsId() );
+		return false;
 	}
-	
-	/**
-	 * Place units in the board when initialize battle
-	 * @param player
-	 */
-	public void placeUnits( Player player ) {
-		int x = 0;
-		int y = 0;
+
+	public void throwArrow() {
+		arrow = new Arrow( stack_selected.getView().x + SquareBoard.SIZE_W / 2, 
+				stack_selected.getView().y,
+				getAttackOrientation(), stage );
 		
-		if( player.getBattleSide() == RIGHT )
-			x = Board.NS_X - 1;
-			
-		for( Unit unit : player.getUnits() ) {
-			unit.setSquare( board.getSquareFromNumber(x, y), player.getUnitsId() );
-			unit.setPosition( new Vector2( Board.CORRECT_X, Board.CORRECT_Y ).add(
-					board.getSquareFromNumber( x, y ).getPosition() ) );
-			
-			stage.addActor( unit );
-				
-			y+= 2;
-		}
-	}
-	
-	/**
-	 * Go to next turn, select new turn unit and update board.
-	 */
-	public static void passTurn() {		
-		// Pass turn
-		turn = ( turn + 1 ) % 2;
-		
-		// Check if player has any unit or battle is end
-		if( players[turn].getUnits().size == 0 ) {
-			summary.show( ( turn + 1 ) % 2 );			
-		}
-		else {
-			// Set next unit turn
-			players[turn].nexUnit();
-			
-			// Update board with available squares (textures) from new unit
-			board.selectUnit( players[turn].getSelectedUnit(), 
-					players[turn].getSelectedUnit().getActualMovility(), players[turn].getUnitsId() );
-			
-			mutex = false;
-		}
-	}
-	
-	/**
-	 * Calculate next turn
-	 * @return next turn
-	 */
-	public static int getNextTurn() {
-		return ( turn + 1 ) % 2;
-	}
-	
-	/**
-	 * Add an arrow to stage when archer shoot to enemy and add tween to move it.
-	 */
-	public static void throwArrow( float x, float y, int orientation ) {
-		arrow = new Arrow( x + SquareBoard.SIZE_H / 2, y, orientation, BattleController.stage );
-		
-		Vector2 destination = BattleController.enemy_square.getPosition();
+		Vector2 destination = attacked_enemy_square.getPosition();
 		destination.y += SquareBoard.SIZE_H / 2;
 
-		Tween.to( arrow, ImageAccessor.POSITION_XY, Math.abs( x - destination.x ) / 700 )
+		createTweenToMoveArrow( arrow, destination );
+	}
+	
+	public void createTweenToMoveArrow( Arrow arrow, Vector2 destination ) {
+		Tween.to( arrow, ImageAccessor.POSITION_XY, Math.abs(
+				stack_selected.getView().x - destination.x ) / 700 )
 	    .target( destination.x, destination.y )
-	    .setCallback( new TweenCallback() {
-			
-			// When animation end, remove arrow and damage enemy
+	    .setCallback( getArrowCallback() )
+	    .start( manager );
+	}
+	
+	public TweenCallback getArrowCallback() {
+		return new TweenCallback() {
 			public void onEvent(int type, BaseTween<?> source) {
-				arrow.remove();
-				
-				BattleController.attack();
-				
-				BattleController.passTurn();	
+				arrow.remove();			
+				makeDamage();
+				passTurn();	
 			}
-		})
-	    .start( BattleController.manager );
+		};
+	}
+	
+	public CallBack attackRangeCallback() {
+		return new CallBack() {			
+			public void completed() {
+				throwArrow();
+			}
+		};
+	}
+	
+	public CallBack getNormalAttackCallback() {
+		return new CallBack() {
+			public void completed() {
+				makeDamage();			
+				passTurn();
+			}
+		};
+	}
+	
+	public int getAttackOrientation() {
+		if( stack_selected.getView().x  > attacked_enemy_square.x )
+			return Constants.XL;
+		else if( stack_selected.getView().x < attacked_enemy_square.x )
+			return Constants.XR;
+		else
+			return Constants.UNDEFINED;
 	}
 }
