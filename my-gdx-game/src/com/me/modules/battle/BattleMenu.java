@@ -8,10 +8,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.me.mygdxgame.Assets;
+import com.me.mygdxgame.Constants;
 
 /**
  * Represent options menu in battle screen.
- * It show when user touch options button.
+ * It is show when user touch options button.
  */
 public class BattleMenu extends Group {
 	
@@ -22,77 +23,72 @@ public class BattleMenu extends Group {
 	Image background;
 	
 	Button exit_btn;
-	Button resume_btn;
+	Button resume_btn;	
+
+	public BattleMenu() {
+		
+		createAlphaImage();
+		createBackgroundImage();
+		createExitButton();		
+		createResumeButton();
+		
+		this.width = SIZE_W;
+		this.height = SIZE_H;
+		this.x = 0;
+		this.y = 0;		
+		
+		this.addActor( alpha );
+		this.addActor( background );
+		this.addActor( exit_btn );
+		this.addActor( resume_btn );
+	}
 	
-	/**
-	 * Class constructor
-	 * @param stage
-	 */
-	public BattleMenu( Stage stage ) {
-		
-		alpha = new Image( Assets.getFlipTextureRegion( "greyBackground" ) );
-		alpha.height = BattleScreen.SIZE_H;
-		alpha.width = BattleScreen.SIZE_W;
-		alpha.color.a = 0.8f;
-		
+	private void createAlphaImage() {
+		alpha = new Image( Assets.getTextureRegion( "greyBackground" ) );
+		alpha.height = Constants.SIZE_H;
+		alpha.width = Constants.SIZE_W;
+		alpha.color.a = 0.5f;
+	}
+	
+	private void createBackgroundImage() {
 		background = new Image( Assets.getTextureRegion( "menu" ) );
 		background.height = SIZE_H;
 		background.width = SIZE_W;
-		background.x = ( BattleScreen.SIZE_W - SIZE_W ) / 2;
-		background.y = ( BattleScreen.SIZE_H - SIZE_H ) / 2;
-		
+		background.x = ( Constants.SIZE_W - SIZE_W ) / 2;
+		background.y = ( Constants.SIZE_H - SIZE_H ) / 2;
+	}
+	
+	private void createExitButton() {
 		exit_btn = new Button( Assets.getFrame( "exit", 1 ), Assets.getFrame( "exit", 2 ) );
 		exit_btn.height = 40;
 		exit_btn.width = 120;
 		exit_btn.x = background.x + ( ( SIZE_W - exit_btn.width ) / 2 );
 		exit_btn.y = background.y + 50;
 		
-		exit_btn.setClickListener( new ClickListener() 
-		{	
-			public void click(Actor actor, float x, float y) {
-				Gdx.app.exit();
-			}
+		exit_btn.setClickListener( new ClickListener() {	
+			public void click(Actor actor, float x, float y) { Gdx.app.exit(); }
 		});
-		
+	}
+	
+	private void createResumeButton() {
 		resume_btn = new Button( Assets.getFrame( "resume", 1 ), Assets.getFrame( "resume", 2 ) );
 		resume_btn.height = 40;
 		resume_btn.width = 120;
 		resume_btn.x = background.x + ( ( SIZE_W - exit_btn.width ) / 2 );;
 		resume_btn.y = 160;
 		
-		resume_btn.setClickListener( new ClickListener() 
-		{	
-			public void click(Actor actor, float x, float y) {
-				setVisible( false );
-			}
+		resume_btn.setClickListener( new ClickListener() {	
+			public void click(Actor actor, float x, float y) { close(); }
 		});
-
-		
-		this.width = SIZE_W;
-		this.height = SIZE_H;
-		
-		this.addActor( alpha );
-		this.addActor( background );
-		this.addActor( exit_btn );
-		this.addActor( resume_btn );
-		
-		this.x = 0;
-		this.y = 0;
-		
-		this.stage = stage;
 	}
 
-	/**
-	 * Add and remove menu from window
-	 * @param visible
-	 */
-	public void setVisible( boolean visible ) {
-		if( visible ) {
-			BattleController.stage.addActor( this );
-		}
-		else {
-			BattleController.stage.removeActor( this );
-			BattleController.mutex = false;
-		}
+	public void show( Stage stage ) {
+		stage.addActor( this );
 	}
+	
+	public void close() {
+		stage.removeActor( this );
+		BattleController.mutex = false;
+	}
+
 }

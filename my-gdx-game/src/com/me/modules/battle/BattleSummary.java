@@ -1,5 +1,7 @@
 package com.me.modules.battle;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -10,7 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.me.mygdxgame.Assets;
-import com.me.mygdxgame.Unit;
+import com.me.mygdxgame.Constants;
+import com.me.mygdxgame.Stack;
 
 /**
  * Show information about battle when it finish
@@ -20,123 +23,129 @@ public class BattleSummary extends Group {
 	public static final int VICTORY = 0;
 	public static final int DEFEAT = 1;
 	
-	static final int SIZE_H = 200;
-	static final int SIZE_W = 380;
+	final int SIZE_H = 200;
+	final int SIZE_W = 380;
 	
 	final int RESULT_W = 100;
 	final int RESULT_H = 170;
 	
 	final int N_CONTENTS = 5;
 	
-	float LOST_X 	= 30;
-	float LOST_Y 	= SIZE_H - BattleSummaryUnit.SIZE_H - 30;
+	float LOST_X = 80;
+	float LOST_Y = 190;
 	
-	float DESTROYED_X  = 30;
-	float DESTROYED_Y  = 25;
+	float DESTROYED_X = 80;
+	float DESTROYED_Y = 105;
 	
+	Image alpha;
 	Image background;
-	
-	Button exit_btn;
+	Image result_img;
+	Image experience_img;
 	
 	Label lost_label;
 	Label destroyed_label;
 	Label result_label;
 	Label experience_label;
 	
-	Image result_img;
-	Image experience_img;
+	Button exit_btn;
 	
-	Array<BattleSummaryUnit> lost;
-	Array<BattleSummaryUnit> destroyed;
+	Array<BattleSummaryStack> lost;
+	Array<BattleSummaryStack> destroyed;
 	
 	int result = -1;
 	
-	/**
-	 * Class constructor
-	 * @param stage
-	 */
 	public BattleSummary( Stage stage ) {
 		
-		this.width = SIZE_W;
-		this.height = SIZE_H;
-		
-		this.x = ( BattleScreen.SIZE_W - this.width ) / 2;
-		this.y = ( ( BattleScreen.SIZE_H - this.height - SquareBoard.SIZE_H ) / 2 ) +
-				SquareBoard.SIZE_H;
-		
 		this.stage = stage;
+		this.width = SIZE_W;
+		this.height = SIZE_H;		
 		
+		createAlphaImage();
+		createBackgroundImage();
+		createUnitsPanels();
+	}
+	
+	private void createAlphaImage() {
+		alpha = new Image( Assets.getTextureRegion( "greyBackground" ) );
+		alpha.height = Constants.SIZE_H;
+		alpha.width = Constants.SIZE_W;
+		alpha.color.a = 0.5f;
+		
+		this.addActor( alpha );
+	}
+	
+	private void createBackgroundImage() {
 		background = new Image( Assets.getTextureRegion( "menu" ) );
 		background.height = SIZE_H;
 		background.width = SIZE_W;
+		background.x = ( Constants.SIZE_W - this.width ) / 2;
+		background.y = ( ( Constants.SIZE_H - this.height - SquareBoard.SIZE_H ) / 2 ) +
+				SquareBoard.SIZE_H;
 		
 		this.addActor( background );
-		
-		loadUnitsPanels();
-		
-		// this.visible = false;
 	}
 	
-	/**
-	 * Load panels with lost and destroyed units info
-	 */
-	public void loadUnitsPanels() {
+	public void createUnitsPanels() {
 		
-		lost = new Array<BattleSummaryUnit>();
-		destroyed = new Array<BattleSummaryUnit>();
+		lost = new Array<BattleSummaryStack>();
+		destroyed = new Array<BattleSummaryStack>();
 		
 		for( int i = 0; i <  N_CONTENTS; i++ ) {
-			lost.add( new BattleSummaryUnit( 
-					LOST_X + BattleSummaryUnit.SIZE_W * i - ( i * 2 ), LOST_Y ) );
+			lost.add( new BattleSummaryStack( 
+					LOST_X + BattleSummaryStack.SIZE_W * i - ( i * 2 ), LOST_Y ) );
 			
-			destroyed.add( new BattleSummaryUnit( 
-					DESTROYED_X + BattleSummaryUnit.SIZE_W * i - ( i * 2 ), DESTROYED_Y ) );
+			destroyed.add( new BattleSummaryStack( 
+					DESTROYED_X + BattleSummaryStack.SIZE_W * i - ( i * 2 ), DESTROYED_Y ) );
 			
 			this.addActor( lost.get( i ) );
 			this.addActor( destroyed.get( i ) );
 		}
 		
-		loadTopText();
+		createTopText();
 	}
 	
-	/**
-	 * Load left panel with info about battle result and experience
-	 */
-	public void loadResultPanel() {
-		result_img = new Image( Assets.getTextureRegion( "content" ) );
-		result_img.height = RESULT_H - 20;
-		result_img.width = RESULT_W;
-		result_img.x = SIZE_W - 130;
-		result_img.y = 20;
-		
-		if( result == VICTORY )
-			result_label = new Label( "Victory !!", Assets.font2 );
-		else
-			result_label = new Label( "Defeat !!", Assets.font2 );
-		
-		result_label.x = SIZE_W - 110;
-		result_label.y = LOST_Y + 30;
-		
-		experience_label = new Label( "Experience:\n\n---- / ----", Assets.skin );
-		experience_label.x = SIZE_W - 110;
-		experience_label.y = LOST_Y - 20;
+	public void createResultPanel() {
+		createResultImage();
+		createResultLabel();
+		createExperienceLabel();
 		
 		this.addActor( result_img );
 		this.addActor( result_label );
 		this.addActor( experience_label );
 		
-		loadExitBtn();
+		createExitButton();
 	}
 	
-	/**
-	 * Load exit button
-	 */
-	public void loadExitBtn() {
+	private void createResultImage() {
+		result_img = new Image( Assets.getTextureRegion( "content" ) );
+		result_img.height = RESULT_H - 20;
+		result_img.width = RESULT_W;
+		result_img.x = background.x + background.width - RESULT_W - 35;
+		result_img.y = DESTROYED_Y;
+	}
+	
+	private void createResultLabel() {
+		if( result == VICTORY )
+			result_label = new Label( "Victory !!", Assets.font2 );
+		else
+			result_label = new Label( "Defeat !!", Assets.font2 );
+		
+		result_label.x = Constants.SIZE_W - 165;
+		result_label.y = LOST_Y + 30;
+	}
+	
+	private void createExperienceLabel() {
+		experience_label = new Label( "Experience:\n\n---- / ----", Assets.skin );
+		experience_label.x = Constants.SIZE_W - 165;;
+		experience_label.y = LOST_Y - 20;
+	}
+	
+	public void createExitButton() {
 		exit_btn = new Button( Assets.getFrame( "exit", 1 ), Assets.getFrame( "exit", 2 ) );
 		exit_btn.height = 25;
 		exit_btn.width = 80;
-		exit_btn.x = SIZE_W - exit_btn.width - 40;
-		exit_btn.y = DESTROYED_Y + 5;
+		exit_btn.x = Constants.SIZE_W - 175;;
+		exit_btn.y = DESTROYED_Y + 10;
 		
 		exit_btn.setClickListener( new ClickListener() 
 		{	
@@ -148,64 +157,44 @@ public class BattleSummary extends Group {
 		this.addActor( exit_btn );
 	}
 	
-	/**
-	 * Load text with information
-	 */
-	public void loadTopText() {
-		lost_label = new Label( "Creatures Lost", Assets.skin );
-		lost_label.x = LOST_X;
-		lost_label.y = LOST_Y + BattleSummaryUnit.SIZE_H;
-		
-		destroyed_label = new Label( "Creatures Destroyed", Assets.skin );
-		destroyed_label.x = DESTROYED_X;
-		destroyed_label.y = DESTROYED_Y + BattleSummaryUnit.SIZE_H;		
+	public void createTopText() {
+		createLostLabel();
+		createDestroyedLabel();		
 		
 		this.addActor( lost_label );
 		this.addActor( destroyed_label );
 	}
 	
-	public void setUnits( Array<Unit> u_lost, Array<Unit> u_destroyed ) {
-		for( int i = 0; i < u_lost.size; i++ )
-			u_lost.get( i ).setSummaryUnit( lost.get( i ) );
-		
-		for( int i = 0; i < u_destroyed.size; i++ )
-			u_destroyed.get( i ).setSummaryUnit( destroyed.get( i ) );
+	public void createLostLabel() {
+		lost_label = new Label( "Creatures Lost", Assets.skin );
+		lost_label.x = LOST_X;
+		lost_label.y = LOST_Y + BattleSummaryStack.SIZE_H;
 	}
 	
-	/**
-	 * Show summary with final result of battle
-	 * 
-	 * @param result
-	 */
+	public void createDestroyedLabel() {
+		destroyed_label = new Label( "Creatures Destroyed", Assets.skin );
+		destroyed_label.x = DESTROYED_X;
+		destroyed_label.y = DESTROYED_Y + BattleSummaryStack.SIZE_H;
+	}
+	
+	public void setSummaryStacks( ArrayList<Stack> u_lost, ArrayList<Stack> u_destroyed ) {
+		for( int i = 0; i < u_lost.size(); i++ )
+			u_lost.get( i ).setSummary( lost.get( i ) );
+		
+		for( int i = 0; i < u_destroyed.size(); i++ )
+			u_destroyed.get( i ).setSummary( destroyed.get( i ) );
+	}
+	
 	public void show( int result ) {
 		this.result = result;
 		
 		for( int i = 0; i < N_CONTENTS; i ++ ) {
-			lost.get( i ).addNumberLabel();
-			destroyed.get( i ).addNumberLabel();
+			lost.get( i ).createNumberLabel();
+			destroyed.get( i ).createNumberLabel();
 		}
 		
-		loadResultPanel();
+		createResultPanel();
 		
-		BattleController.stage.addActor( this );
-	}
-	
-	/**
-	 * Add and remove menu from window
-	 * @param visible
-	 */
-	public void setVisible( boolean visible ) {
-		if( visible ) {
-			for( int i = 0; i < N_CONTENTS; i ++ ) {
-				lost.get( i ).addNumberLabel();
-				destroyed.get( i ).addNumberLabel();
-			}
-			
-			BattleController.stage.addActor( this );
-		}
-		else {
-			BattleController.stage.removeActor( this );
-			BattleController.mutex = false;
-		}
+		stage.addActor( this );
 	}
 }

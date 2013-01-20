@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.me.mygdxgame.Assets;
+import com.me.mygdxgame.Constants;
 
 /**
  * Panel at the bottom of the screen.
@@ -15,7 +16,7 @@ public class BattlePanel {
 	
 	/** Square size */
 	static final float SIZE_H = 40.0f;
-	static final float SIZE_W = BattleScreen.SIZE_W;
+	static final float SIZE_W = Constants.SIZE_W;
 	
 	Button shield;
 	Button magic_book;
@@ -28,11 +29,27 @@ public class BattlePanel {
 	 * @param stage
 	 */
 	public BattlePanel( Stage stage ) {
+		createBackgroundImage();
+		createShieldButton();
+		createMagicBookButton();
+		createSettingButton();
+		
+		stage.addActor( background );
+		stage.addActor( shield );
+		stage.addActor( magic_book );
+		stage.addActor( settings );
+	}
+	
+	private void createBackgroundImage() {
 		background = new Image( Assets.getTextureRegion( "number" ) );
 		background.height = SIZE_H;
 		background.width = SIZE_W;
+	}
+	
+	private void createShieldButton() {
+		shield = new Button(Assets.getTextureRegion( "shield" ),
+				Assets.getTextureRegion( "number" ));
 		
-		shield = new Button(Assets.getTextureRegion( "shield" ), Assets.getTextureRegion( "number" ));
 		shield.height = 30;
 		shield.width = 35;
 		shield.x = 80;
@@ -40,11 +57,15 @@ public class BattlePanel {
 		
 		shield.setClickListener( new ClickListener() {	
 			public void click(Actor actor, float x, float y) {
-				BattleController.addEvent( BattleController.SHIELD, null );	
+				BattleController.addEvent( Constants.SHIELD, null );	
 			}
 		});
+	}
+	
+	private void createMagicBookButton() {
+		magic_book = new Button( Assets.getTextureRegion( "magicBook" ),
+				Assets.getTextureRegion( "number" ) );
 		
-		magic_book = new Button( Assets.getTextureRegion( "magicBook" ), Assets.getTextureRegion( "number" ) );
 		magic_book.height = 30;
 		magic_book.width = 35;
 		magic_book.x = 140;
@@ -52,11 +73,15 @@ public class BattlePanel {
 		
 		magic_book.setClickListener( new ClickListener() {
 			public void click( Actor actor, float x, float y ) {
-				BattleController.addEvent( BattleController.MAGIC, null );	
+				BattleController.addEvent( Constants.MAGIC, null );	
 			}
 		} );
+	}
+	
+	private void createSettingButton() {
+		settings = new Button( Assets.getTextureRegion( "settings" ),
+				Assets.getTextureRegion( "number" ) );
 		
-		settings = new Button( Assets.getTextureRegion( "settings" ), Assets.getTextureRegion( "number" ) );
 		settings.height = 30;
 		settings.width = 35;
 		settings.x = 370;
@@ -64,13 +89,8 @@ public class BattlePanel {
 		
 		settings.setClickListener( new ClickListener() {
 			public void click( Actor actor, float x, float y ) {
-				BattleController.addEvent( BattleController.SETTINGS, null );	
+				BattleController.addEvent( Constants.SETTINGS, null );	
 			}
 		} );
-		
-		stage.addActor( background );
-		stage.addActor( shield );
-		stage.addActor( magic_book );
-		stage.addActor( settings );
 	}
 }

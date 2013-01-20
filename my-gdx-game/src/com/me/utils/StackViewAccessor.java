@@ -1,19 +1,20 @@
-package com.me.mygdxgame;
+package com.me.utils;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.me.modules.battle.StackView;
 
 import aurelienribon.tweenengine.TweenAccessor;
 
 /**
- * Class that let to Tween Engine to move Images
+ * Class that let "Tween Engine" to move Units
  */
-public class ImageAccessor implements TweenAccessor<Image> {
+public class StackViewAccessor implements TweenAccessor<StackView> {
 
 	public static final int POSITION_X = 1;
     public static final int POSITION_Y = 2;
     public static final int POSITION_XY = 3;
     
-	public int getValues( Image target, int tweenType, float[] returnValues ) {
+	@Override
+	public int getValues( StackView target, int tweenType, float[] returnValues ) {
 		switch (tweenType) {
 	        case POSITION_X: returnValues[0] = target.x; return 1;
 	        case POSITION_Y: returnValues[0] = target.y; return 1;
@@ -25,7 +26,8 @@ public class ImageAccessor implements TweenAccessor<Image> {
 		}
 	}
 
-	public void setValues( Image target, int tweenType, float[] newValues ) {
+	@Override
+	public void setValues( StackView target, int tweenType, float[] newValues ) {
         switch (tweenType) {
 	        case POSITION_X: target.x = newValues[0]; break;
 	        case POSITION_Y: target.y = newValues[0]; break;
