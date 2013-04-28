@@ -8,7 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdxgame.Assets;
 import com.mygdxgame.Constants;
-import com.mygdxgame.Stack;
 import com.utils.Vector2i;
 
 public abstract class Hero {
@@ -29,7 +28,7 @@ public abstract class Hero {
 	
 	public abstract void loadAnimations();
 	
-	public abstract void runAction( Stack stack, int orientation );
+	public abstract void walkAction( HeroTop heroTop, int orientation );
 	
 	/**
 	 * Load static Hereo textures for all orientations

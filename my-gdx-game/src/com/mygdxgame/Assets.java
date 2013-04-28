@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -58,8 +59,8 @@ public class Assets {
 	public static Level getLevel( int level_number ) {
 		Gson gson = new Gson();
 		
-		String file = "bin/levels/level" + Integer.toString( level_number ) + ".json";
-		Level level = gson.fromJson( readFile( file ), Level.class ); 
+		String file = "levels/level" + Integer.toString( level_number ) + ".json";
+		Level level = gson.fromJson( Gdx.files.internal( file ).readString(), Level.class ); 
 
 		return level;
 	}

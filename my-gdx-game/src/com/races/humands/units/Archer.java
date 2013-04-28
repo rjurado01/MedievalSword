@@ -31,6 +31,9 @@ public class Archer extends Unit {
 		damage 	 = 8;
 		mobility = 4;
 		
+		map_width = 30;
+		map_height = 30;
+		
 		name = "Archer";
 		
 		loadTextures();

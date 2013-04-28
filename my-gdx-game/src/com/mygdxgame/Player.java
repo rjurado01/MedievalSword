@@ -1,5 +1,6 @@
 package com.mygdxgame;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.modules.map.HeroTop;
 
@@ -39,5 +40,18 @@ public class Player {
 	
 	public Array<HeroTop> getHeroes() {
 		return heroes;
+	}
+	
+	public boolean isHeroSelected() {
+		if( hero_selected == null )
+			return false;
+		else
+			return true;
+	}
+
+	public void update( float deltaTime ) {
+		if( hero_selected != null )
+			hero_selected.updateActions( deltaTime );
+		
 	}
 }

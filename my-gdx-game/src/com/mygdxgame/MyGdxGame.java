@@ -37,17 +37,13 @@ public class MyGdxGame extends Game {
 				setScreen( mapScreen );
 				break;
 			case BATTLE:
-				createTestBattleScreen();
 				setScreen( battleScreen );
 				break;
 		}
 	}
 	
-	private void createTestBattleScreen() {
-		if( battleScreen == null )
-			battleScreen = new BattleScreen( this, 
-					((MapScreen) mapScreen).getPlayerArmy(), 
-					((MapScreen) mapScreen).getEnemyArmy());
+	public void throwBattleScreen( Army player_army, Army enemy_army ) {
+		battleScreen = new BattleScreen( this, player_army, enemy_army );
+		setScreen( battleScreen );
 	}
-	
 }

@@ -1,10 +1,12 @@
 package com.modules.map;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.level.Level;
 import com.level.LevelStructure;
 import com.level.TerrainParser;
@@ -16,9 +18,9 @@ import com.utils.Vector2i;
 
 public class Terrain extends Group {
 	
-	final int GRASS = 0;
-	final int WATER = 1;
-	final int ROAD = 2;
+	static final int GRASS = 0;
+	static final int WATER = 1;
+	static final int ROAD = 2;
 	
 	final int GOLD_MINE = 0;
 	final int STONE_MINE = 1;
@@ -34,26 +36,21 @@ public class Terrain extends Group {
 	final int Castle; 
 	*/
 	
-	int SQUARES_X = 20;
-	int SQUARES_Y = 15;
+	public int SQUARES_X;
+	public int SQUARES_Y;
 	
+	ArrayList<SquarePath> path_selected;
 	ArrayList<ResourceStructure> resource_structures;
 	
 	SquareTerrain terrain[][];
 	
-	public Terrain( Stage stage, Level level ) {
-		this.stage = stage;
-
-		loadTerrain( level );
-		loadStructures( level );
-	}
-	
-	private void loadTerrain( Level level ) {
-		SQUARES_X = level.SQUARES_X;
-		SQUARES_Y = level.SQUARES_Y;
-
+	public Terrain( Vector2i n_squares) {
+		SQUARES_X = n_squares.x;
+		SQUARES_Y = n_squares.y;
+		
 		initializeTerrain();
-		createTerrain( level.terrain );
+		
+		path_selected = new ArrayList<SquarePath>();
 	}
 	
 	private void initializeTerrain() {
@@ -63,22 +60,12 @@ public class Terrain extends Group {
 			terrain[i] = new SquareTerrain[ SQUARES_X ];
 	}
 	
-	private void createTerrain( int[][] lvl_terrain ) {
-		int inverse = SQUARES_Y - 1; // in libgdx, [0,0] is [SQUARES_Y - 1][0]
-		
-		for( int i = 0; i < SQUARES_Y; i++)
-			for( int j = 0; j < SQUARES_X; j++)
-				addSquareTerrain( new Vector2i( j, i ), lvl_terrain[inverse - i][j] );
-	}
-	
-	private void addSquareTerrain( Vector2i square_number, int id ) {
-		terrain[square_number.y][square_number.x] =
-				new SquareTerrain( square_number, TerrainParser.getSquareType(id) );
+	public void addSquareTerrain( Vector2i square_number, int type, String texture ) {
+		terrain[square_number.y][square_number.x] = 
+				new SquareTerrain( square_number, type );
 		
 		terrain[square_number.y][square_number.x].setRegion(
-				Assets.getTextureRegion( TerrainParser.getSquareTextureName(id) ) );
-		
-		stage.addActor( terrain[square_number.y][square_number.x] );
+				Assets.getTextureRegion( texture ) );
 	}
 	 
 	public SquareTerrain getSquareTerrain( Vector2i square_number ) {
@@ -124,5 +111,44 @@ public class Terrain extends Group {
 	
 	public Vector2 getSquarePosition( Vector2i square_number ) {
 		return terrain[square_number.y][square_number.x].getPosition();
+	}
+	
+	public void addStage( Stage stage ) {
+		for( int i = 0; i < SQUARES_Y; i++)
+			for( int j = 0; j < SQUARES_X; j++)
+				stage.addActor( terrain[i][j] );
+	}
+	
+	/**
+	 * Return matrix with roads available (squares)
+	 */
+	public int[][] getRoadsMatrix( Vector2i destination ) {
+		int matrix[][] = new int[ SQUARES_Y ][ SQUARES_X ];
+		
+		for( int i = 0; i < SQUARES_Y; i++)
+			for( int j = 0; j < SQUARES_X; j++)
+				if( terrain[i][j].isRoadAvailable() )
+					matrix[i][j] = PathFinder.FREE;
+				else
+					matrix[i][j] = PathFinder.BUSY;
+		
+		matrix[destination.y][destination.x] = PathFinder.FREE;
+		
+		return matrix;
+	}
+	
+	public void drawPathSelected( List<Vector2i> path ) {
+		for( Vector2i item : path ) {
+			SquarePath square_path = new SquarePath( getSquarePosition( item ) );
+			path_selected.add( square_path );
+			stage.addActor( square_path );
+		}
+	}
+	
+	public void removePathSelected() {
+		while( path_selected.size() > 0 ) {
+			stage.removeActor( path_selected.get( 0 ) );
+			path_selected.remove( 0 );
+		}
 	}
 }

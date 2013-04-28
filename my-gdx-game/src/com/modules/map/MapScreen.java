@@ -2,15 +2,18 @@ package com.modules.map;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.level.Level;
 import com.level.Parser;
 import com.mygdxgame.Army;
+import com.mygdxgame.Assets;
 import com.mygdxgame.Constants;
 import com.mygdxgame.MyGdxGame;
 import com.mygdxgame.Player;
@@ -27,30 +30,37 @@ public class MapScreen implements Screen {
 	Stage terrain_stage;
 	Stage hud_stage;
 	
-	public Map<String, Unit> units;
+	Parser parser;
 	
-	public ArrayList<Army> enemies;
-	public Player player;
+	public Map<Integer, Unit> units;
+	
+	public List<Player> players;
+	public List<CreaturesGroup> creatures;
 	
 	Level level;
 	Terrain terrain;
 	HUD hud;
+	MapController controller;
 	
 	public MapScreen( MyGdxGame game, Level level ) {
 		this.game = game;
 		this.level = level;
+		this.parser = new Parser();
+		
+		players = new ArrayList<Player>();
 
 		loadTerrain();
 		loadHUD();
 		loadMapUnits();		
-		loadMapEnemies();
+		loadMapCreatures();
 		loadPlayers();
 		loadStructures();
 	}
 	
 	private void loadTerrain() {
 		terrain_stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true );	
-		terrain = new Terrain( terrain_stage, level );
+		terrain = parser.getTerrain( level.terrain );
+		terrain.addStage( terrain_stage );
 	}
 	
 	private void loadHUD() {
@@ -59,25 +69,22 @@ public class MapScreen implements Screen {
 	}
 	
 	private void loadMapUnits() {
-		units = new HashMap<String, Unit>();
-		units.put( "villager", new Villager() );
-		units.put( "archer", new Archer() );
+		units = new HashMap<Integer, Unit>();
+		units.put( Constants.VILLAGER, new Villager() );
+		units.put( Constants.ARCHER, new Archer() );
 	}
 	
-	private void loadMapEnemies() {
-		enemies = new ArrayList<Army>();
-		/*enemies.add( new Army() );
-
-		enemies.get( 0 ).addStack( new Stack( units.get( "villager" ), 10, Constants.RED ) );
-		enemies.get( 0 ).addStack( new Stack( units.get( "archer" ), 12, Constants.RED ) );
-		enemies.get( 0 ).addStack( new Stack( units.get( "villager" ), 10, Constants.RED ) ); */
+	private void loadMapCreatures() {
+		creatures = parser.getCreaturesGroups( terrain, units, level );
+		
+		for( CreaturesGroup group : creatures )
+			terrain_stage.addActor( group.getImage() ); 
 	}
 	
 	private void loadPlayers() {
-		Parser parser = new Parser( terrain );
-		player = parser.getPlayer( level.players.get(0) );
+		players.add( parser.getPlayer( terrain, units, level.players.get(0) ) );
 		
-		for( HeroTop hero : player.getHeroes() )
+		for( HeroTop hero : players.get(0).getHeroes() )
 			terrain_stage.addActor( hero.getView() );
 	}
 	
@@ -86,6 +93,8 @@ public class MapScreen implements Screen {
 	}
 	
 	public void render(float delta) {
+		controller.update();
+		
 		Gdx.gl.glClearColor(0.8f, 0.8f, 1.f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		
@@ -107,6 +116,8 @@ public class MapScreen implements Screen {
 		terrain_stage.addActor( terrain );
 
 		Gdx.input.setInputProcessor( new MapInputProcessor( terrain ) );
+		
+		controller = new MapController( game, players, terrain );
 	}
 
 	public void loadLevel( int level ) {
@@ -141,12 +152,12 @@ public class MapScreen implements Screen {
 		
 	}
 	
-	public Army getPlayerArmy() {
-		return player.getHeroSelected().getArmy();
+	public Army getPlayerArmy( int player_number) {
+		return players.get( player_number ).getHeroSelected().getArmy();
 	}
 	
-	public Army getEnemyArmy() {
-		return enemies.get( 0 );
+	public CreaturesGroup getCreaturesGroup() {
+		return creatures.get( 0 );
 	}
 
 }

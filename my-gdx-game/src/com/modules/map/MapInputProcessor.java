@@ -93,6 +93,8 @@ public class MapInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean scrolled(int amount) {
+		stage.getCamera().viewportHeight += 20 * amount;
+		stage.getCamera().viewportWidth += 20 * amount;
 		// TODO Auto-generated method stub
 		return false;
 	}

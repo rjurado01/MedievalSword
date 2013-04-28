@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.utils.CallBack;
 
 /**
@@ -23,6 +24,9 @@ public abstract class Unit {
 	protected int range;
 	protected int mobility;
 	protected int damage;
+	
+	protected int map_width;
+	protected int map_height;
 
 	protected Map<String, TextureRegion> textures;
 	protected Map<String, Animation> animations  = new HashMap<String, Animation>();
@@ -35,6 +39,13 @@ public abstract class Unit {
 	public abstract void walkAction( Stack stack, int orientation );
 
 	public abstract void attackAction( Stack stack, int orientation, CallBack callback );
+	
+	public Image getMapImage( int orientation ) {
+		Image image = new Image( textures.get( "normal" + orientation + "0" ) );
+		image.width = map_width;
+		image.height = map_height;
+		return image;
+	}
 	
 	/**
 	 * Load normal textures of unit ( when unit is stop texture and icon )

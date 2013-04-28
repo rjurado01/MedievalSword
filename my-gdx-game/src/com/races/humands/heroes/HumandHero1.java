@@ -1,8 +1,8 @@
 package com.races.humands.heroes;
 
 import com.modules.map.Hero;
+import com.modules.map.HeroTop;
 import com.mygdxgame.Constants;
-import com.mygdxgame.Stack;
 import com.utils.CustomAnimation;
 import com.utils.Vector2i;
 
@@ -35,8 +35,8 @@ public class HumandHero1 extends Hero {
 	/**
 	 * Add walk action to actions queue of stack
 	 */
-	public void runAction( Stack stack, int orientation ) {
-		stack.addAction( new CustomAnimation(
-				getAnimation( RUN, orientation, stack.getColor() ), 0.8f, null ) );		
+	public void walkAction( HeroTop hero, int orientation ) {
+		hero.addAction( new CustomAnimation(
+				getAnimation( RUN, orientation, hero.getColor() ), 0.8f, null ) );		
 	}
 }

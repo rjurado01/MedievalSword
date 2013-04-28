@@ -25,7 +25,7 @@ public class Army {
 		stacks = new ArrayList<Stack>( N_STACKS );
 	}
 	
-	public void addHero( Hero hero ) {
+	public void setHero( Hero hero ) {
 		this.hero = hero;
 	}
 	

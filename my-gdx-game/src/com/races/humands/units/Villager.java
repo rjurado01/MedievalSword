@@ -23,6 +23,9 @@ public class Villager extends Unit{
 		damage 	 = 7;
 		mobility = 6;
 		
+		map_width = 38;
+		map_height = 38;
+		
 		name = "Villager";
 		
 		loadTextures();

@@ -180,7 +180,7 @@ public class BattleController {
 	}
 	
 	private void showMenu() {
-		summary.show( 0 );
+		menu.show( stage );
 		
 		mutex = true;
 		typeEvent = Constants.NONE;

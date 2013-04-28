@@ -22,7 +22,7 @@ public class Hero {
 	
 	public Hero() {
 		army = new Army();
-		army.addHero( this ); 
+		army.setHero( this ); 
 	}
 	
 	public Army getArmy() {

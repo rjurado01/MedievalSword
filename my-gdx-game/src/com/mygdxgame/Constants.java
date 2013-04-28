@@ -42,4 +42,12 @@ public class Constants {
 	public static final int NEUTRAL = 0;
 	public static final int PLAYER_1 = 1;
 	public static final int PLAYER_2 = 2;
+	
+	/* UNITS */
+	public static final int VILLAGER = 0;
+	public static final int ARCHER = 1;
+	public static final int CRUSADER = 2;
+	public static final int KNIGHT = 3;
+	public static final int MAGUS = 4;
+
 }
