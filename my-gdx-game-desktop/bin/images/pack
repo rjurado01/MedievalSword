@@ -1,0 +1,461 @@
+
+images1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+grass2
+  rotate: false
+  xy: 2, 2
+  size: 480, 320
+  orig: 480, 320
+  offset: 0, 0
+  index: -1
+greyBackground
+  rotate: false
+  xy: 484, 2
+  size: 480, 300
+  orig: 480, 300
+  offset: 0, 0
+  index: -1
+menu
+  rotate: false
+  xy: 2, 324
+  size: 300, 224
+  orig: 300, 224
+  offset: 0, 0
+  index: -1
+grass
+  rotate: false
+  xy: 2, 550
+  size: 243, 160
+  orig: 243, 160
+  offset: 0, 0
+  index: -1
+shield
+  rotate: false
+  xy: 2, 712
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+settings
+  rotate: false
+  xy: 132, 712
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+preferences
+  rotate: false
+  xy: 2, 842
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+magicBook
+  rotate: false
+  xy: 132, 842
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+content
+  rotate: false
+  xy: 304, 324
+  size: 64, 96
+  orig: 64, 96
+  offset: 0, 0
+  index: -1
+availableCell
+  rotate: false
+  xy: 304, 422
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+atackCell2
+  rotate: false
+  xy: 304, 488
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+unitCell2
+  rotate: false
+  xy: 304, 554
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+normalCell
+  rotate: false
+  xy: 304, 620
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+atack2Cell
+  rotate: false
+  xy: 304, 686
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+unitCell
+  rotate: false
+  xy: 304, 752
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+atackCell
+  rotate: false
+  xy: 304, 818
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+exit
+  rotate: false
+  xy: 2, 972
+  size: 120, 40
+  orig: 120, 40
+  offset: 0, 0
+  index: 1
+resume
+  rotate: false
+  xy: 132, 972
+  size: 120, 40
+  orig: 120, 40
+  offset: 0, 0
+  index: 2
+exit
+  rotate: false
+  xy: 370, 324
+  size: 120, 40
+  orig: 120, 40
+  offset: 0, 0
+  index: 2
+resume
+  rotate: false
+  xy: 492, 324
+  size: 120, 40
+  orig: 120, 40
+  offset: 0, 0
+  index: 1
+number
+  rotate: false
+  xy: 484, 304
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+arrow1
+  rotate: false
+  xy: 502, 304
+  size: 37, 5
+  orig: 37, 5
+  offset: 0, 0
+  index: -1
+arrow0
+  rotate: false
+  xy: 502, 311
+  size: 37, 5
+  orig: 37, 5
+  offset: 0, 0
+  index: -1
+
+archer1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Archer01
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+Archer01
+  rotate: false
+  xy: 68, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+Archer10
+  rotate: false
+  xy: 134, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+Archer10
+  rotate: false
+  xy: 200, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+Archer11
+  rotate: false
+  xy: 266, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+Archer10
+  rotate: false
+  xy: 332, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+Archer00
+  rotate: false
+  xy: 398, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+Archer11
+  rotate: false
+  xy: 464, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+Archer01
+  rotate: false
+  xy: 530, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+Archer00
+  rotate: false
+  xy: 596, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+Archer00
+  rotate: false
+  xy: 662, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+Archer11
+  rotate: false
+  xy: 728, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+
+villager1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Villager00
+  rotate: false
+  xy: 2, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+Villager00
+  rotate: false
+  xy: 68, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+Villager10
+  rotate: false
+  xy: 134, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+Villager01
+  rotate: false
+  xy: 200, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+Villager01
+  rotate: false
+  xy: 266, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+Villager11
+  rotate: false
+  xy: 332, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+Villager11
+  rotate: false
+  xy: 398, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 2
+Villager10
+  rotate: false
+  xy: 464, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+Villager10
+  rotate: false
+  xy: 530, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+Villager11
+  rotate: false
+  xy: 596, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+Villager01
+  rotate: false
+  xy: 662, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 3
+Villager00
+  rotate: false
+  xy: 728, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: 1
+  
+terrain1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+mineGold
+  rotate: false
+  xy: 2, 2
+  size: 172, 130
+  orig: 172, 130
+  offset: 0, 0
+  index: -1
+mapRoad
+  rotate: false
+  xy: 176, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+mapWater
+  rotate: false
+  xy: 176, 68
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+mapGrass
+  rotate: false
+  xy: 2, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+mapWater2
+  rotate: false
+  xy: 68, 134
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+  
+HeroOne1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+HeroOne31
+  rotate: false
+  xy: 2, 2
+  size: 43, 65
+  orig: 43, 65
+  offset: 0, 0
+  index: 2
+HeroOne31
+  rotate: false
+  xy: 47, 2
+  size: 43, 65
+  orig: 43, 65
+  offset: 0, 0
+  index: 1
+HeroOne11
+  rotate: false
+  xy: 92, 2
+  size: 58, 64
+  orig: 58, 64
+  offset: 0, 0
+  index: 2
+HeroOne01
+  rotate: false
+  xy: 152, 2
+  size: 58, 64
+  orig: 58, 64
+  offset: 0, 0
+  index: 1
+HeroOne11
+  rotate: false
+  xy: 212, 2
+  size: 58, 64
+  orig: 58, 64
+  offset: 0, 0
+  index: 1
+HeroOne01
+  rotate: false
+  xy: 272, 2
+  size: 58, 64
+  orig: 58, 64
+  offset: 0, 0
+  index: 2
+HeroOne21
+  rotate: false
+  xy: 332, 2
+  size: 44, 64
+  orig: 44, 64
+  offset: 0, 0
+  index: 2
+HeroOne21
+  rotate: false
+  xy: 378, 2
+  size: 44, 64
+  orig: 44, 64
+  offset: 0, 0
+  index: 3
+HeroOne31
+  rotate: false
+  xy: 424, 2
+  size: 43, 64
+  orig: 43, 64
+  offset: 0, 0
+  index: 3
+HeroOne21
+  rotate: false
+  xy: 469, 2
+  size: 41, 64
+  orig: 41, 64
+  offset: 0, 0
+  index: 1
+  
+  
