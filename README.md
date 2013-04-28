@@ -44,7 +44,7 @@ Includes all the project code. It is divided into multiple packages:
 * **com.races.humands.heroes**: humands heroes specifications.
 * **com.races.humands.units**: humands units specifications.
 * **com.resources**: contains the map builds resources especification.
-* **com.utils**: diferents utilities.
+* **com.utils**: different utilities.
 
 ### my-gdx-game-desktop
 
