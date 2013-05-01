@@ -30,6 +30,7 @@ public class MapController {
 	TweenManager manager;
 	HeroTop selected_hero;
 	MyGdxGame game;
+	MiniMap minimap;
 	
 	int turn;
 	List<Vector2i> path_found;	// show if path have been found 
@@ -38,10 +39,11 @@ public class MapController {
 	static boolean mutex = false; 	// Semaphore		
 	
 	
-	public MapController( MyGdxGame game, List<Player> players, Terrain terrain ) {
+	public MapController( MyGdxGame game, List<Player> players, Terrain terrain, MiniMap minimap ) {
 		this.game = game;
 		this.players = players;
 		this.terrain = terrain;
+		this.minimap = minimap;
 		
 		path_found = new ArrayList<Vector2i>();
 		manager = new TweenManager();
@@ -51,7 +53,7 @@ public class MapController {
 	}
 	
 	static void addEvent( int type, Object receiver ) {
-		if( typeEvent == Constants.NONE ) {
+		if( typeEvent == Constants.NONE && !mutex ) {
 			typeEvent = type;
 			objectEvent = receiver;
 		}
@@ -117,18 +119,6 @@ public class MapController {
 	public void moveSelectedHero() {
 		Timeline line = Timeline.createSequence();		
 		createMoveHeroLine( line );
-		
-		// Add callback for when animation has finished'
-		line.push( Tween.call( new TweenCallback() {
-			public void onEvent( int type, BaseTween<?> source ) {
-				Vector2i end = path_found.get( path_found.size() - 1 );
-				players.get( turn ).getHeroSelected().setSquareTerrain(
-						terrain.getSquareTerrain( end ));
-
-				path_found = new ArrayList<Vector2i>();
-			}
-		}));
-		
 		line.start( manager );
 	}
 	
@@ -138,23 +128,41 @@ public class MapController {
 	 * @param line line of animations
 	 */
 	public void createMoveHeroLine( Timeline line ) {
-		Vector2i last_square = 
+		mutex = true;
+		
+		Vector2i last_square_number = 
 				players.get( turn ).getHeroSelected().getSquareTerrain().getNumber();
 		
-		for( Vector2i next_square : path_found ) {
-			Vector2 next_position = terrain.getSquarePosition( next_square );
+		for( Vector2i next_square_number : path_found ) {
+			Vector2 next_position = terrain.getSquarePosition( next_square_number );
 			
 			line.push( Tween.to( players.get( turn ).getHeroSelected().getView(), 
 					StackViewAccessor.POSITION_XY, 0.8f ).target(
 							next_position.x, next_position.y ).ease( Linear.INOUT ) );
 			
+			line.push( Tween.call( new TweenCallback() {
+				public void onEvent(int type, BaseTween<?> source) {
+					Vector2i prev_square_number = selected_hero.getSquareTerrain().getNumber();
+					
+					selected_hero.setSquareTerrain( terrain.getSquareTerrain( path_found.get(0) ) );
+					path_found.remove( 0 );
+					
+					minimap.updatePosition( prev_square_number );
+					minimap.updatePosition( selected_hero.getSquareTerrain().getNumber() );
+				}
+			}));
 			
-			int orientation = getOrientation( last_square, next_square );
+			
+			int orientation = getOrientation( last_square_number, next_square_number );
 			
 			players.get( turn ).getHeroSelected().addWalkAction( orientation );
 			
-			last_square = next_square;
+			last_square_number = next_square_number;
 		}
+		
+		line.push( Tween.call( new TweenCallback() {
+			public void onEvent(int type, BaseTween<?> source) { mutex = false; }
+		}));
 	}
 	
 	public int getOrientation( Vector2i last_position, Vector2i new_position ) {
@@ -212,14 +220,7 @@ public class MapController {
 		// Add callback for when animation has finished'
 		line.push( Tween.call( new TweenCallback() {
 			public void onEvent( int type, BaseTween<?> source ) {
-				Vector2i end = path_found.get( path_found.size() - 1 );
-				
-				players.get( turn ).getHeroSelected().setSquareTerrain(
-						terrain.getSquareTerrain( end ));
-
-				game.throwBattleScreen( selected_hero.getArmy(), attack_square.getArmy() );
-				
-				path_found = new ArrayList<Vector2i>();				
+				game.throwBattleScreen( selected_hero.getArmy(), attack_square.getArmy() );	
 			}
 		}));
 		

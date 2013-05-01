@@ -8,6 +8,7 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.level.Level;
@@ -41,6 +42,7 @@ public class MapScreen implements Screen {
 	Terrain terrain;
 	HUD hud;
 	MapController controller;
+	MiniMap mini_map;
 	
 	public MapScreen( MyGdxGame game, Level level ) {
 		this.game = game;
@@ -50,11 +52,11 @@ public class MapScreen implements Screen {
 		players = new ArrayList<Player>();
 
 		loadTerrain();
-		loadHUD();
 		loadMapUnits();		
 		loadMapCreatures();
 		loadPlayers();
 		loadStructures();
+		loadHUD();
 	}
 	
 	private void loadTerrain() {
@@ -66,6 +68,7 @@ public class MapScreen implements Screen {
 	private void loadHUD() {
 		hud_stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true );
 		hud = new HUD( hud_stage );
+		mini_map = new MiniMap( hud_stage, terrain );
 	}
 	
 	private void loadMapUnits() {
@@ -114,10 +117,11 @@ public class MapScreen implements Screen {
 	public void show() {
 		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
 		terrain_stage.addActor( terrain );
+		hud_stage.addActor( mini_map );
 
 		Gdx.input.setInputProcessor( new MapInputProcessor( terrain ) );
 		
-		controller = new MapController( game, players, terrain );
+		controller = new MapController( game, players, terrain, mini_map );
 	}
 
 	public void loadLevel( int level ) {

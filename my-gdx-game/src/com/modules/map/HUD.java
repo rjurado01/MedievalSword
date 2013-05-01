@@ -24,7 +24,7 @@ public class HUD extends Group {
 	}
 	
 	private void loadBackground() {
-		background = new Image(Assets.getTextureRegion( "number" ) );
+		background = new Image(Assets.getTextureRegion( "menu" ) );
 		background.height = height;
 		background.width = width;
 		

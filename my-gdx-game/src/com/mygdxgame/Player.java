@@ -15,6 +15,7 @@ public class Player {
 	public int stone;
 	
 	public int color;
+	public int id;
 	private Array<HeroTop> heroes;
 	private HeroTop hero_selected;
 	

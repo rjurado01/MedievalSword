@@ -33,6 +33,7 @@ public class Parser {
 		
 		if( hero != null ) {
 			hero.setSquareTerrain( terrain.getSquareTerrain( level_hero.square_number ) );
+			terrain.getSquareTerrain( level_hero.square_number ).setTopHero( hero );
 			
 			if( level_hero.attack > 0 )
 				hero.setAttack( level_hero.attack );

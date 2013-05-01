@@ -63,7 +63,11 @@ public class HeroTop {
 	}
 	
 	public void setSquareTerrain( SquareTerrain square ) {
+		if( this.square != null )
+			this.square.setFree();
+		
 		this.square = square;
+		this.square.setTopHero( this );
 		this.view.setPosition( square.getPosition() );
 	}
 	

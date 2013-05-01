@@ -28,7 +28,7 @@ public class PathFinder {
 			matrix[i] = new PathItem[ width ];
 			
 			for( int j = 0; j < width; j++ )
-				if( terrain[i][j] != 0 )
+				if( terrain[i][j] == 0 )
 					matrix[i][j] = new PathItem( new Vector2i( j, i ), 1 );
 				else
 					matrix[i][j] = new PathItem( new Vector2i( j, i ), 0 );
@@ -46,7 +46,7 @@ public class PathFinder {
 			checkAdjacencies();
 			selectNextFather();
 		}
-		
+
 		createWayList( father );
 		
 		return way_list;

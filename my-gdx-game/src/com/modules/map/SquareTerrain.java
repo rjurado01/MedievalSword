@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdxgame.Army;
+import com.mygdxgame.Assets;
 import com.mygdxgame.Constants;
 import com.utils.Vector2i;
 
@@ -13,9 +14,14 @@ public class SquareTerrain extends Image {
 	static int HEIGHT = 40;
 	static int WIDTH = 40;
 	
+	/* TYPES */
+	static final int GRASS = 0;
+	static final int WATHER = 1;
+	static final int ROAD = 2;
+	
 	/* ROAD STATUS */
 	static final int FREE = 0;
-	static final int PLAYER = 1;
+	static final int HERO_PLAYER_1 = 1;
 	static final int CREATURES_GROUP = 2;
 	
 	boolean visible = false;
@@ -25,8 +31,9 @@ public class SquareTerrain extends Image {
 	
 	Vector2i number;
 	
-	Hero hero;
+	HeroTop hero;
 	CreaturesGroup group;
+	MiniMap mini_map;
 	
 	public SquareTerrain( Vector2i number, int type ) {
 		this.x = number.x * WIDTH;
@@ -72,9 +79,9 @@ public class SquareTerrain extends Image {
 			return false;
 	}
 	
-	public void setHero( Hero hero ) {
+	public void setTopHero( HeroTop hero ) {
 		this.hero = hero;
-		// this.status = HERO;
+		this.status = HERO_PLAYER_1;
 	}
 	
 	public void setCreaturesGroup( CreaturesGroup group ) {
@@ -87,5 +94,34 @@ public class SquareTerrain extends Image {
 			return group.getArmy();
 		else
 			return null;
+	}
+	
+	public int getType() {
+		return type;
+	}
+	
+	/**
+	 * Check if this square has any player hero or player structure
+	 */
+	public int getMiniMapColor() {
+		if( isRoadAvailable() )
+			return MiniMap.ROAD;
+		else if( type == SquareTerrain.WATHER )
+			return MiniMap.WHATER;
+		else if( hero != null ) {
+			if( hero.getColor() == Constants.BLUE  )
+				return MiniMap.BLUE;
+			else
+				return MiniMap.RED;
+		}
+		else if( hasCreaturesGroup() ) {
+			return MiniMap.GREY; }
+		else
+			return MiniMap.GRASS;
+	}
+
+	public void setFree() {
+		if( type == ROAD )
+			status = FREE; 
 	}
  }
