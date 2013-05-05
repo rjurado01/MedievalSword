@@ -119,7 +119,7 @@ public class MapScreen implements Screen {
 		terrain_stage.addActor( terrain );
 		hud_stage.addActor( mini_map );
 
-		Gdx.input.setInputProcessor( new MapInputProcessor( terrain ) );
+		Gdx.input.setInputProcessor( new MapInputProcessor( terrain, hud ) );
 		
 		controller = new MapController( game, players, terrain, mini_map );
 	}

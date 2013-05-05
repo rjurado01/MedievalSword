@@ -458,4 +458,50 @@ HeroOne21
   offset: 0, 0
   index: 1
   
+hud1.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+hourglass
+  rotate: false
+  xy: 2, 2
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+options
+  rotate: false
+  xy: 132, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+woodIcon
+  rotate: false
+  xy: 2, 132
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+stats
+  rotate: false
+  xy: 68, 132
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+goldIcon
+  rotate: false
+  xy: 134, 132
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+stoneIcon
+  rotate: false
+  xy: 2, 198
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
   

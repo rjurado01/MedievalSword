@@ -192,7 +192,7 @@ public class MapController {
 				}
 				else {
 					path_found = new ArrayList<Vector2i>();
-					checkPath( square.getNumber() );
+					checkPathForAttack( square.getNumber() );
 				}
 			}
 		}

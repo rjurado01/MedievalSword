@@ -7,13 +7,17 @@ import com.mygdxgame.Constants;
 
 public class MapInputProcessor implements InputProcessor {
 	
-	Stage stage;
+	Stage terrain_stage;
+	Stage hud_stage;
 	Vector3 last_touch_down = new Vector3();
 	Terrain terrain;
+	HUD hud;
 	
-	public MapInputProcessor( Terrain terrain ) {
-		this.stage = terrain.getStage();
+	public MapInputProcessor( Terrain terrain, HUD hud ) {
+		this.terrain_stage = terrain.getStage();
+		this.hud_stage = hud.getStage();
 		this.terrain = terrain;
+		this.hud = hud;
 	}
 
 	@Override
@@ -37,19 +41,30 @@ public class MapInputProcessor implements InputProcessor {
 	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		last_touch_down.set(x, y, 0);
-		stage.touchDown(x, y, pointer, button );
+
+		if( isHudClicked(x, y) )
+			hud_stage.touchDown(x, y, pointer, button);
+		else
+			terrain_stage.touchDown(x, y, pointer, button );
+			
 		return false;
 	}
 
 	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		stage.touchUp(x, y, pointer, button );
+		if( isHudClicked(x, y) )
+			hud_stage.touchUp(x, y, pointer, button);
+		else
+			terrain_stage.touchUp(x, y, pointer, button );
+		
 		return false;
 	}
 
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-		moveCamera( x, y );		
+		if( isHudClicked(x, y) == false )
+			moveCamera( x, y );		
+		
 		return false;
 	}
 	
@@ -57,7 +72,7 @@ public class MapInputProcessor implements InputProcessor {
 		Vector3 new_position = getNewCameraPosition( touch_x, touch_y );
 
 		if( !cameraOutOfLimit( new_position ) )
-			stage.getCamera().translate( new_position.sub( stage.getCamera().position ) );
+			terrain_stage.getCamera().translate( new_position.sub( terrain_stage.getCamera().position ) );
 		
 		last_touch_down.set( touch_x, touch_y, 0);
 	}
@@ -66,7 +81,7 @@ public class MapInputProcessor implements InputProcessor {
 		Vector3 new_position = last_touch_down;
 		new_position.sub(x, y, 0);
 		new_position.y = -new_position.y;
-		new_position.add( stage.getCamera().position );
+		new_position.add( terrain_stage.getCamera().position );
 		
 		return new_position;
 	}
@@ -85,18 +100,22 @@ public class MapInputProcessor implements InputProcessor {
 			return false;
 	}
 
-	@Override
 	public boolean touchMoved(int x, int y) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean scrolled(int amount) {
-		stage.getCamera().viewportHeight += 20 * amount;
-		stage.getCamera().viewportWidth += 20 * amount;
+		terrain_stage.getCamera().viewportHeight += 14 * amount;
+		terrain_stage.getCamera().viewportWidth += 20 * amount;
 		// TODO Auto-generated method stub
 		return false;
 	}
 
+	private boolean isHudClicked( int x, int y ) {
+		if( x < hud.width )
+			return true;
+		else
+			return false;
+	}
 }

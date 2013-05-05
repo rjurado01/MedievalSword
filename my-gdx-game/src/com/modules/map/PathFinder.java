@@ -29,13 +29,13 @@ public class PathFinder {
 			
 			for( int j = 0; j < width; j++ )
 				if( terrain[i][j] == 0 )
-					matrix[i][j] = new PathItem( new Vector2i( j, i ), 1 );
-				else
 					matrix[i][j] = new PathItem( new Vector2i( j, i ), 0 );
 		}
 	}
 	
 	public List<Vector2i> findWay( Vector2i origin, Vector2i destination ) {
+		matrix[origin.y][origin.x] = new PathItem( origin, 1 );
+		
 		this.origin = origin;
 		this.destination = destination;
 		
@@ -94,7 +94,7 @@ public class PathFinder {
 	}
 	
 	private boolean isValidItem( int x, int y ) {
-		if( y < size.y && y >= 0 && x < size.x && x >= 0 )
+		if( y < size.y && y >= 0 && x < size.x && x >= 0 && matrix[y][x] != null )
 			return true;
 		else
 			return false;
@@ -123,21 +123,26 @@ public class PathFinder {
 	private void selectNextFather() {
 		int min = 1000;
 		
-		for( PathItem aux : open_list )
-			if( aux.F < min ) {
-				father = aux;
-				min = aux.F;
-			}
-		
-		open_list.remove( father );
-		close_list.add( father );
+		if( open_list.size() > 0 ) {
+			for( PathItem aux : open_list )
+				if( aux.F < min ) {
+					father = aux;
+					min = aux.F;
+				}
+			
+			open_list.remove( father );
+			close_list.add( father );
+		}
+		else
+			father = null;
 	}
 	
 	private void createWayList( PathItem father ) {
-		if( father != null & father.father != null && father.father.father != null )
+		if( father != null && father.father != null && father.father.father != null )
 			createWayList( father.father );
 		
-		way_list.add( father.number );
+		if( father != null)
+			way_list.add( father.number );
 	}
 	
 	private void printStatuMatrix() {
