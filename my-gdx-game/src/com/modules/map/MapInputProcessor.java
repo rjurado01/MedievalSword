@@ -1,5 +1,6 @@
 package com.modules.map;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -46,7 +47,7 @@ public class MapInputProcessor implements InputProcessor {
 			hud_stage.touchDown(x, y, pointer, button);
 		else
 			terrain_stage.touchDown(x, y, pointer, button );
-			
+		
 		return false;
 	}
 
@@ -108,12 +109,13 @@ public class MapInputProcessor implements InputProcessor {
 	public boolean scrolled(int amount) {
 		terrain_stage.getCamera().viewportHeight += 14 * amount;
 		terrain_stage.getCamera().viewportWidth += 20 * amount;
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	private boolean isHudClicked( int x, int y ) {
-		if( x < hud.width )
+		float hud_width = hud.width * Gdx.graphics.getWidth() / Constants.SIZE_W;
+
+		if( x < hud_width )
 			return true;
 		else
 			return false;

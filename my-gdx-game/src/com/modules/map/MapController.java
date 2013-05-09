@@ -29,8 +29,10 @@ public class MapController {
 	Terrain terrain;
 	TweenManager manager;
 	HeroTop selected_hero;
+	CreaturesGroup selected_group;
+	HeroTop selected_hero_enemy;
 	MyGdxGame game;
-	MiniMap minimap;
+	HUD hud;
 	
 	int turn;
 	List<Vector2i> path_found;	// show if path have been found 
@@ -39,17 +41,17 @@ public class MapController {
 	static boolean mutex = false; 	// Semaphore		
 	
 	
-	public MapController( MyGdxGame game, List<Player> players, Terrain terrain, MiniMap minimap ) {
+	public MapController( MyGdxGame game, List<Player> players, Terrain terrain, HUD hud ) {
 		this.game = game;
 		this.players = players;
 		this.terrain = terrain;
-		this.minimap = minimap;
+		this.hud = hud;
 		
 		path_found = new ArrayList<Vector2i>();
 		manager = new TweenManager();
 		Tween.registerAccessor( HeroView.class, new HeroViewAccessor() );
 		
-		selected_hero = players.get( 0 ).getHeroSelected();
+		// selected_hero = players.get( 0 ).getHeroSelected();
 	}
 	
 	static void addEvent( int type, Object receiver ) {
@@ -72,14 +74,21 @@ public class MapController {
 			if( typeEvent == MapConstants.SQUARE && objectEvent != null ) {
 				checkSquareEvent( (SquareTerrain) objectEvent );
 			}
+			else if( typeEvent == MapConstants.HERO && objectEvent != null) {
+				checkHeroEvent( (HeroTop) objectEvent );
+			}
+			else if( typeEvent == MapConstants.CREATURES && objectEvent != null) {
+				checkCreaturesGroupEvent( (CreaturesGroup) objectEvent );
+			}
 		}
 	}	
 	
 	public void checkSquareEvent( SquareTerrain square ) {
 		if( square.isRoadAvailable() )
 			processMoveEvent( square );
-		else if( square.hasCreaturesGroup() )
-			processAttackEvent( square );
+		else
+			System.out.println("Evento no registrado.");
+		
 		
 		objectEvent = null;
 		typeEvent = Constants.NONE;
@@ -90,12 +99,12 @@ public class MapController {
 			if( path_found.size() == 0 )
 				checkPath( square.getNumber() );
 			else {
-				terrain.removePathSelected();
 				Vector2i end = path_found.get( path_found.size() - 1 );
 				
 				if( square.getNumber().x == end.x &&  square.getNumber().y == end.y )
 					moveSelectedHero();
 				else {
+					terrain.removePathSelected();
 					path_found = new ArrayList<Vector2i>();
 					checkPath( square.getNumber() );
 				}
@@ -133,6 +142,8 @@ public class MapController {
 		Vector2i last_square_number = 
 				players.get( turn ).getHeroSelected().getSquareTerrain().getNumber();
 		
+		terrain.removeFirstPathElement();
+		
 		for( Vector2i next_square_number : path_found ) {
 			Vector2 next_position = terrain.getSquarePosition( next_square_number );
 			
@@ -147,8 +158,9 @@ public class MapController {
 					selected_hero.setSquareTerrain( terrain.getSquareTerrain( path_found.get(0) ) );
 					path_found.remove( 0 );
 					
-					minimap.updatePosition( prev_square_number );
-					minimap.updatePosition( selected_hero.getSquareTerrain().getNumber() );
+					hud.getMiniMap().updatePosition( prev_square_number );
+					hud.getMiniMap().updatePosition( selected_hero.getSquareTerrain().getNumber() );
+					terrain.removeFirstPathElement();
 				}
 			}));
 			
@@ -178,33 +190,13 @@ public class MapController {
 			return -1;
 	}
 	
-	private void processAttackEvent( SquareTerrain square ) {
-		if( players.get( turn ).isHeroSelected() ) {
-			if( path_found.size() == 0 )
-				checkPathForAttack( square.getNumber() );
-			else {
-				terrain.removePathSelected();
-				Vector2i end = path_found.get( path_found.size() - 1 );
-				
-				if( square.getNumber().x == end.x &&  square.getNumber().y == end.y ) {
-					attack_square = square;
-					moveSelectedHeroAndAttack();
-				}
-				else {
-					path_found = new ArrayList<Vector2i>();
-					checkPathForAttack( square.getNumber() );
-				}
-			}
-		}
-	}
-	
 	private void checkPathForAttack( Vector2i destination ) {
 		PathFinder path_finder = new PathFinder(
 				terrain.getRoadsMatrix( destination ), terrain.SQUARES_X, terrain.SQUARES_Y );
 		
 		Vector2i origin = players.get( turn ).getHeroSelected().getSquareTerrain().getNumber();
 		List<Vector2i> camino = path_finder.findWay( origin, destination );
-		
+
 		if( camino.size() > 0 ) {
 			path_found = camino;
 			terrain.drawPathSelected( path_found.subList(0 , path_found.size() - 1) );
@@ -225,5 +217,62 @@ public class MapController {
 		}));
 		
 		line.start( manager );
+	}
+	
+	private void checkHeroEvent( HeroTop hero ) {
+		if( selected_hero == null ) {
+			selected_hero = hero;
+			selected_hero.select();
+			hud.selectHero( selected_hero );
+		}
+		else {
+			selected_hero.unselect();
+			hud.unselectHero();
+			selected_hero = null;
+		}
+		
+		typeEvent = Constants.NONE;
+		objectEvent = null;
+		terrain.removePathSelected();
+	}
+	
+	private void checkCreaturesGroupEvent( CreaturesGroup group ) {
+		if( players.get( turn ).isHeroSelected() ) {
+			SquareTerrain square = group.getSquare();
+			
+			hud.selectEnemy( group );
+			selected_group = group;
+			
+			if( path_found.size() == 0 )
+				checkPathForAttack( square.getNumber() );
+			else
+				processAttackAction( square );
+		}
+		else {
+			if( selected_group == null ) {
+				hud.selectEnemy( group );
+				selected_group = group;
+			}
+			else {
+				hud.unselectEnemy();
+			}	
+		}
+		
+		typeEvent = Constants.NONE;
+		objectEvent = null;
+	}
+	
+	private void processAttackAction( SquareTerrain square ) {
+		terrain.removePathSelected();
+		Vector2i end = path_found.get( path_found.size() - 1 );
+		
+		if( square.getNumber().x == end.x &&  square.getNumber().y == end.y ) {
+			attack_square = square;
+			moveSelectedHeroAndAttack();
+		}
+		else {
+			path_found = new ArrayList<Vector2i>();
+			checkPathForAttack( square.getNumber() );
+		}
 	}
 }

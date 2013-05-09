@@ -2,10 +2,13 @@ package com.modules.map;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdxgame.Army;
 import com.mygdxgame.Constants;
+import com.mygdxgame.Player;
 import com.mygdxgame.Stack;
 import com.utils.CustomAnimation;
 
@@ -18,13 +21,15 @@ public class HeroTop {
 	ArrayList<CustomAnimation> actions_queue;
 	Army army;
 	SquareTerrain square;
+	Player player;
 	
-	public HeroTop( Hero hero, int color ) {
+	public HeroTop( Player player, Hero hero, int color ) {
+		this.player = player;
 		this.hero = hero;
 		this.color = color;
 
 		actions_queue = new ArrayList<CustomAnimation>();
-		view = new HeroView( hero.getSize() );
+		view = new HeroView( this, hero.getSize() );
 		view.setRegion( hero.textures.get( "normal3" + color ) );
 		army = new Army();
 		//view.setRegion( Assets.getTextureRegion("HeroOne01"));
@@ -119,5 +124,17 @@ public class HeroTop {
 	
 	public void addStack( Stack stack ) {
 		army.addStack( stack );
+	}
+	
+	public void select() {
+		player.selectHero( this );
+	}
+	
+	public void unselect() {
+		player.unselectHero();
+	}
+	
+	public TextureRegion getIconTextureRegion() {
+		return hero.getIconTextureRegion();
 	}
 }

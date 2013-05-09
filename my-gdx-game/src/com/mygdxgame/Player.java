@@ -1,6 +1,5 @@
 package com.mygdxgame;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.modules.map.HeroTop;
 
@@ -10,12 +9,13 @@ import com.modules.map.HeroTop;
  */
 public class Player {
 
+	public int id;
+	public int color;
+	
 	public int gold;
 	public int wood;
 	public int stone;
 	
-	public int color;
-	public int id;
 	private Array<HeroTop> heroes;
 	private HeroTop hero_selected;
 	
@@ -28,7 +28,6 @@ public class Player {
 	
 	public void addHero( HeroTop hero ) {
 		heroes.add( hero );
-		hero_selected = heroes.get( heroes.size - 1 );
 	}
 	
 	public void removeHero( HeroTop hero ) {
@@ -54,5 +53,13 @@ public class Player {
 		if( hero_selected != null )
 			hero_selected.updateActions( deltaTime );
 		
+	}
+	
+	public void unselectHero() {
+		hero_selected = null;
+	}
+	
+	public void selectHero( HeroTop hero ) {
+		hero_selected = hero;
 	}
 }

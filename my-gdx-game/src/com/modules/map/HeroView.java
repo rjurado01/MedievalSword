@@ -1,14 +1,29 @@
 package com.modules.map;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.utils.Vector2i;
 
 public class HeroView extends Image {
 	
-	public HeroView( Vector2i size ) {
+	HeroTop hero;
+	
+	public HeroView( HeroTop hero, Vector2i size ) {
+		this.hero = hero;
 		this.width = size.x;
 		this.height = size.y;
+		
+		setClickListener( new ClickListener() {
+			public void click(Actor actor, float x, float y) { 
+				clicked();
+			}
+		});
+	}
+	
+	private void clicked() {
+		MapController.addEvent( MapConstants.HERO, hero );
 	}
 	
 	public Vector2 getPosition() {

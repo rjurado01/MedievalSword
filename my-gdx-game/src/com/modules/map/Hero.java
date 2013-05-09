@@ -40,6 +40,8 @@ public abstract class Hero {
 			for( int color = 0; color < Constants.N_COLORS; color++ )
 				textures.put( "normal" + orientation + color,
 						Assets.getTextureRegion( name + orientation + color ) );
+		
+		textures.put( "icon", Assets.getTextureRegion( name + Constants.YD + 1 ));
 	}
 	
 	/**
@@ -83,5 +85,9 @@ public abstract class Hero {
 	
 	public Vector2i getSize() {
 		return size;
+	}
+	
+	public TextureRegion getIconTextureRegion() {
+		return textures.get( "icon" );
 	}
 }

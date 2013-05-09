@@ -16,8 +16,10 @@ import com.mygdxgame.Constants;
 public class HUD extends Group {
 	
 	final int GOLD_INDICATOR = 0;
-	final int WOOD_INDICATOR = 0;	
-	final int STONE_INDICATOR = 0;
+	final int WOOD_INDICATOR = 1;	
+	final int STONE_INDICATOR = 2;
+	
+	MiniMap mini_map;
 	
 	Image background;
 	Image map;
@@ -32,9 +34,12 @@ public class HUD extends Group {
 	Button system;
 	Button game;
 	
+	Image hero_selected;
+	Image enemy_selected;
+	
 	Map<Integer, ResourceIndicator> resource_indicators;
 	
-	public HUD( Stage stage ) {
+	public HUD( Stage stage, Terrain terrain ) {
 		this.stage = stage;		
 		this.x = 0;
 		this.y = 0;
@@ -42,6 +47,7 @@ public class HUD extends Group {
 		this.height = Constants.HUD_HEIGHT;
 		
 		loadBackground();
+		loadMiniMap( terrain );
 		loadButtons();
 		loadIndicators();
 		loadHero();
@@ -53,6 +59,11 @@ public class HUD extends Group {
 		background.width = width;
 		
 		stage.addActor( background );
+	}
+	
+	private void loadMiniMap( Terrain terrain ) {
+		mini_map = new MiniMap( stage, terrain );
+		stage.addActor( mini_map );
 	}
 	
 	private void loadButtons() {
@@ -110,8 +121,8 @@ public class HUD extends Group {
 		stone_indicator.updateAmount( 100 );
 		
 		resource_indicators.put( GOLD_INDICATOR, gold_indicator );
-		resource_indicators.put( WOOD_INDICATOR, gold_indicator );
-		resource_indicators.put( STONE_INDICATOR, gold_indicator );
+		resource_indicators.put( WOOD_INDICATOR, wood_indicator );
+		resource_indicators.put( STONE_INDICATOR, stone_indicator );
 		
 		stage.addActor( gold_indicator );
 		stage.addActor( wood_indicator );
@@ -134,8 +145,50 @@ public class HUD extends Group {
 		stage.addActor( hero );
 		stage.addActor( castle );
 	}
-	
+		
 	public void updateGold( int new_gold ) {
 		resource_indicators.get( GOLD_INDICATOR ).updateAmount( new_gold );
+	}
+	
+	public void updateWood( int new_wood ) {
+		resource_indicators.get( WOOD_INDICATOR ).updateAmount( new_wood );
+	}
+	
+	public void updateStone( int new_stone ) {
+		resource_indicators.get( STONE_INDICATOR ).updateAmount( new_stone );
+	}
+	
+	public MiniMap getMiniMap() {
+		return mini_map;
+	}
+
+	public void selectHero(HeroTop selected_hero) {
+		hero_selected = new Image( selected_hero.getIconTextureRegion() );
+		hero_selected.width = 30;
+		hero_selected.height = 30;
+		hero_selected.x = 8;
+		hero_selected.y = 130;
+		
+		stage.addActor( hero_selected );
+	}
+	
+	public void unselectHero() {
+		hero_selected.remove();
+		//stage.addActor( hero_selected );
+	}
+
+	public void selectEnemy(CreaturesGroup group) {
+		enemy_selected = new Image( group.getIconTextureRegion() );
+		enemy_selected.width = 30;
+		enemy_selected.height = 30;
+		enemy_selected.x = 38;
+		enemy_selected.y = 130;
+		
+		stage.addActor( enemy_selected );		
+	}
+	
+	public void unselectEnemy() {
+		enemy_selected.remove();
+		enemy_selected = null;
 	}
 }

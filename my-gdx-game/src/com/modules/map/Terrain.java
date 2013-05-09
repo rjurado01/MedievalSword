@@ -151,4 +151,11 @@ public class Terrain extends Group {
 			path_selected.remove( 0 );
 		}
 	}
+	
+	public void removeFirstPathElement() {
+		if( path_selected.size() > 0 ) {
+			stage.removeActor( path_selected.get( 0 ) );
+			path_selected.remove( 0 );
+		}
+	}
 }

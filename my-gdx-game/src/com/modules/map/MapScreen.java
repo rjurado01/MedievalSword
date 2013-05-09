@@ -37,12 +37,12 @@ public class MapScreen implements Screen {
 	
 	public List<Player> players;
 	public List<CreaturesGroup> creatures;
+	Player humand_player;
 	
 	Level level;
 	Terrain terrain;
 	HUD hud;
 	MapController controller;
-	MiniMap mini_map;
 	
 	public MapScreen( MyGdxGame game, Level level ) {
 		this.game = game;
@@ -67,8 +67,10 @@ public class MapScreen implements Screen {
 	
 	private void loadHUD() {
 		hud_stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true );
-		hud = new HUD( hud_stage );
-		mini_map = new MiniMap( hud_stage, terrain );
+		hud = new HUD( hud_stage, terrain );
+		hud.updateGold( humand_player.gold );
+		hud.updateWood( humand_player.wood );
+		hud.updateStone( humand_player.stone );
 	}
 	
 	private void loadMapUnits() {
@@ -86,6 +88,9 @@ public class MapScreen implements Screen {
 	
 	private void loadPlayers() {
 		players.add( parser.getPlayer( terrain, units, level.players.get(0) ) );
+		
+		if( level.players.get(0).humand )
+			humand_player = players.get( 0 );
 		
 		for( HeroTop hero : players.get(0).getHeroes() )
 			terrain_stage.addActor( hero.getView() );
@@ -117,11 +122,11 @@ public class MapScreen implements Screen {
 	public void show() {
 		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
 		terrain_stage.addActor( terrain );
-		hud_stage.addActor( mini_map );
+		//hud_stage.addActor( mini_map );
 
 		Gdx.input.setInputProcessor( new MapInputProcessor( terrain, hud ) );
 		
-		controller = new MapController( game, players, terrain, mini_map );
+		controller = new MapController( game, players, terrain, hud );
 	}
 
 	public void loadLevel( int level ) {

@@ -25,11 +25,11 @@ public class Parser {
 	public Parser() {
 	}
 	
-	public HeroTop getHeroTop( Terrain terrain, Map<Integer, Unit> units, LevelHero level_hero, int color ) {
+	public HeroTop getHeroTop( Player player, Terrain terrain, Map<Integer, Unit> units, LevelHero level_hero, int color ) {
 		HeroTop hero = null;
 		
 		if( level_hero.type == 1 )
-			hero = new HeroTop( new HumandHero1(), color );
+			hero = new HeroTop( player, new HumandHero1(), color );
 		
 		if( hero != null ) {
 			hero.setSquareTerrain( terrain.getSquareTerrain( level_hero.square_number ) );
@@ -59,7 +59,7 @@ public class Parser {
 		player.stone = level_player.stone;
 		
 		for( LevelHero level_hero : level_player.heroes )
-			player.addHero( getHeroTop( terrain, units, level_hero, level_player.color ) );
+			player.addHero( getHeroTop( player, terrain, units, level_hero, level_player.color ) );
 		
 		return player;
 	}
