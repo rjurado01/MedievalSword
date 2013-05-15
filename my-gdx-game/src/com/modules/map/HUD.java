@@ -136,11 +136,23 @@ public class HUD extends Group {
 		hero.x = 5;
 		hero.y = 105;
 		
+		hero.setClickListener( new ClickListener() {
+			public void click(Actor actor, float x, float y) {
+				MapController.addEvent( MapConstants.INFO1, null );
+			}
+		});
+		
 		castle = new Image(Assets.getTextureRegion( "content" ) );
 		castle.height = 60;
 		castle.width = 35;
 		castle.x = 40;
 		castle.y = 105;
+		
+		castle.setClickListener( new ClickListener() {
+			public void click(Actor actor, float x, float y) {
+				MapController.addEvent( MapConstants.INFO2, null );
+			}
+		});
 		
 		stage.addActor( hero );
 		stage.addActor( castle );

@@ -2,6 +2,7 @@ package com.mygdxgame;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.modules.battle.BattleSummaryStack;
 import com.modules.battle.SquareBoard;
@@ -201,5 +202,9 @@ public class Stack {
 	public void setFrameSide() {
 		orientation = battle_side == Constants.LEFT_SIDE ? Constants.XR : Constants.XL;
 		view.setFrame( unit.getTexture( "normal" + orientation + color ) );
+	}
+	
+	public TextureRegion getIcon() {
+		return unit.getTexture( "icon" + color );
 	}
 }

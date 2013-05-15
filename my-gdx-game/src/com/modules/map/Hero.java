@@ -16,6 +16,7 @@ public abstract class Hero {
 	/* Attributes */
 	protected int defense;
 	protected int attack;
+	protected int power;
 	protected int mobility;
 	
 	protected Vector2i size;

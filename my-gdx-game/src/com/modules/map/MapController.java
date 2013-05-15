@@ -39,6 +39,7 @@ public class MapController {
 	SquareTerrain attack_square;
 	
 	static boolean mutex = false; 	// Semaphore		
+	static boolean showInfo = false;
 	
 	
 	public MapController( MyGdxGame game, List<Player> players, Terrain terrain, HUD hud ) {
@@ -80,6 +81,15 @@ public class MapController {
 			else if( typeEvent == MapConstants.CREATURES && objectEvent != null) {
 				checkCreaturesGroupEvent( (CreaturesGroup) objectEvent );
 			}
+			else if( typeEvent == MapConstants.INFO1 && selected_hero != null) {
+				showArmyInfoPanel();
+			}
+			else if( typeEvent == MapConstants.INFO2 && selected_hero != null) {
+				showEnemyArmyInfoPanel();
+			}
+			
+			typeEvent = Constants.NONE;
+			objectEvent = null;
 		}
 	}	
 	
@@ -273,6 +283,33 @@ public class MapController {
 		else {
 			path_found = new ArrayList<Vector2i>();
 			checkPathForAttack( square.getNumber() );
+		}
+	}
+	
+	private void showArmyInfoPanel() {
+		mutex = true;
+		show_info = true;
+		
+		Vector2 position = new Vector2(
+			terrain.getStage().getCamera().position.x - 160,
+			terrain.getStage().getCamera().position.y - MapConstants.TERRAIN_HEIGHT / 2 );
+		
+		ArmyInfoPanel panel = new ArmyInfoPanel( selected_hero, position );
+		terrain.getStage().addActor( panel );
+	}
+	
+	private void showEnemyArmyInfoPanel() {
+		Vector2 position = new Vector2(
+			terrain.getStage().getCamera().position.x - 160,
+			terrain.getStage().getCamera().position.y - MapConstants.TERRAIN_HEIGHT / 2 );
+		
+		if( selected_hero_enemy != null ) {
+			ArmyInfoPanel panel = new ArmyInfoPanel( selected_hero_enemy, position );
+			terrain.getStage().addActor( panel );
+		}
+		else if( selected_group != null ) {
+			ArmyInfoPanel panel = new ArmyInfoPanel( selected_group, position );
+			terrain.getStage().addActor( panel );
 		}
 	}
 }

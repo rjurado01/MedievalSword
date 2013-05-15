@@ -17,6 +17,7 @@ public class HeroTop {
 	HeroView view;
 	int color;
 	int orientation;
+	int level;
 	
 	ArrayList<CustomAnimation> actions_queue;
 	Army army;
@@ -27,6 +28,7 @@ public class HeroTop {
 		this.player = player;
 		this.hero = hero;
 		this.color = color;
+		this.level = 1;
 
 		actions_queue = new ArrayList<CustomAnimation>();
 		view = new HeroView( this, hero.getSize() );
@@ -57,6 +59,10 @@ public class HeroTop {
 
 	public int getMobility() {
 		return hero.mobility;
+	}
+	
+	public int getPower() {
+		return hero.power;
 	}
 
 	public void setMobility(int mobility) {
@@ -136,5 +142,9 @@ public class HeroTop {
 	
 	public TextureRegion getIconTextureRegion() {
 		return hero.getIconTextureRegion();
+	}
+	
+	public int getLevel() {
+		return level;
 	}
 }
