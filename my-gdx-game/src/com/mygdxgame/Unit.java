@@ -40,13 +40,6 @@ public abstract class Unit {
 
 	public abstract void attackAction( Stack stack, int orientation, CallBack callback );
 	
-	public Image getMapImage( int orientation ) {
-		Image image = new Image( textures.get( "normal" + orientation + "0" ) );
-		image.width = map_width;
-		image.height = map_height;
-		return image;
-	}
-	
 	/**
 	 * Load normal textures of unit ( when unit is stop texture and icon )
 	 */
@@ -108,6 +101,17 @@ public abstract class Unit {
 			frames.add( Assets.getFrame( name + orientation + color, nframes[i] ) );
 		
 		return frames;
+	}
+	
+	public Image getMapImage( int orientation ) {
+		Image image = new Image( textures.get( "normal" + orientation + "0" ) );
+		image.width = map_width;
+		image.height = map_height;
+		return image;
+	}
+
+	public TextureRegion getIcon() {
+		return textures.get( "normal10" );
 	}
 	
 	public Animation getAnimation( String name, int orientation, int color ) {

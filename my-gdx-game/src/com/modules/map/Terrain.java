@@ -127,7 +127,7 @@ public class Terrain extends Group {
 		
 		for( int i = 0; i < SQUARES_Y; i++)
 			for( int j = 0; j < SQUARES_X; j++)
-				if( terrain[i][j].isRoadAvailable() )
+				if( terrain[i][j].isRoad() )
 					matrix[i][j] = PathFinder.FREE;
 				else
 					matrix[i][j] = PathFinder.BUSY;
@@ -137,11 +137,20 @@ public class Terrain extends Group {
 		return matrix;
 	}
 	
-	public void drawPathSelected( List<Vector2i> path ) {
+	public void drawPathSelected( List<Vector2i> path, int mobility ) {
+		int i = 0;
+		
 		for( Vector2i item : path ) {
-			SquarePath square_path = new SquarePath( getSquarePosition( item ) );
+			SquarePath square_path;
+			
+			if( i < mobility )
+				square_path = new SquarePath( getSquarePosition( item ), true );
+			else
+				square_path = new SquarePath( getSquarePosition( item ), false );
+				
 			path_selected.add( square_path );
 			stage.addActor( square_path );
+			i++;
 		}
 	}
 	

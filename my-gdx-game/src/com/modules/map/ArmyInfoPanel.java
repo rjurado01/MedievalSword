@@ -47,7 +47,7 @@ public class ArmyInfoPanel extends Group {
 		//createExitButton();
 	}
 
-	public ArmyInfoPanel(CreaturesGroup group, Vector2 position ) {
+	public ArmyInfoPanel( CreaturesGroup group, Vector2 position ) {
 		this.width = SIZE_W;
 		this.height = SIZE_H;		
 		this.x = position.x;
@@ -56,6 +56,7 @@ public class ArmyInfoPanel extends Group {
 		createAlphaImage();
 		createBackgroundImage();
 		createUnitsPanels( group.getArmy() );
+		createGroupInfo( group );
 	}
 
 	private void createAlphaImage() {
@@ -68,6 +69,7 @@ public class ArmyInfoPanel extends Group {
 		alpha.setClickListener( new ClickListener() {	
 			public void click(Actor actor, float x, float y) {
 				removePanel();
+				MapController.status = MapController.NORMAL;
 			}
 		});
 		
@@ -127,26 +129,9 @@ public class ArmyInfoPanel extends Group {
 	}
 	
 	private void createHeroInfo( HeroTop hero ) {
-		icon = new Group();
-				
-		Image icon_back = new Image( Assets.getTextureRegion("number") );
-		icon_back.width = 55;
-		icon_back.height = 55;	
-		icon.addActor( icon_back );
-		
-		Image image = new Image( hero.getIconTextureRegion() );
-		image.width = 35;
-		image.height = 35;
-		image.x = 10;
-		image.y = 10;
-		icon.addActor( image );
-		
-		icon.x = 80;
-		icon.y = 170;	
-		
-		addActor( icon );
-		
+		createIcon( hero.getIconTextureRegion() );
 		createHeroProperties(hero);
+		createAttributes( hero.getAttack(), hero.getDefense(), hero.getPower() );
 	}
 	
 	private void createHeroProperties( HeroTop hero ) {
@@ -191,17 +176,40 @@ public class ArmyInfoPanel extends Group {
 		addActor( name );
 		addActor( level );
 		addActor( exp );
+	}
+	
+	private void createIcon( TextureRegion texture_icon ) {
+		icon = new Group();
 		
+		Image icon_back = new Image( Assets.getTextureRegion("number") );
+		icon_back.width = 55;
+		icon_back.height = 55;	
+		icon.addActor( icon_back );
+		
+		Image image = new Image( texture_icon );
+		image.width = 35;
+		image.height = 35;
+		image.x = 10;
+		image.y = 10;
+		icon.addActor( image );
+		
+		icon.x = 80;
+		icon.y = 170;	
+		
+		addActor( icon );
+	}
+	
+	private void createAttributes( int attack, int defense, int power ) {
 		addProperty( Assets.getTextureRegion( "attackIcon" ), 
-				Integer.toString( hero.getAttack() ),
+				Integer.toString( attack ),
 				new Vector2( 150, 170 ) );
 		
 		addProperty( Assets.getTextureRegion( "defenseIcon" ), 
-				Integer.toString( hero.getDefense() ),
+				Integer.toString( defense ),
 				new Vector2( 198, 170 ) );
 		
 		addProperty( Assets.getTextureRegion( "powerIcon" ), 
-				Integer.toString( hero.getPower() ),
+				Integer.toString( power ),
 				new Vector2( 245, 170 ) );
 	}
 	
@@ -226,5 +234,25 @@ public class ArmyInfoPanel extends Group {
 		addActor( background );
 		addActor( image );
 		addActor( info );
+	}
+	
+	private void createGroupInfo( CreaturesGroup group ) {
+		createIcon( group.getIconTextureRegion() );
+		
+		Image image = new Image( Assets.getTextureRegion("number") );
+		image.width = 70;
+		image.height = 15;
+		image.x = 150;
+		image.y = 190;
+		
+		Label name;
+		name = new Label( "Name", Assets.skin );
+		name.x = 170;
+		name.y = 190;
+		
+		addActor( image );
+		addActor( name );
+		
+		createAttributes( 1, 1, 0 );
 	}
 }

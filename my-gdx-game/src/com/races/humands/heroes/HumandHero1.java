@@ -37,6 +37,6 @@ public class HumandHero1 extends Hero {
 	 */
 	public void walkAction( HeroTop hero, int orientation ) {
 		hero.addAction( new CustomAnimation(
-				getAnimation( RUN, orientation, hero.getColor() ), 0.8f, null ) );		
+				getAnimation( RUN, orientation, hero.getColor() ), 0.78f, null ) );		
 	}
 }

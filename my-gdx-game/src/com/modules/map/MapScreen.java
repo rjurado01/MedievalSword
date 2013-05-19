@@ -124,9 +124,9 @@ public class MapScreen implements Screen {
 		terrain_stage.addActor( terrain );
 		//hud_stage.addActor( mini_map );
 
-		Gdx.input.setInputProcessor( new MapInputProcessor( terrain, hud ) );
-		
 		controller = new MapController( game, players, terrain, hud );
+		
+		Gdx.input.setInputProcessor( new MapInputProcessor( terrain, hud ) );
 	}
 
 	public void loadLevel( int level ) {

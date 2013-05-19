@@ -35,7 +35,7 @@ public class CustomAnimation {
 	}
 	
 	public boolean isFinished() {
-		if( actual_time > duration ) {
+		if( actual_time >= duration ) {
 			executeCallback();
 			return true;
 		}

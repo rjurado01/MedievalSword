@@ -63,7 +63,7 @@ public class MapInputProcessor implements InputProcessor {
 
 	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-		if( isHudClicked(x, y) == false )
+		if( MapController.status == MapController.NORMAL && isHudClicked(x, y) == false )
 			moveCamera( x, y );		
 		
 		return false;

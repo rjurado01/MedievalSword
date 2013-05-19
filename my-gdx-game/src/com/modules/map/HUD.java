@@ -154,6 +154,12 @@ public class HUD extends Group {
 			}
 		});
 		
+		castle.setClickListener( new ClickListener() {
+			public void click(Actor actor, float x, float y) {
+				MapController.addEvent( MapConstants.INFO2, null );
+			}
+		});
+		
 		stage.addActor( hero );
 		stage.addActor( castle );
 	}

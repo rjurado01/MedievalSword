@@ -65,6 +65,13 @@ public class SquareTerrain extends Image {
 		MapController.addEvent( MapConstants.SQUARE, this );
 	}
 	
+	public boolean isRoad() {
+		if( type == Terrain.ROAD )
+			return true;
+		else 
+			return false;
+	}
+	
 	public boolean isRoadAvailable() {
 		if( type == Terrain.ROAD && status == FREE )
 			return true;

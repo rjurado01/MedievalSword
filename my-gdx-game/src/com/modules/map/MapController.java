@@ -25,12 +25,19 @@ public class MapController {
 	static Object objectEvent = null;
 	static int typeEvent = -1;
 	
+	/* STATUS */
+	static final int NORMAL = 0;
+	static final int ANIMATION = 1;
+	static final int INFO1 = 2;
+	static final int INFO2 = 3;
+	
 	List<Player> players;
 	Terrain terrain;
 	TweenManager manager;
 	HeroTop selected_hero;
 	CreaturesGroup selected_group;
 	HeroTop selected_hero_enemy;
+	ArmyInfoPanel army_info_panel;
 	MyGdxGame game;
 	HUD hud;
 	
@@ -38,8 +45,7 @@ public class MapController {
 	List<Vector2i> path_found;	// show if path have been found 
 	SquareTerrain attack_square;
 	
-	static boolean mutex = false; 	// Semaphore		
-	static boolean showInfo = false;
+	static int status = NORMAL; 	// Semaphore		
 	
 	
 	public MapController( MyGdxGame game, List<Player> players, Terrain terrain, HUD hud ) {
@@ -56,7 +62,12 @@ public class MapController {
 	}
 	
 	static void addEvent( int type, Object receiver ) {
-		if( typeEvent == Constants.NONE && !mutex ) {
+		if( typeEvent == MapConstants.NONE && status == NORMAL  ) {
+			typeEvent = type;
+			objectEvent = receiver;
+		}
+		else if( (status == INFO1 || status == INFO2 ) && 
+				( type == MapConstants.INFO1 || type == MapConstants.INFO2 ) ) {
 			typeEvent = type;
 			objectEvent = receiver;
 		}
@@ -70,27 +81,25 @@ public class MapController {
 	}
 	
 	public void checkEvents() {
-		if( !mutex )	// check semaphore 
-		{
-			if( typeEvent == MapConstants.SQUARE && objectEvent != null ) {
-				checkSquareEvent( (SquareTerrain) objectEvent );
-			}
-			else if( typeEvent == MapConstants.HERO && objectEvent != null) {
-				checkHeroEvent( (HeroTop) objectEvent );
-			}
-			else if( typeEvent == MapConstants.CREATURES && objectEvent != null) {
-				checkCreaturesGroupEvent( (CreaturesGroup) objectEvent );
-			}
-			else if( typeEvent == MapConstants.INFO1 && selected_hero != null) {
-				showArmyInfoPanel();
-			}
-			else if( typeEvent == MapConstants.INFO2 && selected_hero != null) {
-				showEnemyArmyInfoPanel();
-			}
-			
-			typeEvent = Constants.NONE;
-			objectEvent = null;
+		if( typeEvent == MapConstants.SQUARE && objectEvent != null ) {
+			checkSquareEvent( (SquareTerrain) objectEvent );
 		}
+		else if( typeEvent == MapConstants.HERO && objectEvent != null) {
+			checkHeroEvent( (HeroTop) objectEvent );
+		}
+		else if( typeEvent == MapConstants.CREATURES && objectEvent != null) {
+			checkCreaturesGroupEvent( (CreaturesGroup) objectEvent );
+		}
+		else if( typeEvent == MapConstants.INFO1 && selected_hero != null ) {
+			checkInfo1Event();
+		}
+		else if( typeEvent == MapConstants.INFO2 && selected_group != null) {
+			checkInfo2Event();
+			//showEnemyArmyInfoPanel();
+		}
+
+		typeEvent = Constants.NONE;
+		objectEvent = null;
 	}	
 	
 	public void checkSquareEvent( SquareTerrain square ) {
@@ -129,9 +138,27 @@ public class MapController {
 		Vector2i origin = players.get( turn ).getHeroSelected().getSquareTerrain().getNumber();
 		List<Vector2i> camino = path_finder.findWay( origin, destination );
 		
-		if( camino.size() > 0 ) {
+		int end = camino.size();
+		
+		for( int i = camino.size() - 1; i > 0; i-- ) {
+			if( terrain.getSquareTerrain( camino.get(i) ).isRoadAvailable() == false )
+				end = i;
+		}
+		
+		if( end < camino.size() ) {
+			SquareTerrain square = terrain.getSquareTerrain( camino.get(end) );
+			
+			if( square.hasCreaturesGroup() ) {
+				selected_group = square.group;
+				hud.selectEnemy( square.group );
+			}
+			
+			path_found = camino.subList( 0, end + 1 );
+			terrain.drawPathSelected( path_found.subList( 0, end ), 5 );
+		}
+		else if( camino.size() > 0 ) {
 			path_found = camino;
-			terrain.drawPathSelected( path_found );
+			terrain.drawPathSelected( path_found, 5 );
 		}
 	}
 	
@@ -147,7 +174,7 @@ public class MapController {
 	 * @param line line of animations
 	 */
 	public void createMoveHeroLine( Timeline line ) {
-		mutex = true;
+		status = ANIMATION;
 		
 		Vector2i last_square_number = 
 				players.get( turn ).getHeroSelected().getSquareTerrain().getNumber();
@@ -183,7 +210,7 @@ public class MapController {
 		}
 		
 		line.push( Tween.call( new TweenCallback() {
-			public void onEvent(int type, BaseTween<?> source) { mutex = false; }
+			public void onEvent(int type, BaseTween<?> source) { status = NORMAL; }
 		}));
 	}
 	
@@ -209,13 +236,13 @@ public class MapController {
 
 		if( camino.size() > 0 ) {
 			path_found = camino;
-			terrain.drawPathSelected( path_found.subList(0 , path_found.size() - 1) );
+			terrain.drawPathSelected( path_found.subList(0 , path_found.size() - 1), 5 );
 		}
 	}
 	
 	public void moveSelectedHeroAndAttack() {
 		path_found.remove( path_found.size() - 1 );
-		
+
 		Timeline line = Timeline.createSequence();		
 		createMoveHeroLine( line );
 		
@@ -255,8 +282,9 @@ public class MapController {
 			
 			if( path_found.size() == 0 )
 				checkPathForAttack( square.getNumber() );
-			else
+			else {
 				processAttackAction( square );
+			}
 		}
 		else {
 			if( selected_group == null ) {
@@ -273,7 +301,6 @@ public class MapController {
 	}
 	
 	private void processAttackAction( SquareTerrain square ) {
-		terrain.removePathSelected();
 		Vector2i end = path_found.get( path_found.size() - 1 );
 		
 		if( square.getNumber().x == end.x &&  square.getNumber().y == end.y ) {
@@ -286,16 +313,45 @@ public class MapController {
 		}
 	}
 	
+	private void checkInfo1Event() {
+		if( status == NORMAL ) {
+			showArmyInfoPanel();
+			status = INFO1;
+		}
+		else if( status == INFO2 ) {
+			army_info_panel.remove();
+			showArmyInfoPanel();
+			status = INFO1;
+		}
+		else {
+			army_info_panel.remove();
+			status = NORMAL;
+		}
+	}
+	
 	private void showArmyInfoPanel() {
-		mutex = true;
-		show_info = true;
-		
-		Vector2 position = new Vector2(
+		Vector2 panel_position = new Vector2(
 			terrain.getStage().getCamera().position.x - 160,
 			terrain.getStage().getCamera().position.y - MapConstants.TERRAIN_HEIGHT / 2 );
 		
-		ArmyInfoPanel panel = new ArmyInfoPanel( selected_hero, position );
-		terrain.getStage().addActor( panel );
+		army_info_panel = new ArmyInfoPanel( selected_hero, panel_position );
+		terrain.getStage().addActor( army_info_panel );
+	}
+	
+	private void checkInfo2Event() {
+		if( status == NORMAL ) {
+			showEnemyArmyInfoPanel();
+			status = INFO2;
+		}
+		else if( status == INFO1 ) {
+			army_info_panel.remove();
+			showEnemyArmyInfoPanel();
+			status = INFO2;
+		}
+		else {
+			army_info_panel.remove();
+			status = NORMAL;
+		}
 	}
 	
 	private void showEnemyArmyInfoPanel() {
@@ -304,12 +360,12 @@ public class MapController {
 			terrain.getStage().getCamera().position.y - MapConstants.TERRAIN_HEIGHT / 2 );
 		
 		if( selected_hero_enemy != null ) {
-			ArmyInfoPanel panel = new ArmyInfoPanel( selected_hero_enemy, position );
-			terrain.getStage().addActor( panel );
+			army_info_panel = new ArmyInfoPanel( selected_hero_enemy, position );
+			terrain.getStage().addActor( army_info_panel );
 		}
 		else if( selected_group != null ) {
-			ArmyInfoPanel panel = new ArmyInfoPanel( selected_group, position );
-			terrain.getStage().addActor( panel );
+			army_info_panel = new ArmyInfoPanel( selected_group, position );
+			terrain.getStage().addActor( army_info_panel );
 		}
 	}
 }

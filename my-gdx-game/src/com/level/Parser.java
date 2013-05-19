@@ -101,11 +101,11 @@ public class Parser {
 	private CreaturesGroup getCreatureGroup( Terrain terrain, Map<Integer, Unit> units, LevelCreaturesGroup level_group ) {
 		Army army = new Army();
 		SquareTerrain square = terrain.getSquareTerrain( level_group.square_number );
-		Image image = units.get( level_group.type ).getMapImage( Constants.XL );
+		Unit unit = units.get( level_group.type );
 		
 		for( LevelStack level_stack : level_group.stacks )
 			army.addStack( new Stack( units.get( level_stack.type ), level_stack.number, 0 ) );
 			
-		return new CreaturesGroup( army, square, image  );
+		return new CreaturesGroup( army, square, unit  );
 	}
 }

@@ -1,16 +1,16 @@
 package com.modules.map;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdxgame.Army;
-import com.mygdxgame.Constants;
 import com.mygdxgame.Player;
 import com.mygdxgame.Stack;
 import com.utils.CustomAnimation;
+import com.utils.Vector2i;
 
 public class HeroTop {
 	Hero hero;
@@ -23,6 +23,8 @@ public class HeroTop {
 	Army army;
 	SquareTerrain square;
 	Player player;
+	
+	List<Vector2i> path_marked;	// last path marked
 	
 	public HeroTop( Player player, Hero hero, int color ) {
 		this.player = player;
@@ -59,6 +61,18 @@ public class HeroTop {
 
 	public int getMobility() {
 		return hero.mobility;
+	}
+	
+	public int getActualMobility() {
+		return hero.actual_mobility;
+	}
+	
+	public void decreaseMobility() {
+		hero.actual_mobility -= 1;
+	}
+	
+	public void resetMovility() {
+		hero.actual_mobility = hero.mobility;
 	}
 	
 	public int getPower() {
@@ -98,8 +112,9 @@ public class HeroTop {
 	}
 	
 	private void updateCurrentAction( float time ) {
-		if( actions_queue.get( 0 ).isFinished() )
+		if( actions_queue.get( 0 ).isFinished() ) {
 			actions_queue.remove(0);
+		}
 		else
 			actions_queue.get( 0 ).increaseTime( time );
 	}
