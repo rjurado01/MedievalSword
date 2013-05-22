@@ -1,4 +1,4 @@
-MedievalSwort
+MedievalSword
 =============
 
 Turn-based strategy game for Final University Project.
