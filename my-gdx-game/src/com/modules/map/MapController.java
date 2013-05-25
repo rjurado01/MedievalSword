@@ -1,6 +1,5 @@
 package com.modules.map;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import aurelienribon.tweenengine.BaseTween;
@@ -24,13 +23,13 @@ public class MapController {
 	/* EVENTS INFO */
 	static Object objectEvent = null;
 	static int typeEvent = -1;
-	
+
 	/* STATUS */
 	static final int NORMAL = 0;
 	static final int ANIMATION = 1;
 	static final int INFO1 = 2;
 	static final int INFO2 = 3;
-	
+
 	List<Player> players;
 	Terrain terrain;
 	TweenManager manager;
@@ -40,46 +39,45 @@ public class MapController {
 	ArmyInfoPanel army_info_panel;
 	MyGdxGame game;
 	HUD hud;
-	
+
 	int turn;
-	List<Vector2i> path_found;	// show if path have been found 
+	int day;
+	HeroPath hero_path;
 	SquareTerrain attack_square;
-	
-	static int status = NORMAL; 	// Semaphore		
-	
-	
+
+	static int status = NORMAL; 	// Semaphore
+
+
 	public MapController( MyGdxGame game, List<Player> players, Terrain terrain, HUD hud ) {
 		this.game = game;
 		this.players = players;
 		this.terrain = terrain;
 		this.hud = hud;
-		
-		path_found = new ArrayList<Vector2i>();
+
+		hero_path = new HeroPath( terrain );
 		manager = new TweenManager();
 		Tween.registerAccessor( HeroView.class, new HeroViewAccessor() );
-		
-		// selected_hero = players.get( 0 ).getHeroSelected();
 	}
-	
+
 	static void addEvent( int type, Object receiver ) {
 		if( typeEvent == MapConstants.NONE && status == NORMAL  ) {
 			typeEvent = type;
 			objectEvent = receiver;
 		}
-		else if( (status == INFO1 || status == INFO2 ) && 
+		else if( (status == INFO1 || status == INFO2 ) &&
 				( type == MapConstants.INFO1 || type == MapConstants.INFO2 ) ) {
 			typeEvent = type;
 			objectEvent = receiver;
 		}
 	}
-	
+
 	public void update() {
 		manager.update( Gdx.graphics.getDeltaTime() );
 		players.get( turn ).update( Gdx.graphics.getDeltaTime() );
-		
+
 		checkEvents();
 	}
-	
+
 	public void checkEvents() {
 		if( typeEvent == MapConstants.SQUARE && objectEvent != null ) {
 			checkSquareEvent( (SquareTerrain) objectEvent );
@@ -95,79 +93,88 @@ public class MapController {
 		}
 		else if( typeEvent == MapConstants.INFO2 && selected_group != null) {
 			checkInfo2Event();
-			//showEnemyArmyInfoPanel();
+		}
+		else if( typeEvent == MapConstants.TURN ) {
+			passTurn();
 		}
 
 		typeEvent = Constants.NONE;
 		objectEvent = null;
-	}	
-	
+	}
+
 	public void checkSquareEvent( SquareTerrain square ) {
 		if( square.isRoadAvailable() )
 			processMoveEvent( square );
 		else
 			System.out.println("Evento no registrado.");
-		
-		
+
+
 		objectEvent = null;
 		typeEvent = Constants.NONE;
 	}
-	
+
+	private void passTurn() {
+		if( selected_hero != null ) {
+			players.get(turn).selectHero( selected_hero );
+			unselectHero();
+		}
+		else {
+			players.get(turn).unselectHero();
+		}
+
+		turn = ( turn + 1 ) % players.size();
+		day = ( day + 1 ) % 7;
+		hud.passTurn( day + 1 );
+
+		players.get(turn).passTurn();
+		selectHero( players.get(turn).getHeroSelected() );
+	}
+
 	private void processMoveEvent( SquareTerrain square ) {
 		if( players.get( turn ).isHeroSelected() ) {
-			if( path_found.size() == 0 )
-				checkPath( square.getNumber() );
+			if(  hero_path.isPathMarked() == false )
+				findPath( square.getNumber() );
 			else {
-				Vector2i end = path_found.get( path_found.size() - 1 );
-				
-				if( square.getNumber().x == end.x &&  square.getNumber().y == end.y )
-					moveSelectedHero();
+				// if square marked isn't the last of path, recalculates path
+				if( hero_path.isLastMarked( square.getNumber() ) )
+					moveSelectedHero( null );
 				else {
-					terrain.removePathSelected();
-					path_found = new ArrayList<Vector2i>();
-					checkPath( square.getNumber() );
+					hero_path.removePath();
+					findPath( square.getNumber() );
 				}
 			}
 		}
 	}
-	
-	private void checkPath( Vector2i destination ) {
-		PathFinder path_finder = new PathFinder(
-				terrain.getRoadsMatrix( destination ), terrain.SQUARES_X, terrain.SQUARES_Y );
-		
-		Vector2i origin = players.get( turn ).getHeroSelected().getSquareTerrain().getNumber();
-		List<Vector2i> camino = path_finder.findWay( origin, destination );
-		
-		int end = camino.size();
-		
-		for( int i = camino.size() - 1; i > 0; i-- ) {
-			if( terrain.getSquareTerrain( camino.get(i) ).isRoadAvailable() == false )
-				end = i;
-		}
-		
-		if( end < camino.size() ) {
-			SquareTerrain square = terrain.getSquareTerrain( camino.get(end) );
-			
+
+	private void findPath( Vector2i destination ) {
+		Vector2i origin =
+				players.get( turn ).getHeroSelected().getSquareTerrain().getNumber();
+
+		hero_path.findPath( origin, destination, selected_hero.getActualMobility() );
+
+		if( hero_path.isLastAvailable() == false ) {
+			SquareTerrain square = hero_path.getLastSquareTerrain();
+
 			if( square.hasCreaturesGroup() ) {
 				selected_group = square.group;
 				hud.selectEnemy( square.group );
 			}
-			
-			path_found = camino.subList( 0, end + 1 );
-			terrain.drawPathSelected( path_found.subList( 0, end ), 5 );
-		}
-		else if( camino.size() > 0 ) {
-			path_found = camino;
-			terrain.drawPathSelected( path_found, 5 );
 		}
 	}
-	
-	public void moveSelectedHero() {
-		Timeline line = Timeline.createSequence();		
-		createMoveHeroLine( line );
-		line.start( manager );
+
+	public void moveSelectedHero( TweenCallback callback ) {
+		if( selected_hero.getActualMobility() > 0 ) {
+			Timeline line = Timeline.createSequence();
+			createMoveHeroLine( line );
+
+			// Add callback for when animation has finished'
+			if( callback != null)
+				line.push( Tween.call(callback) );
+
+			line.start( manager );
+		}
 	}
-	
+
 	/**
 	 * Move stack from actual square to end square of board.wayList
 	 * Adds a walk action for each element of wayList ( for each square )
@@ -175,45 +182,59 @@ public class MapController {
 	 */
 	public void createMoveHeroLine( Timeline line ) {
 		status = ANIMATION;
-		
-		Vector2i last_square_number = 
+
+		Vector2i last_square_number =
 				players.get( turn ).getHeroSelected().getSquareTerrain().getNumber();
-		
-		terrain.removeFirstPathElement();
-		
-		for( Vector2i next_square_number : path_found ) {
+
+		terrain.removeFirstPathDrawnElement();
+
+		for( Vector2i next_square_number : hero_path.getAvailableList() ) {
 			Vector2 next_position = terrain.getSquarePosition( next_square_number );
-			
-			line.push( Tween.to( players.get( turn ).getHeroSelected().getView(), 
+
+			line.push( Tween.to(players.get( turn ).getHeroSelected().getView(),
 					StackViewAccessor.POSITION_XY, 0.8f ).target(
 							next_position.x, next_position.y ).ease( Linear.INOUT ) );
-			
-			line.push( Tween.call( new TweenCallback() {
-				public void onEvent(int type, BaseTween<?> source) {
-					Vector2i prev_square_number = selected_hero.getSquareTerrain().getNumber();
-					
-					selected_hero.setSquareTerrain( terrain.getSquareTerrain( path_found.get(0) ) );
-					path_found.remove( 0 );
-					
-					hud.getMiniMap().updatePosition( prev_square_number );
-					hud.getMiniMap().updatePosition( selected_hero.getSquareTerrain().getNumber() );
-					terrain.removeFirstPathElement();
-				}
-			}));
-			
-			
+
+			line.push( Tween.call( getMoveItemCallback() ) );
+
 			int orientation = getOrientation( last_square_number, next_square_number );
-			
 			players.get( turn ).getHeroSelected().addWalkAction( orientation );
-			
+
 			last_square_number = next_square_number;
 		}
-		
+
 		line.push( Tween.call( new TweenCallback() {
 			public void onEvent(int type, BaseTween<?> source) { status = NORMAL; }
 		}));
 	}
-	
+
+	private TweenCallback getMoveItemCallback() {
+		return new TweenCallback() {
+			public void onEvent(int type, BaseTween<?> source) {
+				Vector2i prev_square_number = selected_hero.getSquareTerrain().getNumber();
+				SquareTerrain actual_square = terrain.getSquareTerrain( hero_path.getFirstElement() );
+
+				selected_hero.setSquareTerrain( actual_square );
+				hero_path.removeFirstElement();
+
+				hud.getMiniMap().updatePosition( prev_square_number );
+				hud.getMiniMap().updatePosition( selected_hero.getSquareTerrain().getNumber() );
+
+				if( hero_path.isLastPahtItem( actual_square.getNumber() ) == false &&
+						selected_hero.getActualMobility() > 1 )
+					terrain.removeFirstPathDrawnElement();
+
+				selected_hero.decreaseMobility();
+			}
+		};
+	}
+
+	/**
+	 * Calculate orientation from two positions, last and new
+	 * @param last_position
+	 * @param new_position
+	 * @return orientation identifier
+	 */
 	public int getOrientation( Vector2i last_position, Vector2i new_position ) {
 		if( new_position.x - last_position.x < 0)
 			return Constants.XL;
@@ -226,65 +247,57 @@ public class MapController {
 		else
 			return -1;
 	}
-	
-	private void checkPathForAttack( Vector2i destination ) {
-		PathFinder path_finder = new PathFinder(
-				terrain.getRoadsMatrix( destination ), terrain.SQUARES_X, terrain.SQUARES_Y );
-		
-		Vector2i origin = players.get( turn ).getHeroSelected().getSquareTerrain().getNumber();
-		List<Vector2i> camino = path_finder.findWay( origin, destination );
 
-		if( camino.size() > 0 ) {
-			path_found = camino;
-			terrain.drawPathSelected( path_found.subList(0 , path_found.size() - 1), 5 );
-		}
-	}
-	
-	public void moveSelectedHeroAndAttack() {
-		path_found.remove( path_found.size() - 1 );
-
-		Timeline line = Timeline.createSequence();		
-		createMoveHeroLine( line );
-		
-		// Add callback for when animation has finished'
-		line.push( Tween.call( new TweenCallback() {
-			public void onEvent( int type, BaseTween<?> source ) {
-				game.throwBattleScreen( selected_hero.getArmy(), attack_square.getArmy() );	
-			}
-		}));
-		
-		line.start( manager );
-	}
-	
 	private void checkHeroEvent( HeroTop hero ) {
-		if( selected_hero == null ) {
+		if( selected_hero == null )
+			selectHero( hero );
+		else
+			unselectHero();
+
+		typeEvent = Constants.NONE;
+		objectEvent = null;
+		terrain.removePathDrawn();
+	}
+
+	private void selectHero( HeroTop hero ) {
+		if( hero != null ) {
 			selected_hero = hero;
 			selected_hero.select();
 			hud.selectHero( selected_hero );
+
+			hero_path.addPath( selected_hero.getPathMarked(),
+					selected_hero.getActualMobility() );
 		}
-		else {
-			selected_hero.unselect();
+	}
+
+	private void unselectHero() {
+		if( selected_hero != null ) {
+			if( hero_path.isPathMarked() ) {
+				selected_hero.setPathMarked( hero_path.getPathList() );
+				hero_path.removePath();
+			}
+
 			hud.unselectHero();
 			selected_hero = null;
 		}
-		
-		typeEvent = Constants.NONE;
-		objectEvent = null;
-		terrain.removePathSelected();
 	}
-	
+
 	private void checkCreaturesGroupEvent( CreaturesGroup group ) {
 		if( players.get( turn ).isHeroSelected() ) {
 			SquareTerrain square = group.getSquare();
-			
+
 			hud.selectEnemy( group );
 			selected_group = group;
-			
-			if( path_found.size() == 0 )
-				checkPathForAttack( square.getNumber() );
-			else {
-				processAttackAction( square );
+
+			if( hero_path.isPathMarked() && hero_path.isValidDestination( square.getNumber() ) ) {
+				attack_square = square;
+				hero_path.removeLastElement();
+				moveSelectedHero( getAttackCallback() );
 			}
+			else if( hero_path.isPathMarked() && hero_path.isLastMarked( square.getNumber() ) )
+				moveSelectedHero( null );
+			else
+				findPath( square.getNumber() );
 		}
 		else {
 			if( selected_group == null ) {
@@ -293,26 +306,21 @@ public class MapController {
 			}
 			else {
 				hud.unselectEnemy();
-			}	
+			}
 		}
-		
+
 		typeEvent = Constants.NONE;
 		objectEvent = null;
 	}
-	
-	private void processAttackAction( SquareTerrain square ) {
-		Vector2i end = path_found.get( path_found.size() - 1 );
-		
-		if( square.getNumber().x == end.x &&  square.getNumber().y == end.y ) {
-			attack_square = square;
-			moveSelectedHeroAndAttack();
-		}
-		else {
-			path_found = new ArrayList<Vector2i>();
-			checkPathForAttack( square.getNumber() );
-		}
+
+	private TweenCallback getAttackCallback() {
+		return new TweenCallback() {
+			public void onEvent( int type, BaseTween<?> source ) {
+				game.throwBattleScreen( selected_hero.getArmy(), attack_square.getArmy() );
+			}
+		};
 	}
-	
+
 	private void checkInfo1Event() {
 		if( status == NORMAL ) {
 			showArmyInfoPanel();
@@ -328,16 +336,16 @@ public class MapController {
 			status = NORMAL;
 		}
 	}
-	
+
 	private void showArmyInfoPanel() {
 		Vector2 panel_position = new Vector2(
 			terrain.getStage().getCamera().position.x - 160,
 			terrain.getStage().getCamera().position.y - MapConstants.TERRAIN_HEIGHT / 2 );
-		
+
 		army_info_panel = new ArmyInfoPanel( selected_hero, panel_position );
 		terrain.getStage().addActor( army_info_panel );
 	}
-	
+
 	private void checkInfo2Event() {
 		if( status == NORMAL ) {
 			showEnemyArmyInfoPanel();
@@ -353,12 +361,12 @@ public class MapController {
 			status = NORMAL;
 		}
 	}
-	
+
 	private void showEnemyArmyInfoPanel() {
 		Vector2 position = new Vector2(
 			terrain.getStage().getCamera().position.x - 160,
 			terrain.getStage().getCamera().position.y - MapConstants.TERRAIN_HEIGHT / 2 );
-		
+
 		if( selected_hero_enemy != null ) {
 			army_info_panel = new ArmyInfoPanel( selected_hero_enemy, position );
 			terrain.getStage().addActor( army_info_panel );
