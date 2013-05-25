@@ -458,6 +458,7 @@ HeroOne21
   offset: 0, 0
   index: 1
   
+
 hud1.png
 format: RGBA8888
 filter: Nearest,Nearest
@@ -469,6 +470,69 @@ hourglass
   orig: 128, 128
   offset: 0, 0
   index: -1
+passTurn
+  rotate: false
+  xy: 2, 132
+  size: 128, 109
+  orig: 128, 109
+  offset: 0, 0
+  index: 2
+passTurn
+  rotate: false
+  xy: 2, 243
+  size: 128, 109
+  orig: 128, 109
+  offset: 0, 0
+  index: 1
+dayCounter
+  rotate: false
+  xy: 2, 354
+  size: 124, 95
+  orig: 124, 95
+  offset: 0, 0
+  index: 2
+dayCounter
+  rotate: false
+  xy: 128, 354
+  size: 124, 95
+  orig: 124, 95
+  offset: 0, 0
+  index: 5
+dayCounter
+  rotate: false
+  xy: 2, 451
+  size: 124, 95
+  orig: 124, 95
+  offset: 0, 0
+  index: 4
+dayCounter
+  rotate: false
+  xy: 128, 451
+  size: 124, 95
+  orig: 124, 95
+  offset: 0, 0
+  index: 6
+dayCounter
+  rotate: false
+  xy: 2, 548
+  size: 124, 95
+  orig: 124, 95
+  offset: 0, 0
+  index: 3
+dayCounter
+  rotate: false
+  xy: 128, 548
+  size: 124, 95
+  orig: 124, 95
+  offset: 0, 0
+  index: 7
+dayCounter
+  rotate: false
+  xy: 2, 645
+  size: 124, 95
+  orig: 124, 95
+  offset: 0, 0
+  index: 1
 options
   rotate: false
   xy: 132, 2
@@ -478,30 +542,50 @@ options
   index: -1
 woodIcon
   rotate: false
-  xy: 2, 132
+  xy: 132, 132
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 stats
   rotate: false
-  xy: 68, 132
+  xy: 132, 243
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 goldIcon
   rotate: false
-  xy: 134, 132
+  xy: 128, 645
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 stoneIcon
   rotate: false
-  xy: 2, 198
+  xy: 2, 742
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-  
+defenseIcon
+  rotate: false
+  xy: 198, 2
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+powerIcon
+  rotate: false
+  xy: 132, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+attackIcon
+  rotate: false
+  xy: 166, 68
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
