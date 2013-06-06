@@ -47,6 +47,7 @@ public class Assets {
 		skin.getFont( "default-font" ).setScale( 0.6f, 0.6f );
 		loadFont();
 		loadMiniMapTextures();
+		//saveLevel();
 	}
 
 	public static TextureRegion getTextureRegion( String name ) {
@@ -107,6 +108,12 @@ public class Assets {
 
 		return level;
 	}
+	
+	
+	/** public static void saveLevel() {
+		Gson gson = new Gson();
+		Gdx.files.local( "save.txt" ).writeString( "level", true );
+	} */
 	
 	public static String readFile( String path ) {
 		String content = "";

@@ -8,13 +8,10 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.level.Level;
 import com.level.Parser;
 import com.mygdxgame.Army;
-import com.mygdxgame.Assets;
 import com.mygdxgame.Constants;
 import com.mygdxgame.MyGdxGame;
 import com.mygdxgame.Player;
@@ -43,6 +40,7 @@ public class MapScreen implements Screen {
 	Terrain terrain;
 	HUD hud;
 	MapController controller;
+	MapInputProcessor input;
 	
 	public MapScreen( MyGdxGame game, Level level ) {
 		this.game = game;
@@ -57,6 +55,12 @@ public class MapScreen implements Screen {
 		loadPlayers();
 		loadStructures();
 		loadHUD();
+		
+		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
+		terrain_stage.addActor( terrain );
+		//hud_stage.addActor( mini_map );
+
+		input = new MapInputProcessor( terrain, hud );
 	}
 	
 	private void loadTerrain() {
@@ -120,13 +124,12 @@ public class MapScreen implements Screen {
 	}
 
 	public void show() {
-		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
-		terrain_stage.addActor( terrain );
-		//hud_stage.addActor( mini_map );
-
-		controller = new MapController( game, players, terrain, hud );
+		if( controller == null )
+			controller = new MapController( game, players, terrain, hud );
+		else
+			controller.returnToBattle();
 		
-		Gdx.input.setInputProcessor( new MapInputProcessor( terrain, hud ) );
+		Gdx.input.setInputProcessor( input );
 	}
 
 	public void loadLevel( int level ) {

@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.mygdxgame.Assets;
 import com.mygdxgame.Constants;
+import com.mygdxgame.MyGdxGame;
 import com.mygdxgame.Stack;
 
 /**
@@ -52,10 +53,13 @@ public class BattleSummary extends Group {
 	Array<BattleSummaryStack> lost;
 	Array<BattleSummaryStack> destroyed;
 	
+	MyGdxGame game;
+	
 	int result = -1;
 	
-	public BattleSummary( Stage stage ) {
+	public BattleSummary( MyGdxGame game, Stage stage ) {
 		
+		this.game = game;
 		this.stage = stage;
 		this.width = SIZE_W;
 		this.height = SIZE_H;		
@@ -150,7 +154,8 @@ public class BattleSummary extends Group {
 		exit_btn.setClickListener( new ClickListener() 
 		{	
 			public void click(Actor actor, float x, float y) {
-				Gdx.app.exit();
+				//Gdx.app.exit();
+				game.returnToMapScreen();
 			}
 		});
 		

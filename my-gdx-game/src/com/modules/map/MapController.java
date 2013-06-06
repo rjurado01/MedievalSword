@@ -33,20 +33,21 @@ public class MapController {
 	List<Player> players;
 	Terrain terrain;
 	TweenManager manager;
-	HeroTop selected_hero;
-	CreaturesGroup selected_group;
-	HeroTop selected_hero_enemy;
 	ArmyInfoPanel army_info_panel;
 	MyGdxGame game;
 	HUD hud;
+	
+	HeroTop selected_hero;
+	HeroTop selected_hero_enemy;
+	CreaturesGroup selected_group;
 
 	int turn;
 	int day;
+	
 	HeroPath hero_path;
 	SquareTerrain attack_square;
 
 	static int status = NORMAL; 	// Semaphore
-
 
 	public MapController( MyGdxGame game, List<Player> players, Terrain terrain, HUD hud ) {
 		this.game = game;
@@ -59,6 +60,11 @@ public class MapController {
 		Tween.registerAccessor( HeroView.class, new HeroViewAccessor() );
 	}
 
+	/**
+	 * Add new event for processing it. Only one event can be added.
+	 * @param type event type
+	 * @param receiver object that has received the event
+	 */
 	static void addEvent( int type, Object receiver ) {
 		if( typeEvent == MapConstants.NONE && status == NORMAL  ) {
 			typeEvent = type;
@@ -152,7 +158,7 @@ public class MapController {
 
 		hero_path.findPath( origin, destination, selected_hero.getActualMobility() );
 
-		if( hero_path.isLastAvailable() == false ) {
+		if( hero_path.isLastAvailable() == false && selected_group == null ) {
 			SquareTerrain square = hero_path.getLastSquareTerrain();
 
 			if( square.hasCreaturesGroup() ) {
@@ -283,11 +289,11 @@ public class MapController {
 	}
 
 	private void checkCreaturesGroupEvent( CreaturesGroup group ) {
-		if( players.get( turn ).isHeroSelected() ) {
+		if( selected_hero != null ) {
 			SquareTerrain square = group.getSquare();
 
-			hud.selectEnemy( group );
 			selected_group = group;
+			hud.selectEnemy( selected_group );
 
 			if( hero_path.isPathMarked() && hero_path.isValidDestination( square.getNumber() ) ) {
 				attack_square = square;
@@ -306,6 +312,7 @@ public class MapController {
 			}
 			else {
 				hud.unselectEnemy();
+				selected_group = null;
 			}
 		}
 
@@ -337,6 +344,9 @@ public class MapController {
 		}
 	}
 
+	/**
+	 * Show army selected info panel
+	 */
 	private void showArmyInfoPanel() {
 		Vector2 panel_position = new Vector2(
 			terrain.getStage().getCamera().position.x - 160,
@@ -362,6 +372,9 @@ public class MapController {
 		}
 	}
 
+	/**
+	 * Show icon of army in the HUD
+	 */
 	private void showEnemyArmyInfoPanel() {
 		Vector2 position = new Vector2(
 			terrain.getStage().getCamera().position.x - 160,
@@ -374,6 +387,17 @@ public class MapController {
 		else if( selected_group != null ) {
 			army_info_panel = new ArmyInfoPanel( selected_group, position );
 			terrain.getStage().addActor( army_info_panel );
+		}
+	}
+	
+	/**
+	 * Return from battle module to map module
+	 */
+	public void returnToBattle() {
+		// player has won the battle
+		if( selected_hero.getArmy().getStacks().size() > 0 ) {
+			hud.unselectEnemy();
+			selected_group.destroy( terrain.getStage() );
 		}
 	}
 }

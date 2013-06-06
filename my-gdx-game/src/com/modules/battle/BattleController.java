@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdxgame.Army;
 import com.mygdxgame.Constants;
+import com.mygdxgame.MyGdxGame;
 import com.mygdxgame.Stack;
 import com.utils.CallBack;
 import com.utils.ImageAccessor;
@@ -45,14 +46,17 @@ public class BattleController {
 	Stack stack_selected;
 	Arrow arrow = null;
 	
+	MyGdxGame game;
+	
 	/* EVENTS INFO */
 	static Object objectEvent = null;
 	static int typeEvent = -1;
 	
 
-	public BattleController( Army armies[], Stage stage ) {
+	public BattleController( MyGdxGame game, Army armies[], Stage stage ) {
 		this.armies = armies;
 		this.stage = stage;
+		this.game = game;
 		
 		createBattleElements();
 		
@@ -66,7 +70,7 @@ public class BattleController {
 		panel = new BattlePanel( stage );
 		menu  = new BattleMenu();
 		
-		summary = new BattleSummary( stage );
+		summary = new BattleSummary( game, stage );
 		summary.setSummaryStacks( armies[0].getStacks(), armies[1].getStacks() );
 	}
 
@@ -164,7 +168,7 @@ public class BattleController {
 		
 		// Check if player has any unit or battle has finished
 		if( armies[turn].getStacks().size() == 0 )
-			summary.show( getNextTurn() );			
+			summary.show( getNextTurn() );
 		else
 			selectNextStack();
 	}

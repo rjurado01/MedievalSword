@@ -5,7 +5,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdxgame.Army;
-import com.mygdxgame.Assets;
 import com.mygdxgame.Constants;
 import com.utils.Vector2i;
 

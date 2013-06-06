@@ -36,7 +36,6 @@ public class HeroTop {
 		view = new HeroView( this, hero.getSize() );
 		view.setRegion( hero.textures.get( "normal3" + color ) );
 		army = new Army();
-		//view.setRegion( Assets.getTextureRegion("HeroOne01"));
 	}
 
 	public void setPosition( Vector2 position ) {

@@ -2,6 +2,7 @@ package com.modules.map;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.mygdxgame.Army;
@@ -48,5 +49,10 @@ public class CreaturesGroup {
 
 	public TextureRegion getIconTextureRegion() {
 		return unit.getIcon();
+	}
+	
+	public void destroy( Stage stage ) {
+		stage.removeActor( image );
+		square.setFree();
 	}
 }

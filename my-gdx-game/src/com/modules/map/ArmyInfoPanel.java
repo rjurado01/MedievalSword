@@ -1,23 +1,18 @@
 package com.modules.map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.modules.battle.BattleSummaryStack;
-import com.modules.battle.SquareBoard;
 import com.mygdxgame.Army;
 import com.mygdxgame.Assets;
 import com.mygdxgame.Constants;
-import com.mygdxgame.Stack;
 
 public class ArmyInfoPanel extends Group {
 	final int SIZE_H = 180;

@@ -1,6 +1,5 @@
 package com.modules.battle;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
@@ -15,12 +14,12 @@ public class BattleScreen implements Screen {
 	Army armies [];
 	BattleController controller;
 	Stage stage;
-	Game game;
+	MyGdxGame game;
 	
 	/**
 	 * Class constructor
 	 */
-	public BattleScreen( Game game, Army player, Army enemy ) {
+	public BattleScreen( MyGdxGame game, Army player, Army enemy ) {
 		this.game = game;
 		
 		armies = new Army[2];
@@ -43,7 +42,7 @@ public class BattleScreen implements Screen {
 		
 		addArmiesToStage();
 		
-		controller = new BattleController( armies, stage );		
+		controller = new BattleController( game, armies, stage );		
 		controller.initBattle();
 	}
 	

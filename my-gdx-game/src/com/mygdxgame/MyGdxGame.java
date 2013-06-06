@@ -46,4 +46,8 @@ public class MyGdxGame extends Game {
 		battleScreen = new BattleScreen( this, player_army, enemy_army );
 		setScreen( battleScreen );
 	}
+	
+	public void returnToMapScreen() {
+		setScreen( mapScreen );
+	}
 }

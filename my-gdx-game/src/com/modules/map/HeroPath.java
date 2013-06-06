@@ -71,9 +71,6 @@ public class HeroPath {
 	 */
 	public boolean isLastMarked( Vector2i marked ) {
 		Vector2i end = path.get( path.size() - 1 );
-		System.out.println(path.size());
-		System.out.println(end);
-		System.out.println(marked);
 
 		if( marked.x == end.x &&  marked.y == end.y )
 			return true;
@@ -131,11 +128,9 @@ public class HeroPath {
 	 * Iterate path array and return first element that is not a road available
 	 */
 	private Vector2i getFirstEnemySquareNumber() {
-		for( Vector2i item : path ) {
-			if( terrain.getSquareTerrain( item ).isRoadAvailable() == false ) {
+		for( Vector2i item : path )
+			if( terrain.getSquareTerrain( item ).isRoadAvailable() == false )
 				return item;
-			}
-		}
 
 		return null;
 	}
