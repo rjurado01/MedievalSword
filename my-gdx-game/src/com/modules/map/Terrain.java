@@ -6,12 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.level.Level;
-import com.level.LevelStructure;
 import com.mygdxgame.Assets;
-import com.resources.GoldMine;
-import com.resources.Sawmill;
-import com.resources.StoneMine;
 import com.utils.Vector2i;
 
 public class Terrain extends Group {
@@ -38,7 +33,7 @@ public class Terrain extends Group {
 	public int SQUARES_Y;
 
 	ArrayList<SquarePath> path_drawn;
-	ArrayList<ResourceStructure> resource_structures;
+	List<ResourceStructure> resource_structures;
 
 	SquareTerrain terrain[][];
 
@@ -70,14 +65,14 @@ public class Terrain extends Group {
 		return terrain[square_number.y][square_number.x];
 	}
 
-	public void loadStructures( Level level ) {
+	/*public void loadStructures( Level level ) {
 		resource_structures = new ArrayList<ResourceStructure>();
 
-		for( LevelStructure level_structure : level.structures )
+		for( LevelResourceStructure level_structure : level.structures )
 			addStructure( level_structure );
 	}
 
-	public void addStructure( LevelStructure ls ) {
+	public void addStructure( LevelResourceStructure ls ) {
 		switch( ls.type ) {
 			case GOLD_MINE:
 				addResourceStructure( new GoldMine( ls.square_number, ls.owner ) );
@@ -97,7 +92,7 @@ public class Terrain extends Group {
 			stage.addActor( top.getActor() );
 			resource_structures.add( rs );
 		}
-	}
+	}*/
 
 	public int getWidth() {
 		return SQUARES_X * SquareTerrain.WIDTH;
@@ -167,5 +162,10 @@ public class Terrain extends Group {
 			stage.removeActor( path_drawn.get( 0 ) );
 			path_drawn.remove( 0 );
 		}
+	}
+	
+	public void passTurn() {
+		for( ResourceStructure structure : resource_structures )
+			structure.turnAction();
 	}
 }

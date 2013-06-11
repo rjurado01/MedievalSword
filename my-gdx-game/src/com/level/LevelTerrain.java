@@ -8,7 +8,7 @@ public class LevelTerrain {
 	
 	public int terrain[][];
 	
-	public ArrayList<LevelStructure> structures;
+	public ArrayList<LevelResourceStructure> structures;
 	
 	public void initializeTerrain() {
 		terrain = new int[ SQUARES_Y ][];

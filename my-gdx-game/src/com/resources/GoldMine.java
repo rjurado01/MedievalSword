@@ -13,17 +13,20 @@ public class GoldMine extends ResourceStructure {
 	public static final float HEIGHT = 35;
 	public static final float WIDTH = 35;
 
-
-	public GoldMine( Vector2i square_number, int owner ) {
+	public GoldMine( Vector2i square_number, Player owner ) {
 		super( square_number );
 		
 		this.owner = owner;
-		this.texture = "mineGold";
-		this.size = new Vector2i( 53, 40 );
-		this.position_correction = new Vector2i( -14, 0 );
+		this.texture_name = "goldMine";
+		this.size = new Vector2i( 100, 100 );
+		this.square_use_number = new Vector2i( 1, -1 );
+		//this.position_correction = new Vector2i( -14, 0 );
+
+		createActor();
 	}
 
-	public void turnAction(Player player) {
-		player.gold += 1;
+	public void turnAction() {
+		if( owner != null )
+			owner.gold += 1;
 	}
 }

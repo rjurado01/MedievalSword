@@ -40,6 +40,7 @@ public class MapController {
 	HeroTop selected_hero;
 	HeroTop selected_hero_enemy;
 	CreaturesGroup selected_group;
+	ResourceStructure selected_resource_structure;
 
 	int turn;
 	int day;
@@ -100,12 +101,17 @@ public class MapController {
 		else if( typeEvent == MapConstants.INFO2 && selected_group != null) {
 			checkInfo2Event();
 		}
+		else if( typeEvent == MapConstants.RESOURCE_STRUCTURE && objectEvent != null ) {
+			checkResourceStructureEvent( (ResourceStructure) objectEvent );
+		}
 		else if( typeEvent == MapConstants.TURN ) {
 			passTurn();
 		}
-
-		typeEvent = Constants.NONE;
-		objectEvent = null;
+		
+		if( typeEvent != Constants.NONE ) {
+			typeEvent = Constants.NONE;
+			objectEvent = null;
+		}
 	}
 
 	public void checkSquareEvent( SquareTerrain square ) {
@@ -128,6 +134,11 @@ public class MapController {
 			players.get(turn).unselectHero();
 		}
 
+		terrain.passTurn();
+		hud.updateGold( players.get(turn).gold );
+		hud.updateWood( players.get(turn).wood );
+		hud.updateStone( players.get(turn).stone );
+		
 		turn = ( turn + 1 ) % players.size();
 		day = ( day + 1 ) % 7;
 		hud.passTurn( day + 1 );
@@ -398,6 +409,25 @@ public class MapController {
 		if( selected_hero.getArmy().getStacks().size() > 0 ) {
 			hud.unselectEnemy();
 			selected_group.destroy( terrain.getStage() );
+		}
+	}
+	
+	private void checkResourceStructureEvent( ResourceStructure structure ) {
+		selected_resource_structure = structure;
+		
+		if( selected_hero != null ) {
+			Vector2i square_number = structure.getUseSquareNumber();
+
+			if( hero_path.isPathMarked() && hero_path.isValidDestination( square_number ) )
+				moveSelectedHero( new TweenCallback() {
+					public void onEvent( int type, BaseTween<?> source ) {
+						selected_resource_structure.use( players.get(turn) );
+					}
+				} );
+			else if( hero_path.isPathMarked() && hero_path.isLastMarked( square_number ) )
+				moveSelectedHero( null );
+			else
+				findPath( square_number );
 		}
 	}
 }

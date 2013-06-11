@@ -47,7 +47,7 @@ public class Assets {
 		skin.getFont( "default-font" ).setScale( 0.6f, 0.6f );
 		loadFont();
 		loadMiniMapTextures();
-		//saveLevel();
+		//usaveLevel();
 	}
 
 	public static TextureRegion getTextureRegion( String name ) {

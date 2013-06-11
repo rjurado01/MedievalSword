@@ -13,6 +13,7 @@ public class MapConstants {
 	public static final int INFO1       =  4;
 	public static final int INFO2       =  5;
 	public static final int TURN        =  6;
+	public static final int RESOURCE_STRUCTURE = 7;
 
 	/* MAP SQUARES STATUS */
 	public static final int FREE = 0;
@@ -25,4 +26,8 @@ public class MapConstants {
 	public static final int TERRAIN_WIDTH = Constants.SIZE_W - HUD_WIDTH;
 	public static final int TERRAIN_HEIGHT = Constants.SIZE_H;
 
+	/* STUCTURES */
+	public static final int GOLD_MINE = 0;
+	public static final int SAWMILL = 1;
+	public static final int STONE_MINE = 2;
 }

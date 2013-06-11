@@ -145,12 +145,12 @@ public class PathFinder {
 			way_list.add( father.number );
 	}
 	
-	private void printStatuMatrix() {
+	/*private void printStatuMatrix() {
 		for( int i = 0; i < size.y; i++ ) {
 			for( int j = 0; j < size.x; j++ )
 				System.out.print( matrix[i][j].status );
 			
 			System.out.println();
 		}
-	}
+	}*/
 }

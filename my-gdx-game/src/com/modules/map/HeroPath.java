@@ -70,6 +70,9 @@ public class HeroPath {
 	 * @return true if is the last and false otherwise
 	 */
 	public boolean isLastMarked( Vector2i marked ) {
+		if( path == null )
+			return false;
+		
 		Vector2i end = path.get( path.size() - 1 );
 
 		if( marked.x == end.x &&  marked.y == end.y )

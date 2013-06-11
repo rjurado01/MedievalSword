@@ -34,6 +34,7 @@ public class MapScreen implements Screen {
 	
 	public List<Player> players;
 	public List<CreaturesGroup> creatures;
+	public List<ResourceStructure> resource_structures;
 	Player humand_player;
 	
 	Level level;
@@ -101,7 +102,10 @@ public class MapScreen implements Screen {
 	}
 	
 	private void loadStructures() {
+		terrain.resource_structures = parser.getResourceStructures( players, level );
 		
+		for( ResourceStructure structure : terrain.resource_structures )
+			terrain_stage.addActor( structure.getActor() );
 	}
 	
 	public void render(float delta) {

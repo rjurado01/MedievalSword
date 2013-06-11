@@ -12,7 +12,7 @@ public class Level {
 	
 	public int level;
 	
-	public List<LevelStructure> structures;
+	public List<LevelResourceStructure> resource_structures;
 	public List<LevelPlayer> players;
 	public List<String> units;
 	public List<LevelCreaturesGroup> map_creatures;

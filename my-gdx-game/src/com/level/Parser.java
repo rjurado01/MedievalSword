@@ -7,7 +7,10 @@ import java.util.Map;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.modules.map.CreaturesGroup;
 import com.modules.map.HeroTop;
+import com.modules.map.MapConstants;
+import com.modules.map.ResourceStructure;
 import com.modules.map.SquareTerrain;
+import com.modules.map.Structure;
 import com.modules.map.Terrain;
 import com.mygdxgame.Army;
 import com.mygdxgame.Player;
@@ -15,6 +18,9 @@ import com.mygdxgame.Stack;
 import com.mygdxgame.Unit;
 import com.mygdxgame.Constants;
 import com.races.humands.heroes.HumandHero1;
+import com.resources.GoldMine;
+import com.resources.Sawmill;
+import com.resources.StoneMine;
 import com.utils.Vector2i;
 
 /**
@@ -25,7 +31,9 @@ public class Parser {
 	public Parser() {
 	}
 	
-	public HeroTop getHeroTop( Player player, Terrain terrain, Map<Integer, Unit> units, LevelHero level_hero, int color ) {
+	public HeroTop getHeroTop( Player player, Terrain terrain, Map<Integer, Unit> units,
+			LevelHero level_hero, int color ) {
+		
 		HeroTop hero = null;
 		
 		if( level_hero.type == 1 )
@@ -44,14 +52,18 @@ public class Parser {
 			
 			if( level_hero.stacks.size() > 0 ) {
 				for( LevelStack level_stack : level_hero.stacks )
-					hero.addStack( new Stack( units.get( level_stack.type ), level_stack.number, color ) );
+					hero.addStack( 
+							new Stack( units.get( level_stack.type ),
+							level_stack.number, color ) );
 			}
 		}
 		
 		return hero;
 	}
 	
-	public Player getPlayer( Terrain terrain, Map<Integer, Unit> units, LevelPlayer level_player ) {
+	public Player getPlayer(
+			Terrain terrain, Map<Integer, Unit> units, LevelPlayer level_player ) {
+		
 		Player player = new Player( level_player.color );
 		
 		player.gold = level_player.gold;
@@ -59,7 +71,8 @@ public class Parser {
 		player.stone = level_player.stone;
 		
 		for( LevelHero level_hero : level_player.heroes )
-			player.addHero( getHeroTop( player, terrain, units, level_hero, level_player.color ) );
+			player.addHero( getHeroTop(
+					player, terrain, units, level_hero, level_player.color ) );
 		
 		return player;
 	}
@@ -88,7 +101,9 @@ public class Parser {
 		}
 	}
 	
-	public List<CreaturesGroup> getCreaturesGroups( Terrain terrain, Map<Integer, Unit> units, Level level ) {
+	public List<CreaturesGroup> getCreaturesGroups(
+			Terrain terrain, Map<Integer, Unit> units, Level level ) {
+		
 		List<CreaturesGroup> groups = new ArrayList<CreaturesGroup>();
 		
 		if( level.map_creatures != null )
@@ -98,7 +113,9 @@ public class Parser {
 		return groups;
 	}
 	
-	private CreaturesGroup getCreatureGroup( Terrain terrain, Map<Integer, Unit> units, LevelCreaturesGroup level_group ) {
+	private CreaturesGroup getCreatureGroup(
+			Terrain terrain, Map<Integer, Unit> units, LevelCreaturesGroup level_group ) {
+		
 		Army army = new Army();
 		SquareTerrain square = terrain.getSquareTerrain( level_group.square_number );
 		Unit unit = units.get( level_group.type );
@@ -107,5 +124,48 @@ public class Parser {
 			army.addStack( new Stack( units.get( level_stack.type ), level_stack.number, 0 ) );
 			
 		return new CreaturesGroup( army, square, unit  );
+	}
+	
+	public List<ResourceStructure> getResourceStructures( List<Player> players, Level level ) {
+		List<ResourceStructure> structures = new ArrayList<ResourceStructure>();
+		
+		for( LevelResourceStructure level_structure : level.resource_structures )
+			structures.add( getResourceStructure( players, level_structure ) );
+			
+		return structures;
+	}
+	
+	private ResourceStructure getResourceStructure(
+			List<Player> players, LevelResourceStructure level_structure ) {
+		
+		Structure structure = null;
+		
+		switch( level_structure.type ) {
+			case MapConstants.GOLD_MINE:
+				 structure = new GoldMine(
+						 level_structure.square_number, 
+						 getPlayerFromId( players, level_structure.owner ) );
+				 break;
+			case MapConstants.SAWMILL:
+				structure = new Sawmill(
+						 level_structure.square_number,
+						 getPlayerFromId( players, level_structure.owner ) );
+				break;
+			case MapConstants.STONE_MINE:
+				structure = new StoneMine(
+						 level_structure.square_number,
+						 getPlayerFromId( players, level_structure.owner ));
+				break;
+		}
+		
+		return (ResourceStructure) structure;
+	}
+	
+	private Player getPlayerFromId( List<Player> players, int id ) {
+		for( Player player : players )
+			if( player.id == id )
+				return player;
+				
+		return null;
 	}
 }
