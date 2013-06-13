@@ -11,11 +11,9 @@ collection of a certain amount of a resource, or finding the grail artifact.
 
 Blog (spanish): http://medievalswordgame.wordpress.com
 
-Demo: [map-battle-demo](https://cloud.nosolosoftware.biz/public.php?service=files&t=647668c06c4cbad162169a3a23f5a36a)
-
 ## Intallation
 
-Download the repository and import the proyects from Eclipse.
+Download the repository and import the projects from Eclipse.
 
 Right click the desktop project, Run As -> Java Application. Select the desktop starter class (e.g. Main.java).
 
@@ -49,7 +47,3 @@ Includes all the project code. It is divided into multiple packages:
 ### my-gdx-game-desktop
 
 Includes all the assets and the starter class to run the application on the desktop.
-
-### TexturePacker
-
-Little project that let us packs many smaller images on to larger images.
