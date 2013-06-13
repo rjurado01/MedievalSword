@@ -343,303 +343,316 @@ Villager00
   offset: 0, 0
   index: 1
   
-terrain1.png
+game.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-mineGold
+attackIcon
   rotate: false
-  xy: 2, 2
-  size: 172, 130
-  orig: 172, 130
+  xy: 377, 372
+  size: 32, 32
+  orig: 32, 32
   offset: 0, 0
   index: -1
-mapRoad
+dayCounter
   rotate: false
-  xy: 176, 2
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-mapWater
-  rotate: false
-  xy: 176, 68
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-mapGrass
-  rotate: false
-  xy: 2, 134
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-mapWater2
-  rotate: false
-  xy: 68, 134
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-  
-HeroOne1.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-HeroOne31
-  rotate: false
-  xy: 2, 2
-  size: 43, 65
-  orig: 43, 65
-  offset: 0, 0
-  index: 2
-HeroOne31
-  rotate: false
-  xy: 47, 2
-  size: 43, 65
-  orig: 43, 65
-  offset: 0, 0
-  index: 1
-HeroOne11
-  rotate: false
-  xy: 92, 2
-  size: 58, 64
-  orig: 58, 64
-  offset: 0, 0
-  index: 2
-HeroOne01
-  rotate: false
-  xy: 152, 2
-  size: 58, 64
-  orig: 58, 64
-  offset: 0, 0
-  index: 1
-HeroOne11
-  rotate: false
-  xy: 212, 2
-  size: 58, 64
-  orig: 58, 64
-  offset: 0, 0
-  index: 1
-HeroOne01
-  rotate: false
-  xy: 272, 2
-  size: 58, 64
-  orig: 58, 64
-  offset: 0, 0
-  index: 2
-HeroOne21
-  rotate: false
-  xy: 332, 2
-  size: 44, 64
-  orig: 44, 64
-  offset: 0, 0
-  index: 2
-HeroOne21
-  rotate: false
-  xy: 378, 2
-  size: 44, 64
-  orig: 44, 64
-  offset: 0, 0
-  index: 3
-HeroOne31
-  rotate: false
-  xy: 424, 2
-  size: 43, 64
-  orig: 43, 64
-  offset: 0, 0
-  index: 3
-HeroOne21
-  rotate: false
-  xy: 469, 2
-  size: 41, 64
-  orig: 41, 64
-  offset: 0, 0
-  index: 1
-  
-
-hud1.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-hourglass
-  rotate: false
-  xy: 2, 2
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-passTurn
-  rotate: false
-  xy: 2, 132
-  size: 128, 109
-  orig: 128, 109
-  offset: 0, 0
-  index: 2
-passTurn
-  rotate: false
-  xy: 2, 243
-  size: 128, 109
-  orig: 128, 109
+  xy: 1, 165
+  size: 124, 95
+  orig: 124, 95
   offset: 0, 0
   index: 1
 dayCounter
   rotate: false
-  xy: 2, 354
+  xy: 131, 295
   size: 124, 95
   orig: 124, 95
   offset: 0, 0
   index: 2
 dayCounter
   rotate: false
-  xy: 128, 354
+  xy: 261, 406
   size: 124, 95
   orig: 124, 95
   offset: 0, 0
-  index: 5
+  index: 3
 dayCounter
   rotate: false
-  xy: 2, 451
+  xy: 387, 406
   size: 124, 95
   orig: 124, 95
   offset: 0, 0
   index: 4
 dayCounter
   rotate: false
-  xy: 128, 451
+  xy: 1, 68
+  size: 124, 95
+  orig: 124, 95
+  offset: 0, 0
+  index: 5
+dayCounter
+  rotate: false
+  xy: 131, 198
   size: 124, 95
   orig: 124, 95
   offset: 0, 0
   index: 6
 dayCounter
   rotate: false
-  xy: 2, 548
-  size: 124, 95
-  orig: 124, 95
-  offset: 0, 0
-  index: 3
-dayCounter
-  rotate: false
-  xy: 128, 548
+  xy: 127, 101
   size: 124, 95
   orig: 124, 95
   offset: 0, 0
   index: 7
-dayCounter
+defenseIcon
   rotate: false
-  xy: 2, 645
-  size: 124, 95
-  orig: 124, 95
-  offset: 0, 0
-  index: 1
-options
-  rotate: false
-  xy: 132, 2
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-woodIcon
-  rotate: false
-  xy: 132, 132
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-stats
-  rotate: false
-  xy: 132, 243
-  size: 64, 64
-  orig: 64, 64
+  xy: 327, 356
+  size: 48, 48
+  orig: 48, 48
   offset: 0, 0
   index: -1
 goldIcon
   rotate: false
-  xy: 128, 645
+  xy: 78, 2
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+hourglass
+  rotate: false
+  xy: 1, 373
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+options
+  rotate: false
+  xy: 144, 35
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+passTurn
+  rotate: false
+  xy: 1, 262
+  size: 128, 109
+  orig: 128, 109
+  offset: 0, 0
+  index: 1
+passTurn
+  rotate: false
+  xy: 131, 392
+  size: 128, 109
+  orig: 128, 109
+  offset: 0, 0
+  index: 2
+powerIcon
+  rotate: false
+  xy: 411, 372
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+stats
+  rotate: false
+  xy: 210, 35
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 stoneIcon
   rotate: false
-  xy: 2, 742
+  xy: 261, 340
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
-defenseIcon
+woodIcon
   rotate: false
-  xy: 198, 2
-  size: 48, 48
-  orig: 48, 48
+  xy: 1, 1
+  size: 75, 65
+  orig: 75, 65
   offset: 0, 0
   index: -1
-powerIcon
-  rotate: false
-  xy: 132, 68
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-attackIcon
-  rotate: false
-  xy: 166, 68
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-  
-buildings1.png
+
+game2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-stoneMine
-  rotate: false
-  xy: 2, 2
-  size: 107, 99
-  orig: 107, 99
-  offset: 0, 0
-  index: -1
-stoneMine1
-  rotate: false
-  xy: 111, 2
-  size: 107, 99
-  orig: 107, 99
-  offset: 0, 0
-  index: -1
 goldMine
   rotate: false
-  xy: 220, 2
+  xy: 333, 102
   size: 97, 96
   orig: 97, 96
   offset: 0, 0
   index: -1
 goldMine0
   rotate: false
-  xy: 319, 2
+  xy: 115, 1
   size: 97, 96
   orig: 97, 96
   offset: 0, 0
   index: -1
 goldMine1
   rotate: false
-  xy: 418, 2
+  xy: 214, 1
   size: 97, 96
   orig: 97, 96
   offset: 0, 0
   index: -1
-sawmill1
-  rotate: false
-  xy: 517, 2
-  size: 112, 95
-  orig: 112, 95
-  offset: 0, 0
-  index: -1
 sawmill
   rotate: false
-  xy: 631, 2
+  xy: 1, 103
   size: 112, 95
   orig: 112, 95
   offset: 0, 0
   index: -1
+sawmill1
+  rotate: false
+  xy: 1, 6
+  size: 112, 95
+  orig: 112, 95
+  offset: 0, 0
+  index: -1
+stoneMine
+  rotate: false
+  xy: 115, 99
+  size: 107, 99
+  orig: 107, 99
+  offset: 0, 0
+  index: -1
+stoneMine1
+  rotate: false
+  xy: 224, 99
+  size: 107, 99
+  orig: 107, 99
+  offset: 0, 0
+  index: -1
+
+game3.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+goldPile
+  rotate: false
+  xy: 1, 1
+  size: 74, 71
+  orig: 74, 71
+  offset: 0, 0
+  index: -1
+mapGrass
+  rotate: false
+  xy: 77, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+mapRoad
+  rotate: false
+  xy: 143, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+mapWater
+  rotate: false
+  xy: 209, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+mapWater2
+  rotate: false
+  xy: 275, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+stonePile
+  rotate: false
+  xy: 341, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+woodPile
+  rotate: false
+  xy: 407, 8
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+
+game4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+HeroOne01
+  rotate: false
+  xy: 1, 2
+  size: 58, 64
+  orig: 58, 64
+  offset: 0, 0
+  index: 1
+HeroOne01
+  rotate: false
+  xy: 61, 2
+  size: 58, 64
+  orig: 58, 64
+  offset: 0, 0
+  index: 2
+HeroOne11
+  rotate: false
+  xy: 121, 2
+  size: 58, 64
+  orig: 58, 64
+  offset: 0, 0
+  index: 1
+HeroOne11
+  rotate: false
+  xy: 181, 2
+  size: 58, 64
+  orig: 58, 64
+  offset: 0, 0
+  index: 2
+HeroOne21
+  rotate: false
+  xy: 241, 2
+  size: 44, 64
+  orig: 44, 64
+  offset: 0, 0
+  index: 2
+HeroOne21
+  rotate: false
+  xy: 287, 2
+  size: 44, 64
+  orig: 44, 64
+  offset: 0, 0
+  index: 3
+HeroOne21
+  rotate: false
+  xy: 468, 2
+  size: 41, 64
+  orig: 41, 64
+  offset: 0, 0
+  index: 1
+HeroOne31
+  rotate: false
+  xy: 333, 1
+  size: 43, 65
+  orig: 43, 65
+  offset: 0, 0
+  index: 1
+HeroOne31
+  rotate: false
+  xy: 378, 1
+  size: 43, 65
+  orig: 43, 65
+  offset: 0, 0
+  index: 2
+HeroOne31
+  rotate: false
+  xy: 423, 2
+  size: 43, 64
+  orig: 43, 64
+  offset: 0, 0
+  index: 3
