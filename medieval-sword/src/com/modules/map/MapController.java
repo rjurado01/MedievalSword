@@ -41,6 +41,7 @@ public class MapController {
 	HeroTop selected_hero_enemy;
 	CreaturesGroup selected_group;
 	ResourceStructure selected_resource_structure;
+	ResourcePile selected_pile;
 
 	int turn;
 	int day;
@@ -104,6 +105,9 @@ public class MapController {
 		else if( typeEvent == MapConstants.RESOURCE_STRUCTURE && objectEvent != null ) {
 			checkResourceStructureEvent( (ResourceStructure) objectEvent );
 		}
+		else if( typeEvent == MapConstants.RESOURCE_PILE && objectEvent != null ) {
+			checkResourcePileEvent( (ResourcePile) objectEvent );
+		}
 		else if( typeEvent == MapConstants.TURN ) {
 			passTurn();
 		}
@@ -135,9 +139,7 @@ public class MapController {
 		}
 
 		terrain.passTurn();
-		hud.updateGold( players.get(turn).gold );
-		hud.updateWood( players.get(turn).wood );
-		hud.updateStone( players.get(turn).stone );
+		updateHudResources();
 		
 		turn = ( turn + 1 ) % players.size();
 		day = ( day + 1 ) % 7;
@@ -145,6 +147,12 @@ public class MapController {
 
 		players.get(turn).passTurn();
 		selectHero( players.get(turn).getHeroSelected() );
+	}
+
+	private void updateHudResources() {
+		hud.updateGold( players.get(turn).gold );
+		hud.updateWood( players.get(turn).wood );
+		hud.updateStone( players.get(turn).stone );
 	}
 
 	private void processMoveEvent( SquareTerrain square ) {
@@ -429,5 +437,35 @@ public class MapController {
 			else
 				findPath( square_number );
 		}
+	}
+
+	private void checkResourcePileEvent( ResourcePile pile ) {
+		if( selected_hero != null ) {
+			Vector2i square_number = pile.square_position_number;
+
+			if( hero_path.isPathMarked() && hero_path.isValidDestination( square_number ) ) {
+				selected_pile = pile;
+				hero_path.removeLastElement();
+				moveSelectedHero( getResourcePileCallback() );
+			}
+			else if( hero_path.isPathMarked() && hero_path.isLastMarked( square_number ) )
+				moveSelectedHero( null );
+			else
+				findPath( square_number );
+		}
+
+		typeEvent = Constants.NONE;
+		objectEvent = null;
+	}
+
+	private TweenCallback getResourcePileCallback() {
+		return new TweenCallback() {
+			public void onEvent(int type, BaseTween<?> source) {
+				selected_pile.use( players.get(turn) );
+				terrain.getSquareTerrain( selected_pile.square_position_number ).setFree();
+				terrain.getStage().removeActor( selected_pile.getActor() );
+				updateHudResources();
+			}
+		};
 	}
 }

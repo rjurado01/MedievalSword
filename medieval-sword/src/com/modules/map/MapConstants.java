@@ -14,6 +14,7 @@ public class MapConstants {
 	public static final int INFO2       =  5;
 	public static final int TURN        =  6;
 	public static final int RESOURCE_STRUCTURE = 7;
+	public static final int RESOURCE_PILE = 8;
 
 	/* MAP SQUARES STATUS */
 	public static final int FREE = 0;

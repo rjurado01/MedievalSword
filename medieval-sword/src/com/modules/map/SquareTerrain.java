@@ -22,6 +22,7 @@ public class SquareTerrain extends Image {
 	static final int FREE = 0;
 	static final int HERO_PLAYER_1 = 1;
 	static final int CREATURES_GROUP = 2;
+	static final int RESOURCE_PILE = 3;
 	
 	boolean visible = false;
 	
@@ -84,17 +85,21 @@ public class SquareTerrain extends Image {
 		else
 			return false;
 	}
-	
+
 	public void setTopHero( HeroTop hero ) {
 		this.hero = hero;
 		this.status = HERO_PLAYER_1;
 	}
-	
+
+	public void setResourcePileStatus() {
+		this.status = RESOURCE_PILE;
+	}
+
 	public void setCreaturesGroup( CreaturesGroup group ) {
 		this.group = group;
 		this.status = CREATURES_GROUP;
 	}
-	
+
 	public Army getArmy() {
 		if( status == CREATURES_GROUP )
 			return group.getArmy();

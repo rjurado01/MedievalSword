@@ -52,7 +52,6 @@ public class Player {
 	public void update( float deltaTime ) {
 		if( hero_selected != null )
 			hero_selected.updateActions( deltaTime );
-
 	}
 
 	public void unselectHero() {
@@ -66,5 +65,17 @@ public class Player {
 	public void passTurn() {
 		for( HeroTop hero : heroes )
 			hero.resetMovility();
+	}
+
+	public void addGold( int amount ) {
+		gold += amount;
+	}
+
+	public void addStone( int amount ) {
+		stone += amount;
+	}
+
+	public void addWood( int amount ) {
+		wood += amount;
 	}
 }

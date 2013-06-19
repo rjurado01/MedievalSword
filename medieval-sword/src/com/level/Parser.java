@@ -4,23 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
-import com.game.Constants;
 import com.game.Player;
 import com.game.Stack;
 import com.game.Unit;
 import com.modules.map.CreaturesGroup;
 import com.modules.map.HeroTop;
 import com.modules.map.MapConstants;
+import com.modules.map.ResourcePile;
 import com.modules.map.ResourceStructure;
 import com.modules.map.SquareTerrain;
 import com.modules.map.Structure;
 import com.modules.map.Terrain;
 import com.races.humands.heroes.HumandHero1;
 import com.resources.GoldMine;
+import com.resources.GoldPile;
 import com.resources.Sawmill;
+import com.resources.SawmillPile;
 import com.resources.StoneMine;
+import com.resources.StonePile;
 import com.utils.Vector2i;
 
 /**
@@ -157,15 +159,43 @@ public class Parser {
 						 getPlayerFromId( players, level_structure.owner ));
 				break;
 		}
-		
+
 		return (ResourceStructure) structure;
 	}
-	
+
 	private Player getPlayerFromId( List<Player> players, int id ) {
 		for( Player player : players )
 			if( player.id == id )
 				return player;
-				
+
 		return null;
+	}
+
+	public List<ResourcePile> getResourcePiles( Level level ) {
+		List<ResourcePile> piles = new ArrayList<ResourcePile>();
+
+		for( LevelResourcePile level_pile : level.resource_piles )
+			piles.add( getResourcePile( level_pile ) );
+
+		return piles;
+	}
+
+	private ResourcePile getResourcePile( LevelResourcePile level_pile ) {
+
+		ResourcePile pile = null;
+
+		switch( level_pile.type ) {
+			case MapConstants.GOLD_MINE:
+				 pile = new GoldPile( level_pile.square_number, level_pile.amount );
+				 break;
+			case MapConstants.SAWMILL:
+				pile = new SawmillPile( level_pile.square_number, level_pile.amount );
+				break;
+			case MapConstants.STONE_MINE:
+				pile = new StonePile( level_pile.square_number, level_pile.amount );
+				break;
+		}
+
+		return pile;
 	}
 }

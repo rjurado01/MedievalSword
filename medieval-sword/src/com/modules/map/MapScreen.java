@@ -55,6 +55,7 @@ public class MapScreen implements Screen {
 		loadMapCreatures();
 		loadPlayers();
 		loadStructures();
+		loadResourcePiles();
 		loadHUD();
 		
 		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
@@ -100,14 +101,24 @@ public class MapScreen implements Screen {
 		for( HeroTop hero : players.get(0).getHeroes() )
 			terrain_stage.addActor( hero.getView() );
 	}
-	
+
 	private void loadStructures() {
 		terrain.resource_structures = parser.getResourceStructures( players, level );
-		
+
 		for( ResourceStructure structure : terrain.resource_structures )
 			terrain_stage.addActor( structure.getActor() );
 	}
-	
+
+	private void loadResourcePiles() {
+		terrain.resource_piles = parser.getResourcePiles( level );
+
+		for( ResourcePile pile : terrain.resource_piles ) {
+			terrain.getSquareTerrain(
+					pile.square_position_number ).setResourcePileStatus();
+			terrain_stage.addActor( pile.getActor() );
+		}
+	}
+
 	public void render(float delta) {
 		controller.update();
 		

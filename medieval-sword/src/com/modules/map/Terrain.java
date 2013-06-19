@@ -34,6 +34,7 @@ public class Terrain extends Group {
 
 	ArrayList<SquarePath> path_drawn;
 	List<ResourceStructure> resource_structures;
+	List<ResourcePile> resource_piles;
 
 	SquareTerrain terrain[][];
 
