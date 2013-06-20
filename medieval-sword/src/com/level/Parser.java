@@ -10,7 +10,10 @@ import com.game.Stack;
 import com.game.Unit;
 import com.modules.map.CreaturesGroup;
 import com.modules.map.HeroTop;
+import com.modules.map.MapActor;
 import com.modules.map.MapConstants;
+import com.modules.map.MapObject;
+import com.modules.map.MapObjectsTypes;
 import com.modules.map.ResourcePile;
 import com.modules.map.ResourceStructure;
 import com.modules.map.SquareTerrain;
@@ -23,6 +26,8 @@ import com.resources.Sawmill;
 import com.resources.SawmillPile;
 import com.resources.StoneMine;
 import com.resources.StonePile;
+import com.terrain.Tree1;
+import com.terrain.Tree2;
 import com.utils.Vector2i;
 
 /**
@@ -197,5 +202,33 @@ public class Parser {
 		}
 
 		return pile;
+	}
+
+	public List<MapActor> getMapObjects( Level level, MapObjectsTypes object_types ) {
+		List<MapActor> objects = new ArrayList<MapActor>();
+
+		if( level.map_objects != null )
+			for( LevelMapObject level_object : level.map_objects )
+				objects.add( getMapObject( level_object, object_types ) );
+
+		return objects;
+	}
+
+	private MapActor getMapObject( LevelMapObject level_object, MapObjectsTypes object_types ) {
+
+		MapActor object = null;
+
+		switch( level_object.type ) {
+			case MapConstants.TREE_1:
+				object = new MapActor(level_object.square_number,
+						object_types.getMapObject( MapConstants.TREE_1 ) );
+				break;
+			case MapConstants.TREE_2:
+				object = new MapActor( level_object.square_number,
+						object_types.getMapObject( MapConstants.TREE_2 ) );
+				break;
+		}
+
+		return object;
 	}
 }

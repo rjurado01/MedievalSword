@@ -18,6 +18,7 @@ public class Level {
 	public List<LevelPlayer> players;
 	public List<String> units;
 	public List<LevelCreaturesGroup> map_creatures;
+	public List<LevelMapObject> map_objects;
 
 	public Level() {
 		resource_piles = new ArrayList<LevelResourcePile>();

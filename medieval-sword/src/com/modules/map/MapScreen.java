@@ -51,26 +51,36 @@ public class MapScreen implements Screen {
 		players = new ArrayList<Player>();
 
 		loadTerrain();
+		loadMapObjects();
 		loadMapUnits();		
 		loadMapCreatures();
 		loadPlayers();
 		loadStructures();
 		loadResourcePiles();
 		loadHUD();
-		
+
 		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
 		terrain_stage.addActor( terrain );
 		//hud_stage.addActor( mini_map );
 
 		input = new MapInputProcessor( terrain, hud );
 	}
-	
+
 	private void loadTerrain() {
 		terrain_stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true );	
 		terrain = parser.getTerrain( level.terrain );
 		terrain.addStage( terrain_stage );
 	}
-	
+
+	private void loadMapObjects() {
+		MapObjectsTypes object_types = new MapObjectsTypes();
+
+		terrain.objects = parser.getMapObjects( level, object_types );
+
+		for( MapActor object : terrain.objects )
+			terrain_stage.addActor( object.getActor() );
+	}
+
 	private void loadHUD() {
 		hud_stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true );
 		hud = new HUD( hud_stage, terrain );
@@ -84,20 +94,20 @@ public class MapScreen implements Screen {
 		units.put( Constants.VILLAGER, new Villager() );
 		units.put( Constants.ARCHER, new Archer() );
 	}
-	
+
 	private void loadMapCreatures() {
 		creatures = parser.getCreaturesGroups( terrain, units, level );
 		
 		for( CreaturesGroup group : creatures )
 			terrain_stage.addActor( group.getImage() ); 
 	}
-	
+
 	private void loadPlayers() {
 		players.add( parser.getPlayer( terrain, units, level.players.get(0) ) );
-		
+
 		if( level.players.get(0).humand )
 			humand_player = players.get( 0 );
-		
+
 		for( HeroTop hero : players.get(0).getHeroes() )
 			terrain_stage.addActor( hero.getView() );
 	}

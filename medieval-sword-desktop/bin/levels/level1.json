@@ -52,6 +52,10 @@
 			]
 		}
 	],
+	"map_objects":[
+		{"type":1,"square_number":{"x":3,"y":1}},
+		{"type":1,"square_number":{"x":3,"y":0}}
+	],
 	"map_creatures":[
 		{
 			"stacks":[
