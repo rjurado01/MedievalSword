@@ -47,3 +47,7 @@ Includes all the project code. It is divided into multiple packages:
 ### my-gdx-game-desktop
 
 Includes all the assets and the starter class to run the application on the desktop.
+
+## License
+
+Medieval Sword is released under the [GPL3 License](http://www.gnu.org/licenses/gpl-3.0.html).
