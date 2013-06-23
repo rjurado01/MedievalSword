@@ -33,11 +33,12 @@ public class MapConstants {
 	public static final int STONE_MINE = 2;
 
 	/* MAP OBJECTS */
-	public static final int TREE_0 = 0;
-	public static final int TREE_1 = 1;
-	public static final int TREE_2 = 2;
-	public static final int TREE_3 = 3;
-	public static final int TREE_4 = 4;
-	public static final int ROCK_1 = 5;
-	public static final int ROCK_2 = 6;
+	public static final int TREE_1 		= 1;
+	public static final int TREE_2		= 2;
+	public static final int TREE_DRY_1 	= 3;
+	public static final int TREE_DRY_2 	= 4;
+	public static final int TREE_CUT_1 	= 5;
+	public static final int ROCK_1 		= 6;
+	public static final int ROCK_2 		= 7;
+	public static final int MOUNTAIN_1	= 8;
 }

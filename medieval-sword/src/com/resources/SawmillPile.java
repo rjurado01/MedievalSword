@@ -10,7 +10,8 @@ public class SawmillPile extends ResourcePile {
 		this.square_position_number = square_number;
 		this.amount = amount;
 		this.texture_name = "woodPile";
-		this.size = new Vector2i( 40, 40 );
+		this.size = new Vector2i( 30, 30 );
+		this.position_correction = new Vector2i(5,5);
 		
 		createActor();
 	}

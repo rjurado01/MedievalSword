@@ -8,8 +8,8 @@ public class Tree1 extends MapObject {
 
 	public Tree1() {
 		type = MapConstants.TREE_1;
-		texture_name = "number";
-		size = new Vector2i( 44, 64 );
-		position_correction = new Vector2i(0,0);
+		texture_name = "tree2";
+		size = new Vector2i( 54, 80 );
+		position_correction = new Vector2i(-5,5);
 	}
 }

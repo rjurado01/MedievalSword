@@ -4,11 +4,11 @@ import com.modules.map.MapConstants;
 import com.modules.map.MapObject;
 import com.utils.Vector2i;
 
-public class Tree2 extends MapObject {
+public class TreeDry2 extends MapObject {
 
-	public Tree2() {
+	public TreeDry2() {
 		type = MapConstants.TREE_2;
-		texture_name = "tree4";
+		texture_name = "tree1";
 		size = new Vector2i( 50, 80 );
 		position_correction = new Vector2i(0,0);
 	}

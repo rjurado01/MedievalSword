@@ -532,51 +532,107 @@ game3.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+cutTree
+  rotate: false
+  xy: 263, 41
+  size: 50, 41
+  orig: 50, 41
+  offset: 0, 0
+  index: -1
 goldPile
   rotate: false
-  xy: 1, 1
+  xy: 291, 175
   size: 74, 71
   orig: 74, 71
   offset: 0, 0
   index: -1
 mapGrass
   rotate: false
-  xy: 77, 8
+  xy: 367, 182
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 mapRoad
   rotate: false
-  xy: 143, 8
+  xy: 433, 182
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 mapWater
   rotate: false
-  xy: 209, 8
+  xy: 95, 67
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 mapWater2
   rotate: false
-  xy: 275, 8
+  xy: 95, 1
   size: 64, 64
   orig: 64, 64
+  offset: 0, 0
+  index: -1
+mountain
+  rotate: false
+  xy: 227, 84
+  size: 64, 60
+  orig: 64, 60
+  offset: 0, 0
+  index: -1
+rock1
+  rotate: false
+  xy: 263, 4
+  size: 44, 35
+  orig: 44, 35
+  offset: 0, 0
+  index: -1
+rock2
+  rotate: false
+  xy: 227, 22
+  size: 34, 60
+  orig: 34, 60
   offset: 0, 0
   index: -1
 stonePile
   rotate: false
-  xy: 341, 8
+  xy: 161, 67
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
+tree0
+  rotate: false
+  xy: 116, 133
+  size: 84, 113
+  orig: 84, 113
+  offset: 0, 0
+  index: -1
+tree1
+  rotate: false
+  xy: 1, 134
+  size: 113, 112
+  orig: 113, 112
+  offset: 0, 0
+  index: -1
+tree2
+  rotate: false
+  xy: 1, 9
+  size: 92, 123
+  orig: 92, 123
+  offset: 0, 0
+  index: -1
+tree4
+  rotate: false
+  xy: 202, 146
+  size: 87, 100
+  orig: 87, 100
+  offset: 0, 0
+  index: -1
 woodPile
   rotate: false
-  xy: 407, 8
+  xy: 161, 1
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
