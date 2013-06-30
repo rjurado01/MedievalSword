@@ -1,17 +1,21 @@
 package com.modules.map;
 
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
+import com.game.Assets;
 import com.game.Constants;
 import com.utils.Vector2i;
 
-public class SquareTerrain extends Image {
+public class SquareTerrain extends Group {
 	
-	static int HEIGHT = 40;
-	static int WIDTH = 40;
+	public static int HEIGHT = 40;
+	public static int WIDTH = 40;
 	
 	/* TYPES */
 	static final int GRASS = 0;
@@ -30,11 +34,13 @@ public class SquareTerrain extends Image {
 	int status;
 	
 	Vector2i number;
+	Image image;
+	Image fog;
 	
 	HeroTop hero;
 	CreaturesGroup group;
 	MiniMap mini_map;
-	
+
 	public SquareTerrain( Vector2i number, int type ) {
 		this.x = number.x * WIDTH;
 		this.y = number.y * HEIGHT;
@@ -44,34 +50,45 @@ public class SquareTerrain extends Image {
 		this.status = 0;
 		this.number = number;
 		
+		image = new Image();
+		image.width = this.width;
+		image.height = this.height;
+
+		addActor( image );
+
 		addClickEvent();
+	}
+
+	public void setRegion( TextureRegion region ) {
+		image.setRegion( region );
 	}
 	
 	public Vector2 getPosition() {
 		return new Vector2( x, y );
 	}
-	
+
 	public Vector2i getNumber()
 	{
 		return number;
 	}
+
 	private void addClickEvent() {
-		setClickListener( new ClickListener() {
+		image.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) { clicked(); }	
 		});
 	}
-	
+
 	private void clicked() {
 		MapController.addEvent( MapConstants.SQUARE, this );
 	}
-	
+
 	public boolean isRoad() {
 		if( type == Terrain.ROAD )
 			return true;
 		else 
 			return false;
 	}
-	
+
 	public boolean isRoadAvailable() {
 		if( type == Terrain.ROAD && status == FREE )
 			return true;
@@ -106,11 +123,11 @@ public class SquareTerrain extends Image {
 		else
 			return null;
 	}
-	
+
 	public int getType() {
 		return type;
 	}
-	
+
 	/**
 	 * Check if this square has any player hero or player structure
 	 */
@@ -134,5 +151,19 @@ public class SquareTerrain extends Image {
 	public void setFree() {
 		if( type == ROAD )
 			status = FREE; 
+	}
+
+	public void setFog( Stage stage ) {
+		fog = new Image( Assets.getTextureRegion( "greyBackground" ) );
+		fog.width = width;
+		fog.height = height;
+		fog.x = number.x * WIDTH;
+		fog.y = number.y * HEIGHT;
+
+		stage.addActor( fog );
+	}
+
+	public void exprlore() {
+		fog.remove();
 	}
  }

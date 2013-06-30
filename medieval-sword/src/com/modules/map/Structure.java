@@ -15,6 +15,7 @@ public abstract class Structure {
 	
 	public String texture_name;
 	public Vector2i size;
+	public Vector2i squares_size;
 	public Vector2i position_correction;
 	
 	Image image;

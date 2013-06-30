@@ -239,6 +239,8 @@ public class MapController {
 				Vector2i prev_square_number = selected_hero.getSquareTerrain().getNumber();
 				SquareTerrain actual_square = terrain.getSquareTerrain( hero_path.getFirstElement() );
 
+				terrain.explore( hero_path.getFirstElement(), selected_hero.getVision() );
+
 				selected_hero.setSquareTerrain( actual_square );
 				hero_path.removeFirstElement();
 
@@ -347,6 +349,9 @@ public class MapController {
 		};
 	}
 
+	/**
+	 * Check click event in the first Info box from HUD
+	 */
 	private void checkInfo1Event() {
 		if( status == NORMAL ) {
 			showArmyInfoPanel();
@@ -375,6 +380,9 @@ public class MapController {
 		terrain.getStage().addActor( army_info_panel );
 	}
 
+	/**
+	 * Check click event in the second Info box from HUD
+	 */
 	private void checkInfo2Event() {
 		if( status == NORMAL ) {
 			showEnemyArmyInfoPanel();
@@ -408,7 +416,7 @@ public class MapController {
 			terrain.getStage().addActor( army_info_panel );
 		}
 	}
-	
+
 	/**
 	 * Return from battle module to map module
 	 */
@@ -419,24 +427,48 @@ public class MapController {
 			selected_group.destroy( terrain.getStage() );
 		}
 	}
-	
+
 	private void checkResourceStructureEvent( ResourceStructure structure ) {
 		selected_resource_structure = structure;
-		
+
 		if( selected_hero != null ) {
 			Vector2i square_number = structure.getUseSquareNumber();
 
-			if( hero_path.isPathMarked() && hero_path.isValidDestination( square_number ) )
-				moveSelectedHero( new TweenCallback() {
-					public void onEvent( int type, BaseTween<?> source ) {
-						selected_resource_structure.use( players.get(turn) );
-					}
-				} );
+			if( hero_path.isPathMarked() && hero_path.isValidDestination( square_number ) ) {
+				if( isHeroOnStructureSquare() )
+					captureResourceStructure();
+				else
+					moveSelectedHero( getResourceStructureCallback() );
+			}
 			else if( hero_path.isPathMarked() && hero_path.isLastMarked( square_number ) )
 				moveSelectedHero( null );
 			else
 				findPath( square_number );
 		}
+	}
+
+	private boolean isHeroOnStructureSquare() {
+		return selected_resource_structure.getUseSquareNumber().equal(
+				selected_hero.getSquareTerrain().getNumber() );
+	}
+
+	private TweenCallback getResourceStructureCallback() {
+		return new TweenCallback() {
+			public void onEvent( int type, BaseTween<?> source ) {
+				captureResourceStructure();
+			}
+		};
+	}
+
+	/**
+	 * Selected hero capture resource structure
+	 */
+	private void captureResourceStructure() {
+		selected_resource_structure.use( players.get(turn) );
+		terrain.explore(
+				selected_resource_structure.square_position_number,
+				selected_resource_structure.squares_size,
+				selected_resource_structure.vision );
 	}
 
 	private void checkResourcePileEvent( ResourcePile pile ) {

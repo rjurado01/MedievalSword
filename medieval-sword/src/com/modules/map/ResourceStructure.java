@@ -8,9 +8,11 @@ public abstract class ResourceStructure extends Structure {
 	
 	protected Player owner;
 	protected int color;
+	protected int vision;
 	
 	public ResourceStructure( Vector2i square_number ) {
 		super( 1, square_number );
+		squares_size = new Vector2i( 2, 2 );
 	}
 	
 	public abstract void turnAction();

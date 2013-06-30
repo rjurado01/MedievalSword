@@ -15,6 +15,7 @@ public class HumandHero1 extends Hero {
 		defense  = 3;
 		attack 	 = 3;
 		mobility = 5;
+		vision   = 5;
 
 		name = "HeroOne";
 		size = new Vector2i( 35, 35 );

@@ -58,9 +58,9 @@ public class MapScreen implements Screen {
 		loadStructures();
 		loadResourcePiles();
 		loadHUD();
+		loadFog();
 
 		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
-		terrain_stage.addActor( terrain );
 		//hud_stage.addActor( mini_map );
 
 		input = new MapInputProcessor( terrain, hud );
@@ -127,6 +127,10 @@ public class MapScreen implements Screen {
 					pile.square_position_number ).setResourcePileStatus();
 			terrain_stage.addActor( pile.getActor() );
 		}
+	}
+
+	private void loadFog() {
+		terrain.drawFog();
 	}
 
 	public void render(float delta) {

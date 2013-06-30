@@ -172,4 +172,8 @@ public class HeroPath {
 		else
 			return false;
 	}
+
+	public int getPathSize() {
+		return path.size();
+	}
 }

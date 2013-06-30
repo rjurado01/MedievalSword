@@ -7,6 +7,7 @@ public class LevelTerrain {
 	public int SQUARES_Y;
 	
 	public int terrain[][];
+	public int explored[][];
 	
 	public ArrayList<LevelResourceStructure> structures;
 	

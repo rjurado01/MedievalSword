@@ -17,6 +17,7 @@ public class Sawmill extends ResourceStructure {
 		this.owner = owner;
 		this.texture_name = "sawmill";
 		this.size = new Vector2i( 100, 100 );
+		this.vision = 5;
 		this.square_use_number = new Vector2i( 1, -1 );
 		
 		createActor();

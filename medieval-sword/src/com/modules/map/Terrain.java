@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Assets;
 import com.utils.Vector2i;
 
-public class Terrain extends Group {
+public class Terrain {
 
 	static final int GRASS = 0;
 	static final int WATER = 1;
@@ -19,15 +18,8 @@ public class Terrain extends Group {
 	final int STONE_MINE = 1;
 	final int SAWMILL = 2;
 
-	/*
-	final int Tree;
-	final int Stone;
-	final int Mountain;
-	final int Mine_Stone;
-	final int Mine_Gold;
-	final int Sawmill;
-	final int Castle; 
-	*/
+	static public final int EXPLORED = 1;
+	static public final int DARK = 0;
 
 	public int SQUARES_X;
 	public int SQUARES_Y;
@@ -38,8 +30,12 @@ public class Terrain extends Group {
 	List<MapActor> objects;
 
 	SquareTerrain terrain[][];
+	int explored[][];
 
-	public Terrain( Vector2i n_squares) {
+	Stage stage;
+
+
+	public Terrain( Vector2i n_squares ) {
 		SQUARES_X = n_squares.x;
 		SQUARES_Y = n_squares.y;
 
@@ -50,9 +46,15 @@ public class Terrain extends Group {
 
 	private void initializeTerrain() {
 		terrain = new SquareTerrain[ SQUARES_Y ][];
+		explored = new int[ SQUARES_Y ][];
 
-		for( int i = 0; i < SQUARES_Y; i++ )
+		for( int i = 0; i < SQUARES_Y; i++ ) {
 			terrain[i] = new SquareTerrain[ SQUARES_X ];
+			explored[i] = new int[ SQUARES_X ];
+
+			for( int j = 0; j < SQUARES_X; j++ )
+				explored[i][j] = DARK;
+		}
 	}
 
 	public void addSquareTerrain( Vector2i square_number, int type, String texture ) {
@@ -67,35 +69,6 @@ public class Terrain extends Group {
 		return terrain[square_number.y][square_number.x];
 	}
 
-	/*public void loadStructures( Level level ) {
-		resource_structures = new ArrayList<ResourceStructure>();
-
-		for( LevelResourceStructure level_structure : level.structures )
-			addStructure( level_structure );
-	}
-
-	public void addStructure( LevelResourceStructure ls ) {
-		switch( ls.type ) {
-			case GOLD_MINE:
-				addResourceStructure( new GoldMine( ls.square_number, ls.owner ) );
-				break;
-			case STONE_MINE:
-				addResourceStructure( new StoneMine( ls.square_number, ls.owner ) );
-				break;
-			case SAWMILL:
-				addResourceStructure( new Sawmill( ls.square_number, ls.owner ) );
-				break;
-		}
-	}
-
-	private void addResourceStructure( ResourceStructure rs ) {
-		if( rs != null ) {
-			TopStructure top = new TopStructure( rs );
-			stage.addActor( top.getActor() );
-			resource_structures.add( rs );
-		}
-	}*/
-
 	public int getWidth() {
 		return SQUARES_X * SquareTerrain.WIDTH;
 	}
@@ -109,9 +82,15 @@ public class Terrain extends Group {
 	}
 
 	public void addStage( Stage stage ) {
+		this.stage = stage;
+
 		for( int i = 0; i < SQUARES_Y; i++)
 			for( int j = 0; j < SQUARES_X; j++)
 				stage.addActor( terrain[i][j] );
+	}
+
+	public Stage getStage() {
+		return stage;
 	}
 
 	/**
@@ -169,5 +148,52 @@ public class Terrain extends Group {
 	public void passTurn() {
 		for( ResourceStructure structure : resource_structures )
 			structure.turnAction();
+	}
+
+	public void exploreSquare( int x, int y ) {
+		explored[y][x] = EXPLORED;
+	}
+
+	/**
+	 * Draw fog for terrain
+	 */
+	public void drawFog() {
+		for( int i = 0; i < SQUARES_Y; i++)
+			for( int j = 0; j < SQUARES_X; j++)
+				if( explored[i][j] == DARK )
+					terrain[i][j].setFog( stage );
+	}
+
+	/**
+	 * Remove fog from a terrain area
+	 * @param square center of area
+	 * @param size right-top increase diagonal
+	 * (use for elements who occupy more than one square)
+	 * @param diagonal diagonal number of squares (diagonal) of area
+	 */
+	public void explore( Vector2i square, Vector2i size, int diagonal ) {
+		int radius = diagonal / 2;
+		int y, x;
+
+		for( int i = 0; i < diagonal + size.y - 1; i++ )
+			for( int j = 0; j < diagonal + size.x - 1; j++ ) {
+				y = square.y + i - radius;
+				x = square.x + j - radius;
+
+				if( y >= 0 && x >= 0 && y < SQUARES_Y && x < SQUARES_X &&
+						explored[y][x] == DARK ) {
+					explored[y][x] = EXPLORED;
+					terrain[y][x].exprlore();
+				}
+			}
+	}
+
+	/**
+	 * Remove fog from a terrain area
+	 * @param square center of area
+	 * @param diagonal number of squares (diagonal) of area
+	 */
+	public void explore( Vector2i square, int diagonal ) {
+		explore( square, new Vector2i(1,1), diagonal );
 	}
 }

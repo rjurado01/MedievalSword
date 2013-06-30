@@ -45,6 +45,7 @@ public class Parser {
 
 		if( hero != null ) {
 			hero.setSquareTerrain( terrain.getSquareTerrain( level_hero.square_number ) );
+			hero.setActualMobility( level_hero.remaining_movement );
 			terrain.getSquareTerrain( level_hero.square_number ).setTopHero( hero );
 
 			if( level_hero.attack > 0 )
@@ -88,11 +89,15 @@ public class Parser {
 		int inverse = level_terrain.SQUARES_Y - 1; // in libgdx, [0,0] is [SQUARES_Y - 1][0]
 
 		for( int i = 0; i < level_terrain.SQUARES_Y; i++)
-			for( int j = 0; j < level_terrain.SQUARES_X; j++)
+			for( int j = 0; j < level_terrain.SQUARES_X; j++) {
 				terrain.addSquareTerrain(
 						new Vector2i( j, i ),
 						level_terrain.terrain[inverse - i][j],
 						getSquareTextureName( level_terrain.terrain[inverse - i][j] ) );
+
+				if( level_terrain.explored[inverse - i][j] == Terrain.EXPLORED )
+					terrain.exploreSquare( j, i );
+			}
 
 		return terrain;
 	}

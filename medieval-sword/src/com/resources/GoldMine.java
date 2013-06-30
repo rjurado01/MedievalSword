@@ -20,6 +20,7 @@ public class GoldMine extends ResourceStructure {
 		this.texture_name = "goldMine";
 		this.size = new Vector2i( 100, 100 );
 		this.square_use_number = new Vector2i( 1, -1 );
+		this.vision = 5;
 		//this.position_correction = new Vector2i( -14, 0 );
 
 		createActor();

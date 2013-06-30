@@ -74,6 +74,10 @@ public class HeroTop {
 		hero.actual_mobility = hero.mobility;
 	}
 
+	public void setActualMobility( int actual_mobility ) {
+		hero.actual_mobility = actual_mobility;
+	}
+
 	public int getPower() {
 		return hero.power;
 	}
@@ -168,5 +172,9 @@ public class HeroTop {
 
 	public List<Vector2i> getPathMarked() {
 		return path_marked;
+	}
+
+	public int getVision() {
+		return hero.vision;
 	}
 }
