@@ -6,6 +6,7 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Assets;
+import com.game.Player;
 import com.utils.Vector2i;
 
 public class Terrain {
@@ -199,5 +200,11 @@ public class Terrain {
 	 */
 	public void explore( Vector2i square, int diagonal, MiniMap mini_map ) {
 		explore( square, new Vector2i(1,1), diagonal, mini_map );
+	}
+
+	public void addStructure(Vector2i position, Vector2i size, Player owner) {
+		for( int y = position.y; y < position.y + size.y; y++ )
+			for( int x = position.x; x < position.x + size.x; x++ )
+				terrain[y][x].setStructure( owner );
 	}
 }

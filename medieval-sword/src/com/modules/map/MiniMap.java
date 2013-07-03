@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Assets;
 import com.game.Constants;
+import com.game.Player;
 import com.utils.Vector2i;
 
 public class MiniMap extends Group {
@@ -18,6 +19,7 @@ public class MiniMap extends Group {
 	public static final int BLUE = 4;
 	public static final int RED = 5;
 	public static final int GREY = 6;
+	public static final int WHITE = 7;
 	
 	final float WIDTH = 75.2f;
 	final float HEIGHT = 80;
@@ -71,5 +73,28 @@ public class MiniMap extends Group {
 		
 		mini_map[number.y][number.x].setRegion(
 		  new TextureRegion( Assets.minimap_textures.get( square.getMiniMapColor() ) ) );
+	}
+
+	public void drawStructure(Vector2i position, Vector2i size, Player owner) {
+		for( int y = position.y; y < position.y + size.y; y++ )
+			for( int x = position.x; x < position.x + size.x; x++ )
+				mini_map[y][x].setRegion( getOwnerTexture( owner) );
+	}
+
+	private TextureRegion getOwnerTexture( Player owner ) {
+		if( owner == null )
+			return new TextureRegion( Assets.minimap_textures.get( WHITE ) );
+		else if( owner.color == Constants.BLUE )
+			return new TextureRegion( Assets.minimap_textures.get( BLUE ) );
+		else if( owner.color == Constants.RED )
+			return new TextureRegion( Assets.minimap_textures.get( RED ) );
+		else
+			return null;
+	}
+
+	public void updateRange(Vector2i position, Vector2i size ) {
+		for( int y = position.y; y < position.y + size.y; y++ )
+			for( int x = position.x; x < position.x + size.x; x++ )
+				updatePosition( new Vector2i( x, y ) );
 	}
 }

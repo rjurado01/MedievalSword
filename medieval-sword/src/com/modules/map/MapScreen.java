@@ -115,8 +115,14 @@ public class MapScreen implements Screen {
 	private void loadStructures() {
 		terrain.resource_structures = parser.getResourceStructures( players, level );
 
-		for( ResourceStructure structure : terrain.resource_structures )
+		for( ResourceStructure structure : terrain.resource_structures ) {
 			terrain_stage.addActor( structure.getActor() );
+
+			terrain.addStructure(
+					structure.square_position_number,
+					structure.squares_size,
+					structure.owner );
+		}
 	}
 
 	private void loadResourcePiles() {

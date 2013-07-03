@@ -68,52 +68,56 @@ public class Assets {
 	
 	private static void loadMiniMapTextures() {
 		minimap_textures = new HashMap<Integer, Texture>();
-		
+
 		Pixmap pixmap = new Pixmap( 2, 2, Format.RGBA8888 );
 
         pixmap.setColor( Color.BLACK );
         pixmap.fillRectangle(0, 0, 2, 2);
 		minimap_textures.put( MiniMap.FOG,  new Texture( pixmap, Format.RGB888, false ) );
-		
+
+        pixmap.setColor( Color.WHITE );
+        pixmap.fillRectangle(0, 0, 2, 2);
+		minimap_textures.put( MiniMap.WHITE,  new Texture( pixmap, Format.RGB888, false ) );
+
         pixmap.setColor( new Color(0.68f, 0.25f, 0.13f, 1) );
         pixmap.fillRectangle(0, 0, 2, 2);
 		minimap_textures.put( MiniMap.ROAD,  new Texture( pixmap, Format.RGB888, false ) );
-		
+
         pixmap.setColor(Color.BLUE);
         pixmap.fillRectangle(0, 0, 2, 2);
         minimap_textures.put( MiniMap.WHATER,  new Texture( pixmap, Format.RGB888, false ) );
-        
+
         pixmap.setColor( new Color(0.2f, 1, 0.2f, 1));
         pixmap.fillRectangle(0, 0, 2, 2);
         minimap_textures.put( MiniMap.GRASS,  new Texture( pixmap, Format.RGB888, false ) );
-        
+
         pixmap.setColor( Color.GRAY );
         pixmap.fillRectangle(0, 0, 2, 2);
         minimap_textures.put( MiniMap.GREY,  new Texture( pixmap, Format.RGB888, false ) );
-        
+
         pixmap.setColor( Color.CYAN );
         pixmap.fillRectangle(0, 0, 2, 2);
         minimap_textures.put( MiniMap.BLUE,  new Texture( pixmap, Format.RGB888, false ) );
-        
+
         pixmap.setColor( Color.RED );
         pixmap.fillRectangle(0, 0, 2, 2);
         minimap_textures.put( MiniMap.RED,  new Texture( pixmap, Format.RGB888, false ) );
 	}
-	
+
 	public Skin getSkin() {
 		return skin;
 	}
-	
+
 	public static Level getLevel( int level_number ) {
 		Gson gson = new Gson();
-		
+
 		String file = "levels/level" + Integer.toString( level_number ) + ".json";
 		Level level = gson.fromJson( Gdx.files.internal( file ).readString(), Level.class ); 
 
 		return level;
 	}
-	
-	
+
+
 	/** public static void saveLevel() {
 		Gson gson = new Gson();
 		Gdx.files.local( "save.txt" ).writeString( "level", true );

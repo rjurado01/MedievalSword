@@ -10,13 +10,16 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
 import com.game.Assets;
 import com.game.Constants;
+import com.game.Player;
 import com.utils.Vector2i;
 
 public class SquareTerrain extends Group {
 	
 	public static int HEIGHT = 40;
 	public static int WIDTH = 40;
-	
+
+	static int NO_COLOR = -1;
+
 	/* TYPES */
 	static final int GRASS = 0;
 	static final int WATHER = 1;
@@ -27,11 +30,13 @@ public class SquareTerrain extends Group {
 	static final int HERO_PLAYER_1 = 1;
 	static final int CREATURES_GROUP = 2;
 	static final int RESOURCE_PILE = 3;
+	static final int RESOURCE_STRUCTURE = 4;
 	
 	boolean visible = true;
 	
 	int type;
 	int status;
+	int color;
 	
 	Vector2i number;
 	Image image;
@@ -153,6 +158,14 @@ public class SquareTerrain extends Group {
 		}
 		else if( hasCreaturesGroup() ) {
 			return MiniMap.GREY; }
+		else if( status == RESOURCE_STRUCTURE ) {
+			if( color == Constants.RED )
+				return MiniMap.RED;
+			else if( color == Constants.BLUE )
+				return MiniMap.BLUE;
+			else
+				return MiniMap.WHITE;
+		}
 		else
 			return MiniMap.GRASS;
 	}
@@ -178,4 +191,13 @@ public class SquareTerrain extends Group {
 		visible = true;
 		fog.remove();
 	}
- }
+
+	public void setStructure(Player owner) {
+		status = RESOURCE_STRUCTURE;
+
+		if( owner == null )
+			color = NO_COLOR;
+		else
+			color = owner.color;
+	}
+}

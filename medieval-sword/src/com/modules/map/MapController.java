@@ -466,11 +466,21 @@ public class MapController {
 	 */
 	private void captureResourceStructure() {
 		selected_resource_structure.use( players.get(turn) );
+
 		terrain.explore(
 				selected_resource_structure.square_position_number,
 				selected_resource_structure.squares_size,
 				selected_resource_structure.vision,
 				hud.getMiniMap() );
+
+		terrain.addStructure(
+				selected_resource_structure.square_position_number,
+				selected_resource_structure.squares_size,
+				selected_resource_structure.owner );
+
+		hud.getMiniMap().updateRange(
+				selected_resource_structure.square_position_number,
+				selected_resource_structure.squares_size );
 	}
 
 	private void checkResourcePileEvent( ResourcePile pile ) {
