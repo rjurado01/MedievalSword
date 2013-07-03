@@ -28,7 +28,7 @@ public class SquareTerrain extends Group {
 	static final int CREATURES_GROUP = 2;
 	static final int RESOURCE_PILE = 3;
 	
-	boolean visible = false;
+	boolean visible = true;
 	
 	int type;
 	int status;
@@ -96,6 +96,13 @@ public class SquareTerrain extends Group {
 			return false;
 	}
 
+	public boolean isMinimapRoad() {
+		if( type == Terrain.ROAD && ( status == FREE || status == RESOURCE_PILE ) )
+			return true;
+		else
+			return false;
+	}
+
 	public boolean hasCreaturesGroup() {
 		if( status == CREATURES_GROUP )
 			return true;
@@ -132,7 +139,9 @@ public class SquareTerrain extends Group {
 	 * Check if this square has any player hero or player structure
 	 */
 	public int getMiniMapColor() {
-		if( isRoadAvailable() )
+		if( !visible )
+			return MiniMap.FOG;
+		else if( isMinimapRoad() )
 			return MiniMap.ROAD;
 		else if( type == SquareTerrain.WATHER )
 			return MiniMap.WHATER;
@@ -154,6 +163,8 @@ public class SquareTerrain extends Group {
 	}
 
 	public void setFog( Stage stage ) {
+		visible = false;
+
 		fog = new Image( Assets.getTextureRegion( "greyBackground" ) );
 		fog.width = width;
 		fog.height = height;
@@ -164,6 +175,7 @@ public class SquareTerrain extends Group {
 	}
 
 	public void exprlore() {
+		visible = true;
 		fog.remove();
 	}
  }

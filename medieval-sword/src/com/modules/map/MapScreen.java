@@ -57,8 +57,8 @@ public class MapScreen implements Screen {
 		loadPlayers();
 		loadStructures();
 		loadResourcePiles();
-		loadHUD();
 		loadFog();
+		loadHUD();
 
 		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
 		//hud_stage.addActor( mini_map );

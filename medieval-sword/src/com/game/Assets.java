@@ -70,9 +70,13 @@ public class Assets {
 		minimap_textures = new HashMap<Integer, Texture>();
 		
 		Pixmap pixmap = new Pixmap( 2, 2, Format.RGBA8888 );
+
+        pixmap.setColor( Color.BLACK );
+        pixmap.fillRectangle(0, 0, 2, 2);
+		minimap_textures.put( MiniMap.FOG,  new Texture( pixmap, Format.RGB888, false ) );
+		
         pixmap.setColor( new Color(0.68f, 0.25f, 0.13f, 1) );
         pixmap.fillRectangle(0, 0, 2, 2);
-		
 		minimap_textures.put( MiniMap.ROAD,  new Texture( pixmap, Format.RGB888, false ) );
 		
         pixmap.setColor(Color.BLUE);

@@ -11,12 +11,13 @@ import com.utils.Vector2i;
 
 public class MiniMap extends Group {
 	
-	public static final int GRASS = 0;
-	public static final int WHATER = 1;
-	public static final int ROAD = 2;
-	public static final int BLUE = 3;
-	public static final int RED = 4;
-	public static final int GREY = 5;
+	public static final int FOG = 0;
+	public static final int GRASS = 1;
+	public static final int WHATER = 2;
+	public static final int ROAD = 3;
+	public static final int BLUE = 4;
+	public static final int RED = 5;
+	public static final int GREY = 6;
 	
 	final float WIDTH = 75.2f;
 	final float HEIGHT = 80;
@@ -34,7 +35,8 @@ public class MiniMap extends Group {
 		
 		pixel_width = WIDTH / terrain.SQUARES_X;
 		pixel_height = HEIGHT / terrain.SQUARES_Y;
-		position = new Vector2( 2.5f, Constants.HUD_HEIGHT - ( pixel_height * terrain.SQUARES_Y ) - 12f );
+		position = new Vector2( 2.5f,
+				Constants.HUD_HEIGHT - ( pixel_height * terrain.SQUARES_Y ) - 12f );
 		
 		createMiniMap( terrain );
 	}
@@ -46,7 +48,8 @@ public class MiniMap extends Group {
 			mini_map[i] = new Image[ terrain.SQUARES_X ];
 			
 			for( int j = 0; j < terrain.SQUARES_X; j++ ) {
-				mini_map[i][j] = createItemImage( terrain.getSquareTerrain( new Vector2i( j, i ) ) );
+				mini_map[i][j] = createItemImage(
+						terrain.getSquareTerrain( new Vector2i( j, i ) ) );
 			}
 		}
 	}

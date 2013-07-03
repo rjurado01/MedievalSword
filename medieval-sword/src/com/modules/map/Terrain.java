@@ -170,8 +170,9 @@ public class Terrain {
 	 * @param size right-top increase diagonal
 	 * (use for elements who occupy more than one square)
 	 * @param diagonal diagonal number of squares (diagonal) of area
+	 * @param mini_map
 	 */
-	public void explore( Vector2i square, Vector2i size, int diagonal ) {
+	public void explore( Vector2i square, Vector2i size, int diagonal, MiniMap mini_map ) {
 		int radius = diagonal / 2;
 		int y, x;
 
@@ -184,6 +185,8 @@ public class Terrain {
 						explored[y][x] == DARK ) {
 					explored[y][x] = EXPLORED;
 					terrain[y][x].exprlore();
+
+					mini_map.updatePosition( new Vector2i( x, y ) );
 				}
 			}
 	}
@@ -192,8 +195,9 @@ public class Terrain {
 	 * Remove fog from a terrain area
 	 * @param square center of area
 	 * @param diagonal number of squares (diagonal) of area
+	 * @param mini_map
 	 */
-	public void explore( Vector2i square, int diagonal ) {
-		explore( square, new Vector2i(1,1), diagonal );
+	public void explore( Vector2i square, int diagonal, MiniMap mini_map ) {
+		explore( square, new Vector2i(1,1), diagonal, mini_map );
 	}
 }

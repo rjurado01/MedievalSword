@@ -239,7 +239,8 @@ public class MapController {
 				Vector2i prev_square_number = selected_hero.getSquareTerrain().getNumber();
 				SquareTerrain actual_square = terrain.getSquareTerrain( hero_path.getFirstElement() );
 
-				terrain.explore( hero_path.getFirstElement(), selected_hero.getVision() );
+				terrain.explore( hero_path.getFirstElement(),
+						selected_hero.getVision(), hud.getMiniMap() );
 
 				selected_hero.setSquareTerrain( actual_square );
 				hero_path.removeFirstElement();
@@ -448,7 +449,7 @@ public class MapController {
 	}
 
 	private boolean isHeroOnStructureSquare() {
-		return selected_resource_structure.getUseSquareNumber().equal(
+		return selected_resource_structure.getUseSquareNumber().equal( 
 				selected_hero.getSquareTerrain().getNumber() );
 	}
 
@@ -468,7 +469,8 @@ public class MapController {
 		terrain.explore(
 				selected_resource_structure.square_position_number,
 				selected_resource_structure.squares_size,
-				selected_resource_structure.vision );
+				selected_resource_structure.vision,
+				hud.getMiniMap() );
 	}
 
 	private void checkResourcePileEvent( ResourcePile pile ) {
