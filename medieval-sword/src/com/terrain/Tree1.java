@@ -1,7 +1,7 @@
 package com.terrain;
 
 import com.modules.map.MapConstants;
-import com.modules.map.MapObject;
+import com.modules.map.terrain.MapObject;
 import com.utils.Vector2i;
 
 public class Tree1 extends MapObject {

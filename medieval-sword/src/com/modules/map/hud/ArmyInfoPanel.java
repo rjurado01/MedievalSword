@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.hud;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +13,9 @@ import com.game.Army;
 import com.game.Assets;
 import com.game.Constants;
 import com.modules.battle.BattleSummaryStack;
+import com.modules.map.MapController;
+import com.modules.map.heroes.CreaturesGroup;
+import com.modules.map.heroes.HeroTop;
 
 public class ArmyInfoPanel extends Group {
 	final int SIZE_H = 180;
@@ -58,19 +61,18 @@ public class ArmyInfoPanel extends Group {
 		alpha = new Image( Assets.getTextureRegion( "greyBackground" ) );
 		alpha.height = Constants.SIZE_H;
 		alpha.width = Constants.SIZE_W;
-		alpha.color.a = 0.5f;
-		
-		
+		alpha.color.a = 0.5f;		
+
 		alpha.setClickListener( new ClickListener() {	
 			public void click(Actor actor, float x, float y) {
 				removePanel();
-				MapController.status = MapController.NORMAL;
+				MapController.enableEvents();
 			}
 		});
-		
+
 		this.addActor( alpha );
 	}
-	
+
 	private void createBackgroundImage() {
 		background = new Image( Assets.getTextureRegion( "menu" ) );
 		background.height = SIZE_H;

@@ -1,7 +1,11 @@
-package com.modules.map;
+package com.modules.map.heroes;
 
 import java.util.List;
 
+import com.modules.map.MapController;
+import com.modules.map.terrain.PathFinder;
+import com.modules.map.terrain.SquareTerrain;
+import com.modules.map.terrain.Terrain;
 import com.utils.Vector2i;
 
 /**

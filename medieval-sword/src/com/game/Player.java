@@ -1,7 +1,7 @@
 package com.game;
 
 import com.badlogic.gdx.utils.Array;
-import com.modules.map.HeroTop;
+import com.modules.map.heroes.HeroTop;
 
 /**
  * This class represent each player and all this features.

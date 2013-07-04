@@ -1,6 +1,6 @@
 package com.level;
 
-import com.modules.map.Terrain;
+import com.modules.map.terrain.Terrain;
 import com.utils.Vector2i;
 
 public class TerrainParser {

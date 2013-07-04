@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.heroes;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -8,6 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
 import com.game.Constants;
 import com.game.Unit;
+import com.modules.map.MapConstants;
+import com.modules.map.MapController;
+import com.modules.map.terrain.SquareTerrain;
 
 public class CreaturesGroup {
 	private Army army;

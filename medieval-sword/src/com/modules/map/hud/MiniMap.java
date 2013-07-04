@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.hud;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Assets;
 import com.game.Constants;
 import com.game.Player;
+import com.modules.map.terrain.SquareTerrain;
+import com.modules.map.terrain.Terrain;
 import com.utils.Vector2i;
 
 public class MiniMap extends Group {

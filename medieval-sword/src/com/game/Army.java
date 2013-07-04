@@ -15,7 +15,6 @@ public class Army {
 	final int LEFT_SIDE = 2;
 	
 	ArrayList<Stack> stacks;
-	Hero hero;
 	
 	int battle_side;
 	int selected_stack;
@@ -23,10 +22,6 @@ public class Army {
 
 	public Army() {
 		stacks = new ArrayList<Stack>( N_STACKS );
-	}
-	
-	public void setHero( Hero hero ) {
-		this.hero = hero;
 	}
 	
 	/**

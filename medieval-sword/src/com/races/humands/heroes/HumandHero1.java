@@ -1,8 +1,8 @@
 package com.races.humands.heroes;
 
 import com.game.Constants;
-import com.modules.map.Hero;
-import com.modules.map.HeroTop;
+import com.modules.map.heroes.Hero;
+import com.modules.map.heroes.HeroTop;
 import com.utils.CustomAnimation;
 import com.utils.Vector2i;
 

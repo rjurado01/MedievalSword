@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.terrain;
 
 
 import java.util.ArrayList;

@@ -1,9 +1,11 @@
-package com.modules.map;
+package com.modules.map.heroes;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.modules.map.MapConstants;
+import com.modules.map.MapController;
 import com.utils.Vector2i;
 
 public class HeroView extends Image {

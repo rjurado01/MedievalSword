@@ -1,7 +1,7 @@
 package com.resources;
 
 import com.game.Player;
-import com.modules.map.ResourceStructure;
+import com.modules.map.terrain.ResourceStructure;
 import com.utils.Vector2i;
 
 public class StoneMine extends ResourceStructure{

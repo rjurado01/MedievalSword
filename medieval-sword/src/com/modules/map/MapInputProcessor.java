@@ -5,6 +5,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Constants;
+import com.modules.map.hud.HUD;
+import com.modules.map.terrain.Terrain;
 
 public class MapInputProcessor implements InputProcessor {
 	

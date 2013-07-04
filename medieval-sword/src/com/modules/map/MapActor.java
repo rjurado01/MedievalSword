@@ -2,6 +2,8 @@ package com.modules.map;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Assets;
+import com.modules.map.terrain.MapObject;
+import com.modules.map.terrain.SquareTerrain;
 import com.utils.Vector2i;
 
 public class MapActor {

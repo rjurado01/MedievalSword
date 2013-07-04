@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.heroes;
 
 import java.util.ArrayList;
 import java.util.HashMap;

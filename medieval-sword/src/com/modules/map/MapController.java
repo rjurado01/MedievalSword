@@ -14,6 +14,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.game.Constants;
 import com.game.MyGdxGame;
 import com.game.Player;
+import com.modules.map.heroes.CreaturesGroup;
+import com.modules.map.heroes.HeroPath;
+import com.modules.map.heroes.HeroTop;
+import com.modules.map.heroes.HeroView;
+import com.modules.map.hud.ArmyInfoPanel;
+import com.modules.map.hud.HUD;
+import com.modules.map.terrain.ResourcePile;
+import com.modules.map.terrain.ResourceStructure;
+import com.modules.map.terrain.SquareTerrain;
+import com.modules.map.terrain.Terrain;
 import com.utils.HeroViewAccessor;
 import com.utils.StackViewAccessor;
 import com.utils.Vector2i;
@@ -67,7 +77,7 @@ public class MapController {
 	 * @param type event type
 	 * @param receiver object that has received the event
 	 */
-	static void addEvent( int type, Object receiver ) {
+	public static void addEvent( int type, Object receiver ) {
 		if( typeEvent == MapConstants.NONE && status == NORMAL  ) {
 			typeEvent = type;
 			objectEvent = receiver;
@@ -77,6 +87,10 @@ public class MapController {
 			typeEvent = type;
 			objectEvent = receiver;
 		}
+	}
+	
+	public static void enableEvents() {
+		status = NORMAL;
 	}
 
 	public void update() {
@@ -181,8 +195,8 @@ public class MapController {
 			SquareTerrain square = hero_path.getLastSquareTerrain();
 
 			if( square.hasCreaturesGroup() ) {
-				selected_group = square.group;
-				hud.selectEnemy( square.group );
+				selected_group = square.getGroup() ;
+				hud.selectEnemy( selected_group );
 			}
 		}
 	}
@@ -239,8 +253,7 @@ public class MapController {
 				Vector2i prev_square_number = selected_hero.getSquareTerrain().getNumber();
 				SquareTerrain actual_square = terrain.getSquareTerrain( hero_path.getFirstElement() );
 
-				terrain.explore( hero_path.getFirstElement(),
-						selected_hero.getVision(), hud.getMiniMap() );
+				terrain.explore( hero_path.getFirstElement(), selected_hero.getVision() );
 
 				selected_hero.setSquareTerrain( actual_square );
 				hero_path.removeFirstElement();
@@ -463,24 +476,11 @@ public class MapController {
 
 	/**
 	 * Selected hero capture resource structure
+	 * Explore map and update mini_map.
 	 */
 	private void captureResourceStructure() {
 		selected_resource_structure.use( players.get(turn) );
-
-		terrain.explore(
-				selected_resource_structure.square_position_number,
-				selected_resource_structure.squares_size,
-				selected_resource_structure.vision,
-				hud.getMiniMap() );
-
-		terrain.addStructure(
-				selected_resource_structure.square_position_number,
-				selected_resource_structure.squares_size,
-				selected_resource_structure.owner );
-
-		hud.getMiniMap().updateRange(
-				selected_resource_structure.square_position_number,
-				selected_resource_structure.squares_size );
+		terrain.captureStructure( selected_resource_structure );
 	}
 
 	private void checkResourcePileEvent( ResourcePile pile ) {

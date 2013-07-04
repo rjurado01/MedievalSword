@@ -16,6 +16,13 @@ import com.game.Player;
 import com.game.Unit;
 import com.level.Level;
 import com.level.Parser;
+import com.modules.map.heroes.CreaturesGroup;
+import com.modules.map.heroes.HeroTop;
+import com.modules.map.hud.HUD;
+import com.modules.map.terrain.MapObjectsTypes;
+import com.modules.map.terrain.ResourcePile;
+import com.modules.map.terrain.ResourceStructure;
+import com.modules.map.terrain.Terrain;
 import com.races.humands.units.Archer;
 import com.races.humands.units.Villager;
 
@@ -75,9 +82,9 @@ public class MapScreen implements Screen {
 	private void loadMapObjects() {
 		MapObjectsTypes object_types = new MapObjectsTypes();
 
-		terrain.objects = parser.getMapObjects( level, object_types );
+		terrain.setObjects(parser.getMapObjects( level, object_types ));
 
-		for( MapActor object : terrain.objects )
+		for( MapActor object : terrain.getObjects() )
 			terrain_stage.addActor( object.getActor() );
 	}
 
@@ -87,6 +94,8 @@ public class MapScreen implements Screen {
 		hud.updateGold( humand_player.gold );
 		hud.updateWood( humand_player.wood );
 		hud.updateStone( humand_player.stone );
+		
+		terrain.setMiniMap( hud.getMiniMap() );
 	}
 	
 	private void loadMapUnits() {
@@ -113,22 +122,18 @@ public class MapScreen implements Screen {
 	}
 
 	private void loadStructures() {
-		terrain.resource_structures = parser.getResourceStructures( players, level );
+		terrain.setResourceStructures(parser.getResourceStructures( players, level ));
 
-		for( ResourceStructure structure : terrain.resource_structures ) {
+		for( ResourceStructure structure : terrain.getResourceStructures() ) {
 			terrain_stage.addActor( structure.getActor() );
-
-			terrain.addStructure(
-					structure.square_position_number,
-					structure.squares_size,
-					structure.owner );
+			terrain.addStructure( structure );
 		}
 	}
 
 	private void loadResourcePiles() {
-		terrain.resource_piles = parser.getResourcePiles( level );
+		terrain.setResourcePiles( parser.getResourcePiles( level ) );
 
-		for( ResourcePile pile : terrain.resource_piles ) {
+		for( ResourcePile pile : terrain.getResourcePiles() ) {
 			terrain.getSquareTerrain(
 					pile.square_position_number ).setResourcePileStatus();
 			terrain_stage.addActor( pile.getActor() );

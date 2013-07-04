@@ -21,7 +21,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 import com.google.gson.Gson;
 import com.level.Level;
-import com.modules.map.MiniMap;
+import com.modules.map.hud.MiniMap;
 
 /**
  * Contain all textures of game and skins

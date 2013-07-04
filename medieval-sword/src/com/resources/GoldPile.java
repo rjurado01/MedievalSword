@@ -1,7 +1,7 @@
 package com.resources;
 
 import com.game.Player;
-import com.modules.map.ResourcePile;
+import com.modules.map.terrain.ResourcePile;
 import com.utils.Vector2i;
 
 public class GoldPile extends ResourcePile {

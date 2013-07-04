@@ -1,8 +1,9 @@
-package com.modules.map;
+package com.modules.map.terrain;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.modules.map.MapConstants;
 import com.terrain.Mountain1;
 import com.terrain.Rock1;
 import com.terrain.Rock2;
@@ -15,7 +16,7 @@ import com.terrain.TreeDry2;
 public class MapObjectsTypes {
 	Map<Integer, MapObject> objects;
 	
-	MapObjectsTypes() {
+	public MapObjectsTypes() {
 		objects = new HashMap<Integer, MapObject>();
 		
 		objects.put( MapConstants.TREE_1, new Tree1() );

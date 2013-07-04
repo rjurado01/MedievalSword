@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.heroes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.game.Army;
 import com.game.Player;
 import com.game.Stack;
+import com.modules.map.terrain.SquareTerrain;
 import com.utils.CustomAnimation;
 import com.utils.Vector2i;
 

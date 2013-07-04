@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.terrain;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;

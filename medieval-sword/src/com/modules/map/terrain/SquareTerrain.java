@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.terrain;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +11,11 @@ import com.game.Army;
 import com.game.Assets;
 import com.game.Constants;
 import com.game.Player;
+import com.modules.map.MapConstants;
+import com.modules.map.MapController;
+import com.modules.map.heroes.CreaturesGroup;
+import com.modules.map.heroes.HeroTop;
+import com.modules.map.hud.MiniMap;
 import com.utils.Vector2i;
 
 public class SquareTerrain extends Group {
@@ -138,6 +143,10 @@ public class SquareTerrain extends Group {
 
 	public int getType() {
 		return type;
+	}
+	
+	public CreaturesGroup getGroup() {
+		return group;
 	}
 
 	/**

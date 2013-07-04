@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.terrain;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,8 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Assets;
-import com.game.Player;
+import com.modules.map.MapActor;
+import com.modules.map.hud.MiniMap;
 import com.utils.Vector2i;
 
 public class Terrain {
@@ -26,9 +27,10 @@ public class Terrain {
 	public int SQUARES_Y;
 
 	ArrayList<SquarePath> path_drawn;
-	List<ResourceStructure> resource_structures;
-	List<ResourcePile> resource_piles;
-	List<MapActor> objects;
+	private List<ResourceStructure> resource_structures;
+	private List<ResourcePile> resource_piles;
+	private List<MapActor> objects;
+	MiniMap mini_map;
 
 	SquareTerrain terrain[][];
 	int explored[][];
@@ -43,6 +45,10 @@ public class Terrain {
 		initializeTerrain();
 
 		path_drawn = new ArrayList<SquarePath>();
+	}
+	
+	public void setMiniMap( MiniMap mini_map ) {
+		this.mini_map = mini_map;
 	}
 
 	private void initializeTerrain() {
@@ -147,7 +153,7 @@ public class Terrain {
 	}
 	
 	public void passTurn() {
-		for( ResourceStructure structure : resource_structures )
+		for( ResourceStructure structure : getResourceStructures() )
 			structure.turnAction();
 	}
 
@@ -173,7 +179,7 @@ public class Terrain {
 	 * @param diagonal diagonal number of squares (diagonal) of area
 	 * @param mini_map
 	 */
-	public void explore( Vector2i square, Vector2i size, int diagonal, MiniMap mini_map ) {
+	public void explore( Vector2i square, Vector2i size, int diagonal ) {
 		int radius = diagonal / 2;
 		int y, x;
 
@@ -198,13 +204,62 @@ public class Terrain {
 	 * @param diagonal number of squares (diagonal) of area
 	 * @param mini_map
 	 */
-	public void explore( Vector2i square, int diagonal, MiniMap mini_map ) {
-		explore( square, new Vector2i(1,1), diagonal, mini_map );
+	public void explore( Vector2i square, int diagonal ) {
+		explore( square, new Vector2i(1,1), diagonal );
 	}
 
-	public void addStructure(Vector2i position, Vector2i size, Player owner) {
+	/**
+	 * Update terrain squares where there is a structure
+	 * @param structure
+	 */
+	public void addStructure( ResourceStructure structure ) {
+		Vector2i position = structure.square_position_number;
+		Vector2i size = structure.squares_size;
+
 		for( int y = position.y; y < position.y + size.y; y++ )
 			for( int x = position.x; x < position.x + size.x; x++ )
-				terrain[y][x].setStructure( owner );
+				terrain[y][x].setStructure( structure.owner );
+	}
+
+	/**
+	 * Update structure squares with the owner color so that mini_map will be updated
+	 * Also, explore map into the vision range of structure 
+	 * @param structure
+	 */
+	public void captureStructure( ResourceStructure structure ) {
+		Vector2i position = structure.square_position_number;
+		Vector2i size = structure.squares_size;
+
+		explore( position, size, structure.vision );
+
+		for( int y = position.y; y < position.y + size.y; y++ )
+			for( int x = position.x; x < position.x + size.x; x++ ) {
+					terrain[y][x].setStructure( structure.owner );
+					mini_map.updatePosition( new Vector2i(x,y) );
+			}
+	}
+
+	public List<MapActor> getObjects() {
+		return objects;
+	}
+
+	public void setObjects( List<MapActor> objects ) {
+		this.objects = objects;
+	}
+	
+	public List<ResourcePile> getResourcePiles() {
+		return resource_piles;
+	}
+
+	public void setResourcePiles( List<ResourcePile> resource_piles ) {
+		this.resource_piles = resource_piles;
+	}
+
+	public List<ResourceStructure> getResourceStructures() {
+		return resource_structures;
+	}
+
+	public void setResourceStructures(List<ResourceStructure> resource_structures) {
+		this.resource_structures = resource_structures;
 	}
 }

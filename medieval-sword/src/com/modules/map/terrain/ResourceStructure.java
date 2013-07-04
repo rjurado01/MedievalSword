@@ -1,7 +1,9 @@
-package com.modules.map;
+package com.modules.map.terrain;
 
 import com.game.Assets;
 import com.game.Player;
+import com.modules.map.MapConstants;
+import com.modules.map.MapController;
 import com.utils.Vector2i;
 
 public abstract class ResourceStructure extends Structure {

@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.hud;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,6 +12,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.game.Assets;
 import com.game.Constants;
+import com.modules.map.MapConstants;
+import com.modules.map.MapController;
+import com.modules.map.heroes.CreaturesGroup;
+import com.modules.map.heroes.HeroTop;
+import com.modules.map.terrain.Terrain;
 
 /**
  * Show HUD in the map screen at left

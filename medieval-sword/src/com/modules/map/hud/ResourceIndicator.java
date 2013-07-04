@@ -1,4 +1,4 @@
-package com.modules.map;
+package com.modules.map.hud;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Group;
