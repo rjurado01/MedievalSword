@@ -478,51 +478,58 @@ game2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+castle1
+  rotate: false
+  xy: 1, 300
+  size: 187, 192
+  orig: 187, 192
+  offset: 0, 0
+  index: -1
 goldMine
   rotate: false
-  xy: 333, 102
+  xy: 190, 299
   size: 97, 96
   orig: 97, 96
   offset: 0, 0
   index: -1
 goldMine0
   rotate: false
-  xy: 115, 1
+  xy: 304, 396
   size: 97, 96
   orig: 97, 96
   offset: 0, 0
   index: -1
 goldMine1
   rotate: false
-  xy: 214, 1
+  xy: 403, 396
   size: 97, 96
   orig: 97, 96
   offset: 0, 0
   index: -1
 sawmill
   rotate: false
-  xy: 1, 103
+  xy: 1, 203
   size: 112, 95
   orig: 112, 95
   offset: 0, 0
   index: -1
 sawmill1
   rotate: false
-  xy: 1, 6
+  xy: 190, 397
   size: 112, 95
   orig: 112, 95
   offset: 0, 0
   index: -1
 stoneMine
   rotate: false
-  xy: 115, 99
+  xy: 1, 102
   size: 107, 99
   orig: 107, 99
   offset: 0, 0
   index: -1
 stoneMine1
   rotate: false
-  xy: 224, 99
+  xy: 1, 1
   size: 107, 99
   orig: 107, 99
   offset: 0, 0
@@ -712,3 +719,92 @@ HeroOne31
   orig: 43, 64
   offset: 0, 0
   index: 3
+  
+game5.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+archery
+  rotate: false
+  xy: 1, 381
+  size: 192, 130
+  orig: 192, 130
+  offset: 0, 0
+  index: 1
+barracks
+  rotate: false
+  xy: 1, 249
+  size: 192, 130
+  orig: 192, 130
+  offset: 0, 0
+  index: 1
+botBuild
+  rotate: false
+  xy: 1, 59
+  size: 192, 56
+  orig: 192, 56
+  offset: 0, 0
+  index: 1
+botBuild
+  rotate: false
+  xy: 1, 1
+  size: 192, 56
+  orig: 192, 56
+  offset: 0, 0
+  index: 2
+botBuild
+  rotate: false
+  xy: 583, 455
+  size: 192, 56
+  orig: 192, 56
+  offset: 0, 0
+  index: 3
+botBuild
+  rotate: false
+  xy: 389, 191
+  size: 192, 56
+  orig: 192, 56
+  offset: 0, 0
+  index: 4
+castle
+  rotate: false
+  xy: 195, 381
+  size: 192, 130
+  orig: 192, 130
+  offset: 0, 0
+  index: 1
+farm
+  rotate: false
+  xy: 1, 117
+  size: 192, 130
+  orig: 192, 130
+  offset: 0, 0
+  index: 1
+monastery
+  rotate: false
+  xy: 195, 249
+  size: 192, 130
+  orig: 192, 130
+  offset: 0, 0
+  index: 1
+stables
+  rotate: false
+  xy: 389, 381
+  size: 192, 130
+  orig: 192, 130
+  offset: 0, 0
+  index: 1
+tavern
+  rotate: false
+  xy: 195, 117
+  size: 192, 130
+  orig: 192, 130
+  offset: 0, 0
+  index: 1
+townhall
+  rotate: false
+  xy: 389, 249
+  size: 192, 130
+  orig: 192, 130
+  offset: 0, 0
+  index: 1

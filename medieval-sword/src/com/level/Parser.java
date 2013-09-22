@@ -2,12 +2,15 @@ package com.level;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
+import com.castles.Castle1;
 import com.game.Army;
+import com.game.Assets;
 import com.game.Player;
 import com.game.Stack;
 import com.game.Unit;
+import com.modules.castle.Castle;
+import com.modules.castle.TopCastle;
 import com.modules.map.MapActor;
 import com.modules.map.MapConstants;
 import com.modules.map.heroes.CreaturesGroup;
@@ -35,7 +38,7 @@ public class Parser {
 	public Parser() {
 	}
 
-	public HeroTop getHeroTop( Player player, Terrain terrain, Map<Integer, Unit> units,
+	public HeroTop getHeroTop( Player player, Terrain terrain,
 			LevelHero level_hero, int color ) {
 
 		HeroTop hero = null;
@@ -58,7 +61,7 @@ public class Parser {
 			if( level_hero.stacks.size() > 0 ) {
 				for( LevelStack level_stack : level_hero.stacks )
 					hero.addStack(
-							new Stack( units.get( level_stack.type ),
+							new Stack( Assets.getUnit( level_stack.type ),
 							level_stack.number, color ) );
 			}
 		}
@@ -66,18 +69,18 @@ public class Parser {
 		return hero;
 	}
 
-	public Player getPlayer(
-			Terrain terrain, Map<Integer, Unit> units, LevelPlayer level_player ) {
+	public Player getPlayer( Terrain terrain, LevelPlayer level_player ) {
 
 		Player player = new Player( level_player.color );
 
+		player.id = level_player.id;
 		player.gold = level_player.gold;
 		player.wood = level_player.wood;
 		player.stone = level_player.stone;
 
 		for( LevelHero level_hero : level_player.heroes )
 			player.addHero( getHeroTop(
-					player, terrain, units, level_hero, level_player.color ) );
+					player, terrain, level_hero, level_player.color ) );
 
 		return player;
 	}
@@ -110,27 +113,26 @@ public class Parser {
 		}
 	}
 
-	public List<CreaturesGroup> getCreaturesGroups(
-			Terrain terrain, Map<Integer, Unit> units, Level level ) {
-
+	public List<CreaturesGroup> getCreaturesGroups( Terrain terrain, Level level ) {
 		List<CreaturesGroup> groups = new ArrayList<CreaturesGroup>();
 
 		if( level.map_creatures != null )
 			for( LevelCreaturesGroup level_group : level.map_creatures )
-				groups.add( getCreatureGroup( terrain, units, level_group ) );
+				groups.add( getCreatureGroup( terrain, level_group ) );
 
 		return groups;
 	}
 
 	private CreaturesGroup getCreatureGroup(
-			Terrain terrain, Map<Integer, Unit> units, LevelCreaturesGroup level_group ) {
+			Terrain terrain, LevelCreaturesGroup level_group ) {
 
 		Army army = new Army();
 		SquareTerrain square = terrain.getSquareTerrain( level_group.square_number );
-		Unit unit = units.get( level_group.type );
+		Unit unit = Assets.getUnit( level_group.type );
 
 		for( LevelStack level_stack : level_group.stacks )
-			army.addStack( new Stack( units.get( level_stack.type ), level_stack.number, 0 ) );
+			army.addStack( new Stack(
+					Assets.getUnit( level_stack.type ), level_stack.number, 0 ) );
 
 		return new CreaturesGroup( army, square, unit  );
 	}
@@ -220,6 +222,35 @@ public class Parser {
 			}
 
 		return objects;
+	}
+
+	public List<TopCastle> getMapCastles( List<Player> players, Level level ) {
+		List<TopCastle> castles = new ArrayList<TopCastle>();
+
+		for( LevelCastle lvl_castle : level.map_castles ) {
+			TopCastle castle = new TopCastle(
+					getNewCastle( lvl_castle.type ),
+					lvl_castle.square_number,
+					getPlayerFromId( players, lvl_castle.owner ) );
+
+			for( LevelStack lvl_stack : lvl_castle.stacks )
+				castle.addUnitToArmy(
+						Assets.getUnit(lvl_stack.type), lvl_stack.number );
+
+			for( int i = 0; i < lvl_castle.number_units.length; i++  )
+				castle.setNumberUnits( i, lvl_castle.number_units[i] );
+
+			for( int i = 0; i < 8; i++ )
+				castle.initializeBuilding( i, lvl_castle.buildings_levels[i] );
+
+			castles.add( castle );
+		}
+
+		return castles;
+	}
+
+	private Castle getNewCastle( int type ) {
+		return new Castle1();
 	}
 
 }

@@ -22,7 +22,7 @@ public class CreaturesGroup {
 		this.army = army;
 		this.square = square;
 		this.unit = unit;
-		
+
 		this.image = unit.getMapImage( Constants.XL );
 		this.image.x = square.getPosition().x;
 		this.image.y = square.getPosition().y;

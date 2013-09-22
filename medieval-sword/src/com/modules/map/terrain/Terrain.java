@@ -6,8 +6,9 @@ import java.util.List;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Assets;
+import com.modules.castle.TopCastle;
 import com.modules.map.MapActor;
-import com.modules.map.hud.MiniMap;
+import com.modules.map.ui.MiniMap;
 import com.utils.Vector2i;
 
 public class Terrain {
@@ -30,6 +31,7 @@ public class Terrain {
 	private List<ResourceStructure> resource_structures;
 	private List<ResourcePile> resource_piles;
 	private List<MapActor> objects;
+	private List<TopCastle> castles;
 	MiniMap mini_map;
 
 	SquareTerrain terrain[][];
@@ -151,10 +153,13 @@ public class Terrain {
 			path_drawn.remove( 0 );
 		}
 	}
-	
-	public void passTurn() {
+
+	public void passTurn( int day ) {
 		for( ResourceStructure structure : getResourceStructures() )
 			structure.turnAction();
+
+		for( TopCastle castle : castles )
+			castle.passTurn( day );
 	}
 
 	public void exploreSquare( int x, int y ) {
@@ -261,5 +266,17 @@ public class Terrain {
 
 	public void setResourceStructures(List<ResourceStructure> resource_structures) {
 		this.resource_structures = resource_structures;
+	}
+
+	public List<TopCastle> getCastles() {
+		return castles;
+	}
+
+	public void setCastles( List<TopCastle> castles ) {
+		this.castles = castles;
+	}
+
+	public Vector2i getSize() {
+		return new Vector2i( getWidth(), getHeight() );
 	}
 }

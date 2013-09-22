@@ -21,7 +21,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 import com.google.gson.Gson;
 import com.level.Level;
-import com.modules.map.hud.MiniMap;
+import com.modules.map.ui.MiniMap;
+import com.races.humands.units.Archer;
+import com.races.humands.units.Villager;
 
 /**
  * Contain all textures of game and skins
@@ -31,6 +33,9 @@ public class Assets {
 	// Battle textures
 	static TextureAtlas atlas;
 	
+	// Units
+	static public Map<Integer, Unit> units;
+
 	// Skin with font
 	public static Skin skin = new Skin( Gdx.files.internal( "skin/uiskin.json" ) );	
 	public static LabelStyle font2;
@@ -145,5 +150,15 @@ public class Assets {
         }
         
         return content;
+	}
+
+	public static void loadUnits() {
+		units = new HashMap<Integer, Unit>();
+		units.put( Constants.VILLAGER, new Villager() );
+		units.put( Constants.ARCHER, new Archer() );
+	}
+
+	public static Unit getUnit( int id ) {
+		return units.get(id);
 	}
 }

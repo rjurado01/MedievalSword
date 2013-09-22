@@ -30,12 +30,16 @@ public class Archer extends Unit {
 		range 	 = 3;
 		damage 	 = 8;
 		mobility = 4;
-		
+
+		id = Constants.ARCHER;
+
 		map_width = 30;
 		map_height = 30;
-		
+
+		enable_description = "You need to build an Archery.";
 		name = "Archer";
-		
+		price = 80;
+
 		loadTextures();
 		loadAnimations();
 	}
@@ -44,7 +48,7 @@ public class Archer extends Unit {
 		int [] frames1 = { 1, 3 };
 		int [] frames2 = { 1 };
 		int [] frames3 = { 1, 2 };
-		
+
 		// load animation for all orientations and in all colors
 		for( int orientation = 0; orientation < Constants.N_ORIENTATIONS; orientation++ )
 			for( int color = 0; color < Constants.N_COLORS; color++ ) {
@@ -72,7 +76,7 @@ public class Archer extends Unit {
 		// prepare the arc and throw arrow
 		stack.addAction( new CustomAnimation(
 				getAnimation( PREPARE, orientation, stack.getColor() ), 1, callback) );
-		
+
 		// go back to original position
 		stack.addAction( new CustomAnimation(
 				getAnimation( SHOOT, orientation, stack.getColor() ), 0, null) );

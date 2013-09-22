@@ -303,7 +303,7 @@ public class BattleController {
 	
 	/**
 	 * Attack enemy with selected stack of units
-	 * @param position enemy position
+	 * @param position_number enemy position
 	 */
 	public void makeDamage() {
 		if( canAttackEnemyStack() ) {	

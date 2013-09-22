@@ -15,7 +15,7 @@ import com.modules.map.MapConstants;
 import com.modules.map.MapController;
 import com.modules.map.heroes.CreaturesGroup;
 import com.modules.map.heroes.HeroTop;
-import com.modules.map.hud.MiniMap;
+import com.modules.map.ui.MiniMap;
 import com.utils.Vector2i;
 
 public class SquareTerrain extends Group {
@@ -198,7 +198,9 @@ public class SquareTerrain extends Group {
 
 	public void exprlore() {
 		visible = true;
-		fog.remove();
+
+		if( fog != null )
+			fog.remove();
 	}
 
 	public void setStructure(Player owner) {

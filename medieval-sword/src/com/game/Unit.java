@@ -14,32 +14,35 @@ import com.utils.CallBack;
  * Player can has 'n' number of units of each type.
  */
 public abstract class Unit {
-	
+
+	protected int id;
 	protected String name;
-	
+	protected String enable_description;
+	protected int position_number;
+
 	/* Attributes */
 	public int life;
 	protected int defense;
-	protected int attack;
+	protected int damage;
 	protected int range;
 	protected int mobility;
-	protected int damage;
-	
+	protected int price;
+
 	protected int map_width;
 	protected int map_height;
 
 	protected Map<String, TextureRegion> textures;
 	protected Map<String, Animation> animations  = new HashMap<String, Animation>();
-	
+
 
 	public Unit() {}
-	
+
 	public abstract void loadAnimations();
-	
+
 	public abstract void walkAction( Stack stack, int orientation );
 
 	public abstract void attackAction( Stack stack, int orientation, CallBack callback );
-	
+
 	/**
 	 * Load normal textures of unit ( when unit is stop texture and icon )
 	 */
@@ -49,7 +52,7 @@ public abstract class Unit {
 		loadUnitTextures();
 		loadUnitIcons();
 	}
-	
+
 	/**
 	 * Load normal texture ( for all orientations and in all colors ) 
 	 */
@@ -59,7 +62,7 @@ public abstract class Unit {
 				textures.put( "normal" + orientation + color,
 						Assets.getTextureRegion( name + orientation + color ) );
 	}
-	
+
 	/**
 	 * Load icon ( in all colors ) 
 	 */
@@ -67,7 +70,7 @@ public abstract class Unit {
 		for( int color = 0; color < Constants.N_COLORS; color++ ) 
 			textures.put( "icon" + color, 	Assets.getTextureRegion( name + 0 + color ) );
 	}
-	
+
 	/**
 	 * Load animation to animations map (initialize)
 	 * 
@@ -87,7 +90,7 @@ public abstract class Unit {
 		
 		animations.put( animation_name + orientation + color, animation );
 	}
-	
+
 	/**
 	 * Frame name example: unit01 ( name = unit, orientation = 0 and color = 1 )
 	 * @return array with animation textures
@@ -102,7 +105,7 @@ public abstract class Unit {
 		
 		return frames;
 	}
-	
+
 	public Image getMapImage( int orientation ) {
 		Image image = new Image( textures.get( "normal" + orientation + "0" ) );
 		image.width = map_width;
@@ -113,19 +116,19 @@ public abstract class Unit {
 	public TextureRegion getIcon() {
 		return textures.get( "normal10" );
 	}
-	
+
 	public Animation getAnimation( String name, int orientation, int color ) {
 		return animations.get( name + orientation + color );
 	}
-	
+
 	public TextureRegion getFrameAnimation(String animation, int time) {
 		return animations.get(animation).getKeyFrame(time);
 	}
-	
+
 	public TextureRegion getTexture( String name ) {
 		return textures.get( name );
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -150,14 +153,6 @@ public abstract class Unit {
 		this.defense = defense;
 	}
 
-	public int getAttack() {
-		return attack;
-	}
-
-	public void setAttack(int attack) {
-		this.attack = attack;
-	}
-
 	public int getRange() {
 		return range;
 	}
@@ -180,5 +175,21 @@ public abstract class Unit {
 
 	public void setDamage(int damage) {
 		this.damage = damage;
+	}
+
+	public int getPositionNumber() {
+		return position_number;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public String getEnableDescription() {
+		return enable_description;
 	}
 }

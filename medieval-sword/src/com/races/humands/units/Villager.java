@@ -22,12 +22,16 @@ public class Villager extends Unit{
 		range 	 = 0;
 		damage 	 = 7;
 		mobility = 6;
-		
+
+		id = Constants.VILLAGER;
+
 		map_width = 38;
 		map_height = 38;
-		
+
+		enable_description = "You need to build a Farm.";
 		name = "Villager";
-		
+		price = 40;
+
 		loadTextures();
 		loadAnimations();
 	}

@@ -5,65 +5,59 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Constants;
-import com.modules.map.hud.HUD;
-import com.modules.map.terrain.Terrain;
+import com.utils.Vector2i;
 
 public class MapInputProcessor implements InputProcessor {
 	
 	Stage terrain_stage;
-	Stage hud_stage;
+	Stage ui_stage;
 	Vector3 last_touch_down = new Vector3();
-	Terrain terrain;
-	HUD hud;
+	Vector2i map_size;
 	
-	public MapInputProcessor( Terrain terrain, HUD hud ) {
-		this.terrain_stage = terrain.getStage();
-		this.hud_stage = hud.getStage();
-		this.terrain = terrain;
-		this.hud = hud;
+	static private boolean ui_activated;
+
+	public MapInputProcessor( Stage terrain_stage, Stage ui_stage, Vector2i map_size ) {
+		this.terrain_stage = terrain_stage;
+		this.ui_stage = ui_stage;
+		this.map_size = map_size;
 	}
 
-	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean keyUp(int keycode) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean keyTyped(char character) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		last_touch_down.set(x, y, 0);
 
-		if( isHudClicked(x, y) )
-			hud_stage.touchDown(x, y, pointer, button);
-		else
+		if( ui_activated || isHudClicked(x, y) )
+			ui_stage.touchDown(x, y, pointer, button);
+		else {
 			terrain_stage.touchDown(x, y, pointer, button );
+		}
 		
 		return false;
 	}
 
-	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		if( isHudClicked(x, y) )
-			hud_stage.touchUp(x, y, pointer, button);
+		if( ui_activated || isHudClicked(x, y) )
+			ui_stage.touchUp(x, y, pointer, button);
 		else
 			terrain_stage.touchUp(x, y, pointer, button );
 		
 		return false;
 	}
 
-	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
 		if( MapController.status == MapController.NORMAL && isHudClicked(x, y) == false )
 			moveCamera( x, y );		
@@ -91,9 +85,9 @@ public class MapInputProcessor implements InputProcessor {
 	
 	private boolean cameraOutOfLimit( Vector3 position ) {
 		int x_left_limit = Constants.SIZE_W / 2 - Constants.HUD_WIDTH;
-		int x_right_limit = terrain.getWidth() - Constants.SIZE_W / 2;
+		int x_right_limit = map_size.x - Constants.SIZE_W / 2;
 		int y_bottom_limit = Constants.SIZE_H / 2;
-		int y_top_limit = terrain.getHeight() - Constants.SIZE_H / 2;
+		int y_top_limit = map_size.y - Constants.SIZE_H / 2;
 		
 		if( position.x < x_left_limit || position.x > x_right_limit )
 			return true;
@@ -115,11 +109,19 @@ public class MapInputProcessor implements InputProcessor {
 	}
 
 	private boolean isHudClicked( int x, int y ) {
-		float hud_width = hud.width * Gdx.graphics.getWidth() / Constants.SIZE_W;
+		float hud_width = MapConstants.HUD_WIDTH * Gdx.graphics.getWidth() / Constants.SIZE_W;
 
 		if( x < hud_width )
 			return true;
 		else
 			return false;
+	}
+
+	static public void activateUI() {
+		ui_activated = true;
+	}
+
+	static public void deactivateUI() {
+		ui_activated = false;
 	}
 }

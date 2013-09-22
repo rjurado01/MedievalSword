@@ -1,17 +1,17 @@
-package com.modules.map.hud;
+package com.modules.map.ui;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.game.Assets;
 import com.game.Constants;
+import com.modules.castle.TopCastle;
 import com.modules.map.MapConstants;
 import com.modules.map.MapController;
 import com.modules.map.heroes.CreaturesGroup;
@@ -48,8 +48,7 @@ public class HUD extends Group {
 
 	Map<Integer, ResourceIndicator> resource_indicators;
 
-	public HUD( Stage stage, Terrain terrain ) {
-		this.stage = stage;
+	public HUD( Terrain terrain ) {
 		this.x = 0;
 		this.y = 0;
 		this.width = Constants.HUD_WIDTH;
@@ -67,12 +66,12 @@ public class HUD extends Group {
 		background.height = height;
 		background.width = width;
 
-		stage.addActor( background );
+		addActor( background );
 	}
 
 	private void loadMiniMap( Terrain terrain ) {
 		mini_map = new MiniMap( stage, terrain );
-		stage.addActor( mini_map );
+		addActor( mini_map );
 	}
 
 	private void loadButtons() {
@@ -85,6 +84,14 @@ public class HUD extends Group {
 		system.x = 5;
 		system.y = 70;
 
+		system.setClickListener( new ClickListener() {
+
+			@Override
+			public void click(Actor actor, float x, float y) {
+				System.out.println("System");
+			}
+		});
+
 		game = new Button(
 				Assets.getTextureRegion( "stats" ),
 				Assets.getTextureRegion( "number" ) );
@@ -94,12 +101,12 @@ public class HUD extends Group {
 		game.x = 42;
 		game.y = 70;
 
-		stage.addActor( system );
-		stage.addActor( game );
-		
+		addActor( system );
+		addActor( game );
+
 		loadPassTurnButton();
 	}
-	
+
 	private void loadPassTurnButton() {
 		pass_turn = new Button(
 				Assets.getFrame( "passTurn", 2 ),
@@ -115,15 +122,15 @@ public class HUD extends Group {
 				MapController.addEvent( MapConstants.TURN, null );
 			}
 		} );
-		
+
 		day_counter = new Image( Assets.getFrame( "dayCounter", 1 ) );
 		day_counter.width = 70;
 		day_counter.height = 50;
 		day_counter.x = 5;
 		day_counter.y = 15;
-		
-		stage.addActor( pass_turn );
-		stage.addActor( day_counter );
+
+		addActor( pass_turn );
+		addActor( day_counter );
 	}
 
 	private void loadIndicators() {
@@ -145,9 +152,9 @@ public class HUD extends Group {
 		resource_indicators.put( WOOD_INDICATOR, wood_indicator );
 		resource_indicators.put( STONE_INDICATOR, stone_indicator );
 
-		stage.addActor( gold_indicator );
-		stage.addActor( wood_indicator );
-		stage.addActor( stone_indicator );
+		addActor( gold_indicator );
+		addActor( wood_indicator );
+		addActor( stone_indicator );
 	}
 
 	private void loadInfoBoxes() {
@@ -175,8 +182,8 @@ public class HUD extends Group {
 			}
 		});
 
-		stage.addActor( info_box_1 );
-		stage.addActor( info_box_2 );
+		addActor( info_box_1 );
+		addActor( info_box_2 );
 	}
 
 	public void updateGold( int new_gold ) {
@@ -198,14 +205,14 @@ public class HUD extends Group {
 	public void selectHero(HeroTop selected_hero) {
 		if( hero_selected != null )
 			hero_selected.remove();
-		
+
 		hero_selected = new Image( selected_hero.getIconTextureRegion() );
 		hero_selected.width = 30;
 		hero_selected.height = 30;
 		hero_selected.x = 8;
 		hero_selected.y = 130;
 
-		stage.addActor( hero_selected );
+		addActor( hero_selected );
 	}
 
 	public void unselectHero() {
@@ -218,14 +225,14 @@ public class HUD extends Group {
 	public void selectEnemy(CreaturesGroup group) {
 		if( enemy_selected != null )
 			enemy_selected.remove();
-		
+
 		enemy_selected = new Image( group.getIconTextureRegion() );
 		enemy_selected.width = 30;
 		enemy_selected.height = 30;
 		enemy_selected.x = 38;
 		enemy_selected.y = 130;
 
-		stage.addActor( enemy_selected );
+		addActor( enemy_selected );
 	}
 
 	public void unselectEnemy() {
@@ -237,5 +244,18 @@ public class HUD extends Group {
 
 	public void passTurn( int day ) {
 		day_counter.setRegion( Assets.getFrame( "dayCounter", day ) );
+	}
+
+	public void selectCastle( TopCastle castle ) {
+		if( enemy_selected != null )
+			enemy_selected.remove();
+
+		enemy_selected = new Image( castle.getIconTextureRegion() );
+		enemy_selected.width = 30;
+		enemy_selected.height = 30;
+		enemy_selected.x = 38;
+		enemy_selected.y = 130;
+
+		addActor( enemy_selected );
 	}
 }
