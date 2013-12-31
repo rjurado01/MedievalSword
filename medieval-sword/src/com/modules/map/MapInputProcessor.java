@@ -2,14 +2,16 @@ package com.modules.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Constants;
+import com.modules.map.terrain.Terrain;
 import com.utils.Vector2i;
 
 public class MapInputProcessor implements InputProcessor {
 
-	Stage terrain_stage;
+	Terrain terrain;
 	Stage ui_stage;
 	Vector3 last_touch_down = new Vector3();
 	Vector2i map_size;
@@ -17,10 +19,9 @@ public class MapInputProcessor implements InputProcessor {
 	static private boolean hud_activated = true;
 	static private boolean panel_activated = false;
 
-	public MapInputProcessor( Stage terrain_stage, Stage ui_stage, Vector2i map_size ) {
-		this.terrain_stage = terrain_stage;
+	public MapInputProcessor( Terrain terrain, Stage ui_stage ) {
+		this.terrain = terrain;
 		this.ui_stage = ui_stage;
-		this.map_size = map_size;
 	}
 
 	public boolean keyDown(int keycode) {
@@ -44,7 +45,7 @@ public class MapInputProcessor implements InputProcessor {
 		if( hud_activated && isHudClicked(x, y) || panel_activated )
 			ui_stage.touchDown(x, y, pointer, button);
 		else {
-			terrain_stage.touchDown(x, y, pointer, button );
+			terrain.getStage().touchDown(x, y, pointer, button );
 		}
 
 		return false;
@@ -54,7 +55,7 @@ public class MapInputProcessor implements InputProcessor {
 		if( hud_activated && isHudClicked(x, y) || panel_activated )
 			ui_stage.touchUp(x, y, pointer, button);
 		else
-			terrain_stage.touchUp(x, y, pointer, button );
+			terrain.getStage().touchUp(x, y, pointer, button );
 
 		return false;
 	}
@@ -68,10 +69,7 @@ public class MapInputProcessor implements InputProcessor {
 
 	private void moveCamera( int touch_x, int touch_y ) {
 		Vector3 new_position = getNewCameraPosition( touch_x, touch_y );
-
-		if( !cameraOutOfLimit( new_position ) )
-			terrain_stage.getCamera().translate( new_position.sub( terrain_stage.getCamera().position ) );
-
+		terrain.centerCamera( new Vector2( new_position.x, new_position.y ) );
 		last_touch_down.set( touch_x, touch_y, 0);
 	}
 
@@ -79,23 +77,9 @@ public class MapInputProcessor implements InputProcessor {
 		Vector3 new_position = last_touch_down;
 		new_position.sub(x, y, 0);
 		new_position.y = -new_position.y;
-		new_position.add( terrain_stage.getCamera().position );
+		new_position.add( terrain.getStage().getCamera().position );
 
 		return new_position;
-	}
-
-	private boolean cameraOutOfLimit( Vector3 position ) {
-		int x_left_limit = Constants.SIZE_W / 2 - Constants.HUD_WIDTH;
-		int x_right_limit = map_size.x - Constants.SIZE_W / 2;
-		int y_bottom_limit = Constants.SIZE_H / 2;
-		int y_top_limit = map_size.y - Constants.SIZE_H / 2;
-
-		if( position.x < x_left_limit || position.x > x_right_limit )
-			return true;
-		else if( position.y < y_bottom_limit || position.y > y_top_limit )
-			return true;
-		else
-			return false;
 	}
 
 	public boolean touchMoved(int x, int y) {
@@ -104,8 +88,8 @@ public class MapInputProcessor implements InputProcessor {
 	}
 
 	public boolean scrolled(int amount) {
-		terrain_stage.getCamera().viewportHeight += 14 * amount;
-		terrain_stage.getCamera().viewportWidth += 20 * amount;
+		terrain.getStage().getCamera().viewportHeight += 14 * amount;
+		terrain.getStage().getCamera().viewportWidth += 20 * amount;
 		return false;
 	}
 

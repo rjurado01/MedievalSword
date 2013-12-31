@@ -65,7 +65,7 @@ public class MapScreen implements Screen {
 		loadUserInterface();
 
 		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
-		input = new MapInputProcessor( terrain_stage, ui_stage, terrain.getSize() );
+		input = new MapInputProcessor( terrain, ui_stage );
 	}
 
 	private void loadTerrain() {

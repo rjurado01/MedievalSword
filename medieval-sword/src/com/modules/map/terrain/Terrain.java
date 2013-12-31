@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Assets;
+import com.game.Constants;
 import com.modules.castle.TopCastle;
 import com.modules.map.MapActor;
 import com.modules.map.MapConstants;
@@ -34,6 +36,13 @@ public class Terrain {
 	public int SQUARES_X;
 	public int SQUARES_Y;
 
+	public int width;
+	public int height;
+	public int x_left_limit;
+	public int x_right_limit;
+	public int y_bottom_limit;
+	public int y_top_limit;
+
 	ArrayList<SquarePath> path_drawn;
 	private List<ResourceStructure> resource_structures;
 	private List<ResourcePile> resource_piles;
@@ -52,6 +61,13 @@ public class Terrain {
 	public Terrain( Vector2i n_squares ) {
 		SQUARES_X = n_squares.x;
 		SQUARES_Y = n_squares.y;
+
+		width = SQUARES_X * MapConstants.SQUARE_TERRAIN_W;
+		height = SQUARES_Y * MapConstants.SQUARE_TERRAIN_H;
+		x_left_limit = Constants.SIZE_W / 2 - Constants.HUD_WIDTH;
+		x_right_limit = width - Constants.SIZE_W / 2;
+		y_bottom_limit = Constants.SIZE_H / 2;
+		y_top_limit = height - Constants.SIZE_H / 2;
 
 		initializeTerrain();
 
@@ -89,11 +105,11 @@ public class Terrain {
 	}
 
 	public int getWidth() {
-		return SQUARES_X * MapConstants.SQUARE_TERRAIN_W;
+		return width;
 	}
 
 	public int getHeight() {
-		return SQUARES_Y * MapConstants.SQUARE_TERRAIN_H;
+		return height;
 	}
 
 	public Vector2 getSquarePosition( Vector2i square_number ) {
@@ -301,12 +317,29 @@ public class Terrain {
 		return path_layer;
 	}
 
-	public void centerCamera( Vector2 vector2 ) {
+	public void centerCamera( Vector2 position ) {
 		Camera camera = stage.getCamera();
+		Vector2 final_position = new Vector2( position );
 
-		camera.translate(
-				vector2.x - camera.position.x,
-				vector2.y - camera.position.y,
+		if( position.x < x_left_limit || position.x > x_right_limit )
+			final_position.x = camera.position.x;
+
+		if( position.y < y_bottom_limit || position.y > y_top_limit )
+			final_position.y = camera.position.y;
+
+		if( position != final_position )
+			camera.translate(
+				final_position.x - camera.position.x,
+				final_position.y - camera.position.y,
 				0);
+	}
+
+	public boolean cameraOutOfLimit( Vector3 position ) {
+		if( position.x < x_left_limit || position.x > x_right_limit )
+			return true;
+		else if( position.y < y_bottom_limit || position.y > y_top_limit )
+			return true;
+		else
+			return false;
 	}
 }
