@@ -194,13 +194,13 @@ public class Stack {
 
 	public void setOrientationByFocus( Vector2 focus ) {
 		if( focus.x - view.getPosition().x < 0)
-			setOrientation( Constants.XL );
+			setOrientation( Constants.LEFT );
 		else if( focus.x - view.getPosition().x > 0)
-			setOrientation( Constants.XR );
+			setOrientation( Constants.RIGHT );
 	}
 
 	public void setFrameSide() {
-		orientation = battle_side == Constants.LEFT_SIDE ? Constants.XR : Constants.XL;
+		orientation = battle_side == Constants.LEFT_SIDE ? Constants.RIGHT : Constants.LEFT;
 		view.setFrame( unit.getTexture( "normal" + orientation + color ) );
 	}
 

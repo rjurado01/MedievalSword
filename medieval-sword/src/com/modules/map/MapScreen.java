@@ -24,55 +24,52 @@ import com.modules.map.terrain.Terrain;
 import com.modules.map.ui.MapUserInterface;
 
 /**
- * Screen that initialize, update and render map. 
+ * Screen that initializes, updates and renders the map.
  */
 public class MapScreen implements Screen {
 
 	MyGdxGame game;
 	Stage terrain_stage;
 	Stage ui_stage;
-	
+
 	Parser parser;
-	
-	//static public Map<Integer, Unit> units;
-	
+
 	public List<Player> players;
 	public List<CreaturesGroup> creatures;
 	public List<ResourceStructure> resource_structures;
 	Player humand_player;
-	
+
 	Level level;
 	Terrain terrain;
 	MapController controller;
 	MapInputProcessor input;
 	MapUserInterface ui;
-	
+
 	public MapScreen( MyGdxGame game, Level level ) {
 		this.game = game;
 		this.level = level;
 		this.parser = new Parser();
-		
+
 		players = new ArrayList<Player>();
 
 		loadTerrain();
 		loadMapObjects();
-		loadMapUnits();		
+		loadMapUnits();
 		loadMapCreatures();
-		loadPlayers();
 		loadStructures();
+		loadPlayers();
 		loadResourcePiles();
 		loadCastles();
-		//loadFog();
+		loadHeroes();
+		loadFog();
 		loadUserInterface();
 
 		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
-		//hud_stage.addActor( mini_map );
-
 		input = new MapInputProcessor( terrain_stage, ui_stage, terrain.getSize() );
 	}
 
 	private void loadTerrain() {
-		terrain_stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true );	
+		terrain_stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true );
 		terrain = parser.getTerrain( level.terrain );
 		terrain.addStage( terrain_stage );
 	}
@@ -88,22 +85,21 @@ public class MapScreen implements Screen {
 
 	private void loadUserInterface() {
 		ui_stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true );
-
 		ui = new MapUserInterface( ui_stage );
 		ui.createHUD( humand_player, terrain );
-		
+
 		terrain.setMiniMap( ui.getHUD().getMiniMap() );
 	}
-	
+
 	private void loadMapUnits() {
 		Assets.loadUnits();
 	}
 
 	private void loadMapCreatures() {
 		creatures = parser.getCreaturesGroups( terrain, level );
-		
+
 		for( CreaturesGroup group : creatures )
-			terrain_stage.addActor( group.getImage() ); 
+			terrain_stage.addActor( group.getImage() );
 	}
 
 	private void loadPlayers() {
@@ -111,7 +107,9 @@ public class MapScreen implements Screen {
 
 		if( level.players.get(0).humand )
 			humand_player = players.get( 0 );
+	}
 
+	private void loadHeroes() {
 		for( HeroTop hero : players.get(0).getHeroes() )
 			terrain_stage.addActor( hero.getView() );
 	}
@@ -149,13 +147,13 @@ public class MapScreen implements Screen {
 
 	public void render(float delta) {
 		controller.update();
-		
+
 		Gdx.gl.glClearColor(0.8f, 0.8f, 1.f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		
+
 		terrain_stage.act( Gdx.graphics.getDeltaTime() );
 		terrain_stage.draw();
-		
+
 		ui_stage.act( Gdx.graphics.getDeltaTime() );
 		ui_stage.draw();
 	}
@@ -169,7 +167,7 @@ public class MapScreen implements Screen {
 			controller = new MapController( game, players, terrain, ui );
 		else
 			controller.returnToBattle();
-		
+
 		Gdx.input.setInputProcessor( input );
 	}
 
@@ -178,37 +176,37 @@ public class MapScreen implements Screen {
 			case 0:
 				break;
 		}
-				
+
 	}
-	
+
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void dispose() {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	public Army getPlayerArmy( int player_number) {
 		return players.get( player_number ).getHeroSelected().getArmy();
 	}
-	
+
 	public CreaturesGroup getCreaturesGroup() {
 		return creatures.get( 0 );
 	}

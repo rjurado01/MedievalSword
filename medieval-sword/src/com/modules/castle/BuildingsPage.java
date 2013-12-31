@@ -10,13 +10,18 @@ import com.utils.Vector2i;
  */
 public class BuildingsPage extends Group {
 
-	// Initial position for buildings squares
-	final int BX_INIT = 20;
-	final int BY_INIT = 105;
+	final int N_BUILDINGS = 8;
 
-	// Space between two buildings squares
-	final int BX_SIZE = 80;
-	final int BY_SIZE = 70;
+	// Initial position for buildings squares
+	final int BUILDINGS_X = 185;
+	final int ROW_1_Y = 230;
+	final int ROW_2_Y = 60;
+
+	// Buildings squares properties
+	static final int BUILDING_W = 140;
+	static final int BUILDING_H = 110;
+	static final int BUILDING_NAME_H = 32;
+	final int SPACE = BUILDING_W + 10;
 
 	BuildingPicture[] buildings;
 
@@ -36,9 +41,10 @@ public class BuildingsPage extends Group {
 	}
 
 	private Vector2i getBuildingPosition( int position ) {
-		return new Vector2i(
-				( ( position % 4 ) * BX_SIZE ) + BX_INIT ,
-				( BY_INIT - ( position / 4 ) * BY_SIZE ) );
+		if( position < N_BUILDINGS / 2 )
+			return new Vector2i( ( (position % 4) * SPACE ) + BUILDINGS_X , ROW_1_Y );
+		else
+			return new Vector2i( ( (position % 4) * SPACE ) + BUILDINGS_X , ROW_2_Y );
 	}
 
 	public void updateBuildings() {

@@ -8,13 +8,14 @@ import com.game.Constants;
 import com.utils.Vector2i;
 
 public class MapInputProcessor implements InputProcessor {
-	
+
 	Stage terrain_stage;
 	Stage ui_stage;
 	Vector3 last_touch_down = new Vector3();
 	Vector2i map_size;
-	
-	static private boolean ui_activated;
+
+	static private boolean hud_activated = true;
+	static private boolean panel_activated = false;
 
 	public MapInputProcessor( Stage terrain_stage, Stage ui_stage, Vector2i map_size ) {
 		this.terrain_stage = terrain_stage;
@@ -40,55 +41,55 @@ public class MapInputProcessor implements InputProcessor {
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		last_touch_down.set(x, y, 0);
 
-		if( ui_activated || isHudClicked(x, y) )
+		if( hud_activated && isHudClicked(x, y) || panel_activated )
 			ui_stage.touchDown(x, y, pointer, button);
 		else {
 			terrain_stage.touchDown(x, y, pointer, button );
 		}
-		
+
 		return false;
 	}
 
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		if( ui_activated || isHudClicked(x, y) )
+		if( hud_activated && isHudClicked(x, y) || panel_activated )
 			ui_stage.touchUp(x, y, pointer, button);
 		else
 			terrain_stage.touchUp(x, y, pointer, button );
-		
+
 		return false;
 	}
 
 	public boolean touchDragged(int x, int y, int pointer) {
-		if( MapController.status == MapController.NORMAL && isHudClicked(x, y) == false )
-			moveCamera( x, y );		
-		
+		if( hud_activated && panel_activated == false )
+			moveCamera( x, y );
+
 		return false;
 	}
-	
+
 	private void moveCamera( int touch_x, int touch_y ) {
 		Vector3 new_position = getNewCameraPosition( touch_x, touch_y );
 
 		if( !cameraOutOfLimit( new_position ) )
 			terrain_stage.getCamera().translate( new_position.sub( terrain_stage.getCamera().position ) );
-		
+
 		last_touch_down.set( touch_x, touch_y, 0);
 	}
-	
+
 	private Vector3 getNewCameraPosition( int x, int y ) {
 		Vector3 new_position = last_touch_down;
 		new_position.sub(x, y, 0);
 		new_position.y = -new_position.y;
 		new_position.add( terrain_stage.getCamera().position );
-		
+
 		return new_position;
 	}
-	
+
 	private boolean cameraOutOfLimit( Vector3 position ) {
 		int x_left_limit = Constants.SIZE_W / 2 - Constants.HUD_WIDTH;
 		int x_right_limit = map_size.x - Constants.SIZE_W / 2;
 		int y_bottom_limit = Constants.SIZE_H / 2;
 		int y_top_limit = map_size.y - Constants.SIZE_H / 2;
-		
+
 		if( position.x < x_left_limit || position.x > x_right_limit )
 			return true;
 		else if( position.y < y_bottom_limit || position.y > y_top_limit )
@@ -117,11 +118,19 @@ public class MapInputProcessor implements InputProcessor {
 			return false;
 	}
 
-	static public void activateUI() {
-		ui_activated = true;
+	static public void activateHUD() {
+		hud_activated = true;
 	}
 
-	static public void deactivateUI() {
-		ui_activated = false;
+	static public void deactivateHUD() {
+		hud_activated = false;
+	}
+
+	static public void activatePanel() {
+		panel_activated = true;
+	}
+
+	static public void deactivatePanel() {
+		panel_activated = false;
 	}
 }

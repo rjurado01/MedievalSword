@@ -4,12 +4,12 @@ import com.modules.map.MapConstants;
 import com.modules.map.terrain.MapObject;
 import com.utils.Vector2i;
 
-public class TreeDry2 extends MapObject {
+public class Plant1 extends MapObject {
 
-	public TreeDry2() {
-		type = MapConstants.TREE_2;
-		texture_name = "tree1";
-		size = new Vector2i( 50, 80 );
+	public Plant1() {
+		type = MapConstants.PLANT_1;
+		texture_name = "plant1";
+		size = new Vector2i( 96, 96 );
 		position_correction = new Vector2i(0,0);
 	}
 }

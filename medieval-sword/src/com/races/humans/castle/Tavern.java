@@ -1,4 +1,4 @@
-package com.races.humands.castle;
+package com.races.humans.castle;
 
 import com.modules.castle.CastleBuilding;
 import com.modules.castle.CastleBuildingLevel;
@@ -18,9 +18,9 @@ public class Tavern extends CastleBuilding {
 
 			public void passDay( TopCastle castle ) {}
 
-			public void up(TopCastle castle) {}
+			public void up( TopCastle castle ) {}
 
-			public void passWeek(TopCastle castle) {
+			public void passWeek( TopCastle castle ) {
 				// TODO Auto-generated method stub
 			}
 		};
@@ -30,7 +30,7 @@ public class Tavern extends CastleBuilding {
 		level_1.setStonePrice(0);
 
 		level_1.setName("Tavern");
-		level_1.setBuildTexture("tavern");
+		level_1.setBuildTexture("humans-tavern");
 		level_1.setDescription("The Tavern allows you to recruit heroes.");
 
 		return level_1;

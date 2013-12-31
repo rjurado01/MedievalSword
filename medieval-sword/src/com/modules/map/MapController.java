@@ -23,14 +23,15 @@ import com.modules.castle.UnitPanel;
 import com.modules.map.heroes.CreaturesGroup;
 import com.modules.map.heroes.HeroPath;
 import com.modules.map.heroes.HeroTop;
-import com.modules.map.heroes.HeroView;
 import com.modules.map.terrain.ResourcePile;
 import com.modules.map.terrain.ResourceStructure;
 import com.modules.map.terrain.SquareTerrain;
 import com.modules.map.terrain.Terrain;
 import com.modules.map.ui.ArmyInfoPanel;
+import com.modules.map.ui.CreaturesGroupPanel;
+import com.modules.map.ui.HeroPanel;
 import com.modules.map.ui.MapUserInterface;
-import com.utils.HeroViewAccessor;
+import com.utils.HeroAccessor;
 import com.utils.StackViewAccessor;
 import com.utils.Vector2i;
 
@@ -55,7 +56,7 @@ public class MapController {
 	UnitPanel unit_panel;
 	MyGdxGame game;
 	MapUserInterface ui;
-	
+
 	HeroTop selected_hero;
 	HeroTop selected_hero_enemy;
 	TopCastle selected_castle;
@@ -65,11 +66,12 @@ public class MapController {
 
 	int turn;
 	int day;
-	
+
 	HeroPath hero_path;
 	SquareTerrain attack_square;
 
 	static int status = NORMAL; 	// Semaphore
+
 
 	public MapController( MyGdxGame game, List<Player> players, Terrain terrain, MapUserInterface ui ) {
 		this.game = game;
@@ -79,7 +81,9 @@ public class MapController {
 
 		hero_path = new HeroPath( terrain );
 		manager = new TweenManager();
-		Tween.registerAccessor( HeroView.class, new HeroViewAccessor() );
+		Tween.registerAccessor( MapController.class, new HeroAccessor() );
+
+		//terrain.centerCamera( new Vector2(1800,1500) );
 	}
 
 	/**
@@ -88,26 +92,10 @@ public class MapController {
 	 * @param receiver object that has received the event
 	 */
 	public static void addEvent( int type, Object receiver ) {
-		// TODO utilizar el activated del MapInputProcessor para simplificar esto
-		/*if( typeEvent == MapConstants.NONE && status == NORMAL  ) {
-			typeEvent = type;
-			objectEvent = receiver;
-		}
-		else if( (status == INFO1 || status == INFO2 ) &&
-				 ( type == MapConstants.INFO1 ||
-				   type == MapConstants.INFO2 ||
-				   type == MapConstants.CLOSE_CASTLE ||
-				   type == MapConstants.SHOW_BUILDING ||
-				   type == MapConstants.CLOSE_BUILDING ||
-				   type == MapConstants.BUILD_BUILDING ) ) {
-			typeEvent = type;
-			objectEvent = receiver;
-		}*/
-
 		typeEvent = type;
 		objectEvent = receiver;
 	}
-	
+
 	public static void enableEvents() {
 		status = NORMAL;
 	}
@@ -116,7 +104,8 @@ public class MapController {
 		manager.update( Gdx.graphics.getDeltaTime() );
 		players.get( turn ).update( Gdx.graphics.getDeltaTime() );
 
-		checkEvents();
+		if( status != ANIMATION )
+			checkEvents();
 	}
 
 	public void checkEvents() {
@@ -145,9 +134,6 @@ public class MapController {
 			case MapConstants.CASTLE:
 				checkCastleEvent( (TopCastle) objectEvent );
 				break;
-			case  MapConstants.CLOSE_CASTLE:
-				closeCastlePanel();
-				break;
 			case MapConstants.SHOW_BUILDING:
 				showBuildingPanel(objectEvent);
 				break;
@@ -168,8 +154,11 @@ public class MapController {
 			case MapConstants.TURN:
 				passTurn();
 				break;
+			case MapConstants.CLOSE_PANEL:
+				closePanel();
+				break;
 		}
-		
+
 		if( typeEvent != Constants.NONE ) {
 			typeEvent = Constants.NONE;
 			objectEvent = null;
@@ -202,7 +191,7 @@ public class MapController {
 
 		terrain.passTurn( day );
 		ui.updateHudResources( getTurnPlayer() );
-		
+
 		turn = ( turn + 1 ) % players.size();
 		day = ( day + 1 ) % 7;
 		ui.getHUD().passTurn( day + 1 );
@@ -220,6 +209,7 @@ public class MapController {
 				if( hero_path.isLastMarked( square.getNumber() ) )
 					moveSelectedHero( null );
 				else {
+					selected_hero.removePathMarked();
 					hero_path.removePath();
 					findPath( square.getNumber() );
 				}
@@ -263,18 +253,23 @@ public class MapController {
 	 */
 	public void createMoveHeroLine( Timeline line ) {
 		status = ANIMATION;
+		ui.getHUD().disable();
 
-		Vector2i last_square_number =
-				players.get( turn ).getHeroSelected().getSquareTerrain().getNumber();
+		SquareTerrain hero_square =
+				players.get( turn ).getHeroSelected().getSquareTerrain();
+
+		Vector2i last_square_number = hero_square.getNumber();
 
 		terrain.removeFirstPathDrawnElement();
 
 		for( Vector2i next_square_number : hero_path.getAvailableList() ) {
 			Vector2 next_position = terrain.getSquarePosition( next_square_number );
 
-			line.push( Tween.to(players.get( turn ).getHeroSelected().getView(),
-					StackViewAccessor.POSITION_XY, 0.8f ).target(
-							next_position.x, next_position.y ).ease( Linear.INOUT ) );
+			line.push( Tween.to( this,
+					StackViewAccessor.POSITION_XY, MapConstants.HERO_SQUARE_TIME ).target(
+							next_position.x + MapConstants.SQUARE_X_POSITION,
+							next_position.y + MapConstants.SQUARE_Y_POSITION
+					).ease( Linear.INOUT ) );
 
 			line.push( Tween.call( getMoveItemCallback() ) );
 
@@ -285,7 +280,10 @@ public class MapController {
 		}
 
 		line.push( Tween.call( new TweenCallback() {
-			public void onEvent(int type, BaseTween<?> source) { status = NORMAL; }
+			public void onEvent(int type, BaseTween<?> source) {
+				status = NORMAL;
+				ui.getHUD().enable();
+			}
 		}));
 	}
 
@@ -323,13 +321,13 @@ public class MapController {
 	 */
 	public int getOrientation( Vector2i last_position, Vector2i new_position ) {
 		if( new_position.x - last_position.x < 0)
-			return Constants.XL;
+			return Constants.LEFT;
 		else if( new_position.x - last_position.x > 0)
-			return Constants.XR;
+			return Constants.RIGHT;
 		else if( new_position.y - last_position.y < 0 )
-			return Constants.YD;
+			return Constants.DOWN;
 		else if( new_position.y - last_position.y > 0 )
-			return Constants.YU;
+			return Constants.TOP;
 		else
 			return -1;
 	}
@@ -431,12 +429,12 @@ public class MapController {
 	 * Show army selected info panel
 	 */
 	private void showArmyInfoPanel() {
-		Vector2 panel_position = new Vector2(
-			terrain.getStage().getCamera().position.x - 160,
-			terrain.getStage().getCamera().position.y - MapConstants.TERRAIN_HEIGHT / 2 );
+		ui.disableAll();
 
-		army_info_panel = new ArmyInfoPanel( selected_hero, panel_position );
-		terrain.getStage().addActor( army_info_panel );
+		army_info_panel = new HeroPanel( selected_hero );
+		ui.getStage().addActor( army_info_panel );
+
+		MapInputProcessor.activatePanel();
 	}
 
 	/**
@@ -466,22 +464,28 @@ public class MapController {
 	 * Show icon of army in the HUD
 	 */
 	private void showSecondInfoPanel() {
-		Vector2 position = new Vector2(
-			terrain.getStage().getCamera().position.x - 160,
-			terrain.getStage().getCamera().position.y - MapConstants.TERRAIN_HEIGHT / 2 );
-
 		if( selected_hero_enemy != null ) {
-			army_info_panel = new ArmyInfoPanel( selected_hero_enemy, position );
-			terrain.getStage().addActor( army_info_panel );
+			ui.disableAll();
+			army_info_panel = new HeroPanel( selected_hero_enemy );
+			ui.getStage().addActor( army_info_panel );
+			MapInputProcessor.activatePanel();
 		}
 		else if( selected_group != null ) {
-			army_info_panel = new ArmyInfoPanel( selected_group, position );
-			terrain.getStage().addActor( army_info_panel );
+			ui.disableAll();
+			army_info_panel = new CreaturesGroupPanel( selected_group );
+			ui.getStage().addActor( army_info_panel );
+			MapInputProcessor.activatePanel();
 		}
 		else if( selected_castle != null ) {
-			castle_panel = new CastlePanel( selected_castle );
-			ui.getHUD().getStage().addActor( castle_panel );
-			MapInputProcessor.activateUI();
+			ui.disableAll();
+
+			if( selected_hero != null )
+				castle_panel = new CastlePanel( selected_castle, selected_hero.getArmy() );
+			else
+				castle_panel = new CastlePanel( selected_castle, null );
+
+			ui.getStage().addActor( castle_panel );
+			MapInputProcessor.activatePanel();
 		}
 	}
 
@@ -516,7 +520,7 @@ public class MapController {
 	}
 
 	private boolean isHeroOnStructureSquare() {
-		return selected_resource_structure.getUseSquareNumber().equal( 
+		return selected_resource_structure.getUseSquareNumber().equal(
 				selected_hero.getSquareTerrain().getNumber() );
 	}
 
@@ -589,12 +593,12 @@ public class MapController {
 		}
 	}
 
-	private void closeCastlePanel() {
+	/*private void closeCastlePanel() {
 		status = NORMAL;
 		selected_castle = null;
 		ui.getHUD().unselectEnemy();
-		MapInputProcessor.deactivateUI();
-	}
+		MapInputProcessor.deactivateHUD();
+	}*/
 
 	private boolean isHeroOnCastleSquare() {
 		return selected_castle.getUseSquareNumber().equal(
@@ -603,7 +607,6 @@ public class MapController {
 
 	private void useSelectedCastle() {
 		showSecondInfoPanel();
-		castle_panel.setHeroArmy( selected_hero.getArmy() );
 	}
 
 	private TweenCallback getCastleCallback() {
@@ -659,5 +662,19 @@ public class MapController {
 	public void closeUnitPanel() {
 		castle_panel.show();
 		ui.getStage().removeActor( unit_panel );
+	}
+
+	public void closePanel() {
+		status = NORMAL;
+		MapInputProcessor.deactivatePanel();
+		ui.enableAll();
+	}
+
+	public HeroTop getSelectedHero() {
+		return selected_hero;
+	}
+
+	public void centerCamera(Vector2 position) {
+		terrain.centerCamera( position );
 	}
 }

@@ -380,9 +380,9 @@ public class BattleController {
 	
 	public int getAttackOrientation() {
 		if( stack_selected.getView().x  > attacked_enemy_square.x )
-			return Constants.XL;
+			return Constants.LEFT;
 		else if( stack_selected.getView().x < attacked_enemy_square.x )
-			return Constants.XR;
+			return Constants.RIGHT;
 		else
 			return Constants.UNDEFINED;
 	}

@@ -1,4 +1,4 @@
-package com.races.humands.units;
+package com.races.humans.units;
 
 import com.game.Constants;
 import com.game.Stack;
@@ -10,11 +10,11 @@ import com.utils.CustomAnimation;
  * Villager unit ( malee unit )
  */
 public class Villager extends Unit{
-	
+
 	/* ANIMATIONS */
-	public static final String WALK = "run";	
+	public static final String WALK = "run";
 	public static final String ATTACK = "attack";
-	
+
 
 	public Villager() {
 		life 	 = 8;
@@ -25,8 +25,8 @@ public class Villager extends Unit{
 
 		id = Constants.VILLAGER;
 
-		map_width = 38;
-		map_height = 38;
+		map_width = 80;
+		map_height = 80;
 
 		enable_description = "You need to build a Farm.";
 		name = "Villager";
@@ -35,9 +35,9 @@ public class Villager extends Unit{
 		loadTextures();
 		loadAnimations();
 	}
-	
+
 	public void loadAnimations() {
-		int [] frames1 = { 1, 2 };	
+		int [] frames1 = { 1, 2 };
 		int [] frames2 = { 1, 3, 1 };
 
 		// Load animation for all orientations and all colors
@@ -53,14 +53,14 @@ public class Villager extends Unit{
 	 */
 	public void walkAction(  Stack stack, int orientation ) {
 		stack.addAction( new CustomAnimation(
-				getAnimation( WALK, orientation, stack.getColor() ), 0.8f, null ) );	
+				getAnimation( WALK, orientation, stack.getColor() ), 0.8f, null ) );
 	}
 
 	/**
 	 * Add attack action to actions queue of stack
 	 */
 	public void attackAction( Stack stack, int orientation, CallBack callback ) {
-		stack.addAction( new CustomAnimation( 
+		stack.addAction( new CustomAnimation(
 				getAnimation( ATTACK, orientation, stack.getColor() ), 1, callback ) );
-	}	
+	}
 }

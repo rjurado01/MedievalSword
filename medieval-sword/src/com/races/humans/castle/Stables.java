@@ -1,4 +1,4 @@
-package com.races.humands.castle;
+package com.races.humans.castle;
 
 import com.game.Constants;
 import com.modules.castle.CastleBuilding;
@@ -33,7 +33,7 @@ public class Stables extends CastleBuilding {
 		level_1.setStonePrice(5);
 
 		level_1.setName("Stables");
-		level_1.setBuildTexture("stables");
+		level_1.setBuildTexture("humans-stables");
 		level_1.setDescription("The Stables allow you to recruit\nKnights.");
 
 		return level_1;

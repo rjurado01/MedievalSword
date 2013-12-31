@@ -5,23 +5,20 @@ import com.modules.map.terrain.ResourceStructure;
 import com.utils.Vector2i;
 
 /**
- * Archer Unit ( distance unit ) 
+ * Archer Unit ( distance unit )
  */
 public class GoldMine extends ResourceStructure {
-	
-	/* SIZE */
-	public static final float HEIGHT = 35;
-	public static final float WIDTH = 35;
 
 	public GoldMine( Vector2i square_number, Player owner ) {
 		super( square_number );
-		
+
 		this.owner = owner;
-		this.texture_name = "goldMine";
-		this.size = new Vector2i( 100, 100 );
-		this.square_use_number = new Vector2i( 1, -1 );
+		this.texture_name = "gold-mine";
+		this.size = new Vector2i( 264, 212 );
 		this.vision = 5;
-		//this.position_correction = new Vector2i( -14, 0 );
+		this.square_use_number = new Vector2i( 1, -1 );
+		this.position_correction = new Vector2i( 0, 0 );
+		this.flag_position = new Vector2i( 120, 190 );
 
 		createActor();
 	}

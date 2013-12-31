@@ -342,135 +342,59 @@ Villager00
   orig: 64, 64
   offset: 0, 0
   index: 1
-  
+
+
 game.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-attackIcon
-  rotate: false
-  xy: 377, 372
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-dayCounter
-  rotate: false
-  xy: 1, 165
-  size: 124, 95
-  orig: 124, 95
-  offset: 0, 0
-  index: 1
-dayCounter
-  rotate: false
-  xy: 131, 295
-  size: 124, 95
-  orig: 124, 95
-  offset: 0, 0
-  index: 2
-dayCounter
-  rotate: false
-  xy: 261, 406
-  size: 124, 95
-  orig: 124, 95
-  offset: 0, 0
-  index: 3
-dayCounter
-  rotate: false
-  xy: 387, 406
-  size: 124, 95
-  orig: 124, 95
-  offset: 0, 0
-  index: 4
-dayCounter
-  rotate: false
-  xy: 1, 68
-  size: 124, 95
-  orig: 124, 95
-  offset: 0, 0
-  index: 5
-dayCounter
-  rotate: false
-  xy: 131, 198
-  size: 124, 95
-  orig: 124, 95
-  offset: 0, 0
-  index: 6
-dayCounter
-  rotate: false
-  xy: 127, 101
-  size: 124, 95
-  orig: 124, 95
-  offset: 0, 0
-  index: 7
-defenseIcon
-  rotate: false
-  xy: 327, 356
-  size: 48, 48
-  orig: 48, 48
-  offset: 0, 0
-  index: -1
-goldIcon
-  rotate: false
-  xy: 78, 2
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-hourglass
-  rotate: false
-  xy: 1, 373
-  size: 128, 128
-  orig: 128, 128
-  offset: 0, 0
-  index: -1
-options
-  rotate: false
-  xy: 144, 35
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-passTurn
+castle1
   rotate: false
   xy: 1, 262
-  size: 128, 109
-  orig: 128, 109
-  offset: 0, 0
-  index: 1
-passTurn
-  rotate: false
-  xy: 131, 392
-  size: 128, 109
-  orig: 128, 109
-  offset: 0, 0
-  index: 2
-powerIcon
-  rotate: false
-  xy: 411, 372
-  size: 32, 32
-  orig: 32, 32
+  size: 187, 192
+  orig: 187, 192
   offset: 0, 0
   index: -1
-stats
+gold-mine
   rotate: false
-  xy: 210, 35
-  size: 64, 64
-  orig: 64, 64
+  xy: 277, 1
+  size: 320, 251
+  orig: 320, 251
   offset: 0, 0
   index: -1
-stoneIcon
+gold-mine2
   rotate: false
-  xy: 261, 340
-  size: 64, 64
-  orig: 64, 64
+  xy: 431, 254
+  size: 250, 200
+  orig: 250, 200
   offset: 0, 0
   index: -1
-woodIcon
+sawmill2
   rotate: false
-  xy: 1, 1
-  size: 75, 65
-  orig: 75, 65
+  xy: 190, 259
+  size: 239, 195
+  orig: 239, 195
+  offset: 0, 0
+  index: -1
+smawill
+  rotate: false
+  xy: 1, 24
+  size: 274, 233
+  orig: 274, 233
+  offset: 0, 0
+  index: -1
+stone-mine
+  rotate: false
+  xy: 599, 1
+  size: 320, 251
+  orig: 320, 251
+  offset: 0, 0
+  index: -1
+stone-mine2
+  rotate: false
+  xy: 683, 254
+  size: 250, 200
+  orig: 250, 200
   offset: 0, 0
   index: -1
 
@@ -478,174 +402,78 @@ game2.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-castle1
+block-grass
   rotate: false
-  xy: 1, 300
-  size: 187, 192
-  orig: 187, 192
+  xy: 104, 10
+  size: 101, 121
+  orig: 101, 121
   offset: 0, 0
   index: -1
-goldMine
+block-stone
   rotate: false
-  xy: 190, 299
-  size: 97, 96
-  orig: 97, 96
+  xy: 1, 9
+  size: 101, 122
+  orig: 101, 122
   offset: 0, 0
   index: -1
-goldMine0
+block-water
   rotate: false
-  xy: 304, 396
-  size: 97, 96
-  orig: 97, 96
+  xy: 207, 17
+  size: 101, 121
+  orig: 101, 121
   offset: 0, 0
   index: -1
-goldMine1
+pile-gold
   rotate: false
-  xy: 403, 396
-  size: 97, 96
-  orig: 97, 96
+  xy: 310, 1
+  size: 93, 66
+  orig: 93, 66
   offset: 0, 0
   index: -1
-sawmill
+pile-stone
   rotate: false
-  xy: 1, 203
-  size: 112, 95
-  orig: 112, 95
+  xy: 405, 23
+  size: 93, 66
+  orig: 93, 66
   offset: 0, 0
   index: -1
-sawmill1
+pile-wood
   rotate: false
-  xy: 190, 397
-  size: 112, 95
-  orig: 112, 95
+  xy: 310, 69
+  size: 82, 78
+  orig: 82, 78
   offset: 0, 0
   index: -1
-stoneMine
+plant1
   rotate: false
-  xy: 1, 102
-  size: 107, 99
-  orig: 107, 99
-  offset: 0, 0
-  index: -1
-stoneMine1
-  rotate: false
-  xy: 1, 1
-  size: 107, 99
-  orig: 107, 99
-  offset: 0, 0
-  index: -1
-
-game3.png
-format: RGBA8888
-filter: Nearest,Nearest
-repeat: none
-cutTree
-  rotate: false
-  xy: 263, 41
-  size: 50, 41
-  orig: 50, 41
-  offset: 0, 0
-  index: -1
-goldPile
-  rotate: false
-  xy: 291, 175
-  size: 74, 71
-  orig: 74, 71
-  offset: 0, 0
-  index: -1
-mapGrass
-  rotate: false
-  xy: 367, 182
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-mapRoad
-  rotate: false
-  xy: 433, 182
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-mapWater
-  rotate: false
-  xy: 95, 67
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-mapWater2
-  rotate: false
-  xy: 95, 1
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-mountain
-  rotate: false
-  xy: 227, 84
-  size: 64, 60
-  orig: 64, 60
+  xy: 150, 140
+  size: 98, 107
+  orig: 98, 107
   offset: 0, 0
   index: -1
 rock1
   rotate: false
-  xy: 263, 4
-  size: 44, 35
-  orig: 44, 35
-  offset: 0, 0
-  index: -1
-rock2
-  rotate: false
-  xy: 227, 22
-  size: 34, 60
-  orig: 34, 60
-  offset: 0, 0
-  index: -1
-stonePile
-  rotate: false
-  xy: 161, 67
-  size: 64, 64
-  orig: 64, 64
-  offset: 0, 0
-  index: -1
-tree0
-  rotate: false
-  xy: 116, 133
-  size: 84, 113
-  orig: 84, 113
+  xy: 250, 149
+  size: 98, 98
+  orig: 98, 98
   offset: 0, 0
   index: -1
 tree1
   rotate: false
-  xy: 1, 134
-  size: 113, 112
-  orig: 113, 112
+  xy: 394, 91
+  size: 100, 156
+  orig: 100, 156
   offset: 0, 0
   index: -1
-tree2
+trunk
   rotate: false
-  xy: 1, 9
-  size: 92, 123
-  orig: 92, 123
-  offset: 0, 0
-  index: -1
-tree4
-  rotate: false
-  xy: 202, 146
-  size: 87, 100
-  orig: 87, 100
-  offset: 0, 0
-  index: -1
-woodPile
-  rotate: false
-  xy: 161, 1
-  size: 64, 64
-  orig: 64, 64
+  xy: 1, 133
+  size: 147, 114
+  orig: 147, 114
   offset: 0, 0
   index: -1
 
-game4.png
+game3.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -719,7 +547,131 @@ HeroOne31
   orig: 43, 64
   offset: 0, 0
   index: 3
-  
+
+game4.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+attackIcon
+  rotate: false
+  xy: 477, 659
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+background
+  rotate: false
+  xy: 1, 235
+  size: 197, 768
+  orig: 197, 768
+  offset: 0, 0
+  index: -1
+defenseIcon
+  rotate: false
+  xy: 158, 185
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+indicator
+  rotate: false
+  xy: 1, 36
+  size: 161, 40
+  orig: 161, 40
+  offset: 0, 0
+  index: -1
+objetive
+  rotate: false
+  xy: 356, 492
+  size: 82, 78
+  orig: 82, 78
+  offset: 0, 0
+  index: -1
+options
+  rotate: false
+  xy: 356, 412
+  size: 82, 78
+  orig: 82, 78
+  offset: 0, 0
+  index: -1
+powerIcon
+  rotate: false
+  xy: 319, 347
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+rect
+  rotate: false
+  xy: 1, 1
+  size: 173, 33
+  orig: 173, 33
+  offset: 0, 0
+  index: -1
+turn
+  rotate: false
+  xy: 356, 572
+  size: 119, 119
+  orig: 119, 119
+  offset: 0, 0
+  index: 1
+turn
+  rotate: false
+  xy: 200, 262
+  size: 117, 117
+  orig: 117, 117
+  offset: 0, 0
+  index: 2
+turnDays
+  rotate: false
+  xy: 1, 78
+  size: 155, 155
+  orig: 155, 155
+  offset: 0, 0
+  index: 6
+turnDays
+  rotate: false
+  xy: 200, 849
+  size: 154, 154
+  orig: 154, 154
+  offset: 0, 0
+  index: 1
+turnDays
+  rotate: false
+  xy: 200, 693
+  size: 154, 154
+  orig: 154, 154
+  offset: 0, 0
+  index: 2
+turnDays
+  rotate: false
+  xy: 356, 849
+  size: 154, 154
+  orig: 154, 154
+  offset: 0, 0
+  index: 3
+turnDays
+  rotate: false
+  xy: 200, 537
+  size: 154, 154
+  orig: 154, 154
+  offset: 0, 0
+  index: 4
+turnDays
+  rotate: false
+  xy: 356, 693
+  size: 154, 154
+  orig: 154, 154
+  offset: 0, 0
+  index: 5
+turnDays
+  rotate: false
+  xy: 200, 381
+  size: 154, 154
+  orig: 154, 154
+  offset: 0, 0
+  index: 7
+
 game5.png
 format: RGBA8888
 filter: Nearest,Nearest

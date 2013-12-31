@@ -1,4 +1,4 @@
-package com.races.humands.castle;
+package com.races.humans.castle;
 
 import com.game.Constants;
 import com.modules.castle.CastleBuilding;
@@ -9,27 +9,20 @@ public class Archery extends CastleBuilding {
 
 	public Archery() {
 		buildings_level.add( getFirstLevel() );
-		
 		position_number = 5;
 		levels = 1;
 	}
 
 	private CastleBuildingLevel getFirstLevel() {
 		CastleBuildingLevel level_1 = new CastleBuildingLevel() {
-			@Override
-			public void passDay( TopCastle castle ) {
-				// TODO Auto-generated method stub			
-			}
+			public void passDay( TopCastle castle ) {}
 
-			@Override
 			public void up(TopCastle castle) {
 				castle.enableUnit( Constants.ARCHER );
 			}
 
-			@Override
 			public void passWeek(TopCastle castle) {
 				// TODO Auto-generated method stub
-				
 			}
 		};
 
@@ -38,10 +31,9 @@ public class Archery extends CastleBuilding {
 		level_1.setStonePrice(0);
 
 		level_1.setName("Archery");
-		level_1.setBuildTexture("archery");
+		level_1.setBuildTexture("humans-archery");
 		level_1.setDescription("The Archery allows you to recruit\nArchers.");
 
 		return level_1;
 	}
-
 }

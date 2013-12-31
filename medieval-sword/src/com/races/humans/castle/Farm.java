@@ -1,4 +1,4 @@
-package com.races.humands.castle;
+package com.races.humans.castle;
 
 import com.game.Constants;
 import com.modules.castle.CastleBuilding;
@@ -36,7 +36,7 @@ public class Farm extends CastleBuilding {
 		level_1.setStonePrice(0);
 
 		level_1.setName("Farm");
-		level_1.setBuildTexture("farm");
+		level_1.setBuildTexture("humans-farm");
 		level_1.setDescription("The Farm allows you to recruit\nVillagers.");
 
 		return level_1;

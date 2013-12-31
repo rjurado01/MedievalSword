@@ -48,7 +48,8 @@ public class TopCastleBuilding {
 	public boolean canBuildLevel() {
 		CastleBuildingLevel building_level = getNextBuildingLevel();
 
-		if( building_level.getGoldPrice() <= castle.getOwner().gold &&
+		if( !castle.isBuilt() &&
+			building_level.getGoldPrice() <= castle.getOwner().gold &&
 			building_level.getWoodPrice() <= castle.getOwner().wood &&
 			building_level.getStonePrice() <= castle.getOwner().stone )
 			return true;
@@ -57,7 +58,7 @@ public class TopCastleBuilding {
 	}
 
 	public boolean availableLevel() {
-		return level >= 0 && !complete() && !castle.isBuilt();
+		return level >= 0;
 	}
 
 	public void build() {

@@ -1,5 +1,8 @@
 package com.modules.castle;
 
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.modules.battle.UnitIcon;
 import com.modules.map.MapConstants;
 import com.modules.map.MapController;
 
@@ -13,6 +16,10 @@ public class BuyUnitIcon extends UnitIcon {
 
 	public BuyUnitIcon( float x_position, float y_position ) {
 		super( x_position, y_position );
+
+		background.setClickListener( new ClickListener() {
+			public void click(Actor actor, float x, float y) { clicked(); }
+		});
 	}
 
 	protected void clicked() {
@@ -22,7 +29,7 @@ public class BuyUnitIcon extends UnitIcon {
 
 	public void addUnit( TopCastleUnit unit ) {
 		this.tc_unit = unit;
-		updateIcon( tc_unit.unit.getIcon() );
+		addIcon( tc_unit.unit.getIcon( tc_unit.castle.owner.color ) );
 	}
 
 	public boolean empty() {
@@ -30,6 +37,6 @@ public class BuyUnitIcon extends UnitIcon {
 	}
 
 	public void update() {
-		updateNumber( tc_unit.number_units );
+		setNumber( tc_unit.number_units );
 	}
 }

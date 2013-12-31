@@ -17,9 +17,11 @@ public class Castle {
 	protected List<CastleBuilding> buildings;
 	protected List<Unit> units;
 
-	protected String texture;
+	protected String texture_name;
+	protected String icon_name;
 	protected Vector2i size;
 	protected Vector2i square_use_number;
+	public Vector2i position_correction;
 
 	public Castle() {
 		buildings = new ArrayList<CastleBuilding>();

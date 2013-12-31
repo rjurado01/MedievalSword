@@ -1,4 +1,4 @@
-package com.races.humands.castle;
+package com.races.humans.castle;
 
 import com.modules.castle.CastleBuilding;
 import com.modules.castle.CastleBuildingLevel;
@@ -19,11 +19,10 @@ public class TownHall extends CastleBuilding {
 		CastleBuildingLevel level_1 = new CastleBuildingLevel() {
 
 			public void passDay( TopCastle castle ) {
-				System.out.println("Level1");
 				castle.getOwner().addGold( 500 );
 			}
 
-			public void up(TopCastle castle) {}
+			public void up( TopCastle castle ) {}
 
 			public void passWeek(TopCastle castle) {
 				// TODO Auto-generated method stub
@@ -35,7 +34,7 @@ public class TownHall extends CastleBuilding {
 		level_1.setStonePrice(0);
 
 		level_1.setName("Town Hall");
-		level_1.setBuildTexture("townhall");
+		level_1.setBuildTexture("humans-townhall");
 		level_1.setDescription("The Town produces 1000 Gold per day.");
 
 		return level_1;
@@ -59,7 +58,7 @@ public class TownHall extends CastleBuilding {
 		level_1.setStonePrice(0);
 
 		level_1.setName("Capitole");
-		level_1.setBuildTexture("townhall");
+		level_1.setBuildTexture("humans-capitole");
 		level_1.setDescription("Town Hall second level.");
 
 		return level_1;

@@ -14,23 +14,25 @@ import com.game.Stack;
 import com.game.Unit;
 import com.modules.map.MapConstants;
 import com.modules.map.MapController;
-import com.modules.map.terrain.SquareTerrain;
 import com.utils.Vector2i;
 
+/**
+ * Top representation of castle.
+ * Includes the castle type and the Image representation.
+ */
 public class TopCastle {
 
 	Castle castle;
+	Player owner;
+	Army army;
+
 	Image image;
 	Vector2i square_position;
 
 	List<TopCastleBuilding> buildings;
 	List<TopCastleUnit> units;
 
-	Army army;
-
-	Player owner;
-
-	boolean built;
+	boolean built; 	// show whether this turn the player has constructed a building
 
 	public TopCastle( Castle castle, Vector2i position, Player owner ) {
 		this.castle = castle;
@@ -45,11 +47,13 @@ public class TopCastle {
 	}
 
 	private void loadImage() {
-		image = new Image( Assets.getTextureRegion( castle.texture ));
+		image = new Image( Assets.getTextureRegion( castle.texture_name ));
 		image.width = castle.size.x;
 		image.height = castle.size.y;
-		image.x = SquareTerrain.WIDTH * square_position.x;
-		image.y = SquareTerrain.HEIGHT * square_position.y;
+		image.x = MapConstants.SQUARE_TERRAIN_W *
+				square_position.x + castle.position_correction.x;
+		image.y = MapConstants.SQUARE_TERRAIN_H *
+				square_position.y + castle.position_correction.y;
 
 		image.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) { clicked(); }
@@ -79,7 +83,7 @@ public class TopCastle {
 	}
 
 	public String getIconTextureName() {
-		return castle.texture;
+		return castle.texture_name;
 	}
 
 	public Vector2i getUseSquareNumber() {
@@ -94,7 +98,7 @@ public class TopCastle {
 	}
 
 	public TextureRegion getIconTextureRegion() {
-		return Assets.getTextureRegion( castle.texture );
+		return Assets.getTextureRegion( castle.icon_name );
 	}
 
 	public Player getOwner() {

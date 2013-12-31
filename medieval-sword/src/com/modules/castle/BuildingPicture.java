@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.game.Assets;
+import com.game.Constants;
 import com.modules.map.MapConstants;
 import com.modules.map.MapController;
 import com.utils.Vector2i;
@@ -16,17 +17,18 @@ import com.utils.Vector2i;
 public class BuildingPicture extends Group {
 
 	TopCastleBuilding building;
+	Image background;
 	Image image;
-	Image image_name;
-	Label name;
+	Image name_image;
+	Label name_label;
 
 	public BuildingPicture( TopCastleBuilding building, Vector2i position ) {
 		this.building = building;
 
 		x = position.x;
 		y = position.y;
-		width = CastlePanel.BUILDING_WIDTH;
-		height = CastlePanel.BUILDING_HEIGHT + CastlePanel.BUILDING_NAME_HEIGHT;
+		width = BuildingsPage.BUILDING_W;
+		height = BuildingsPage.BUILDING_H + BuildingsPage.BUILDING_NAME_H;
 
 		createImage();
 		createName();
@@ -34,33 +36,42 @@ public class BuildingPicture extends Group {
 	}
 
 	private void createImage() {
+		background = new Image( Assets.getTextureRegion("rect2") );
+		background.width = width;
+		background.height = BuildingsPage.BUILDING_H;
+		background.y = BuildingsPage.BUILDING_NAME_H;
+
 		image = new Image( Assets.getTextureRegion(
 				building.getNextBuildingLevel().getBuildTexture() ) );
 
 		image.width = width;
-		image.height = CastlePanel.BUILDING_HEIGHT;
-		image.y = CastlePanel.BUILDING_NAME_HEIGHT;
+		image.height = BuildingsPage.BUILDING_H;
+		image.y = BuildingsPage.BUILDING_NAME_H;
 
+		addActor( background );
 		addActor( image );
 	}
 
 	private void createName() {
 		if( building.availableLevel() == false )
-			image_name = new Image( Assets.getFrame( "botBuild", 3 ) );
+			name_image = new Image( Assets.getFrame( "botBuild", 1 ) );
+		else if ( building.complete() )
+			name_image = new Image( Assets.getFrame( "botBuild", 4 ) );
 		else if( building.canBuildLevel() )
-			image_name = new Image( Assets.getFrame( "botBuild", 1 ) );
+			name_image = new Image( Assets.getFrame( "botBuild", 2 ) );
 		else
-			image_name = new Image( Assets.getFrame( "botBuild", 2 ) );
+			name_image = new Image( Assets.getFrame( "botBuild", 3 ) );
 
-		image_name.width = width;
-		image_name.height = CastlePanel.BUILDING_NAME_HEIGHT;
+		name_image.width = width;
+		name_image.height = BuildingsPage.BUILDING_NAME_H;
 
-		name = new Label( building.getNextBuildingLevel().getName(), Assets.skin );
-		name.x = 10;
-		name.y = 1;
+		String name = building.getNextBuildingLevel().getName();
+		name_label = new Label( name, Assets.skin );
+		name_label.x = ( width - name.length() * Constants.FONT1_WIDTH ) / 2;
+		name_label.y = 3;
 
-		addActor( image_name );
-		addActor( name );
+		addActor( name_image );
+		addActor( name_label );
 	}
 
 	private void addClickedEvent() {
@@ -72,16 +83,13 @@ public class BuildingPicture extends Group {
 	}
 
 	private void clicked() {
-		System.out.println("Entro0");
 		MapController.addEvent( MapConstants.SHOW_BUILDING, building );
 	}
 
 	public void update() {
 		updateImage();
-
-		removeActor( image_name );
-		removeActor( name );
-
+		removeActor( name_image );
+		removeActor( name_label );
 		createName();
 	}
 

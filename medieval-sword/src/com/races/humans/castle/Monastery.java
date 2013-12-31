@@ -1,4 +1,4 @@
-package com.races.humands.castle;
+package com.races.humans.castle;
 
 import com.game.Constants;
 import com.modules.castle.CastleBuilding;
@@ -35,7 +35,7 @@ public class Monastery extends CastleBuilding {
 		level_1.setStonePrice(10);
 
 		level_1.setName("Monastery");
-		level_1.setBuildTexture("monastery");
+		level_1.setBuildTexture("humans-church");
 		level_1.setDescription("The Monastery allows you to recruit\nMagicians.");
 
 		return level_1;

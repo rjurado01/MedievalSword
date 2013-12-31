@@ -67,8 +67,8 @@ public abstract class Unit {
 	 * Load icon ( in all colors ) 
 	 */
 	private void loadUnitIcons() {
-		for( int color = 0; color < Constants.N_COLORS; color++ ) 
-			textures.put( "icon" + color, 	Assets.getTextureRegion( name + 0 + color ) );
+		for( int color = 0; color < Constants.N_COLORS; color++ )
+			textures.put( "icon" + color, Assets.getTextureRegion( name + "Icon" + color ) );
 	}
 
 	/**
@@ -113,8 +113,8 @@ public abstract class Unit {
 		return image;
 	}
 
-	public TextureRegion getIcon() {
-		return textures.get( "normal10" );
+	public TextureRegion getIcon( int color ) {
+		return textures.get( "icon" + color );
 	}
 
 	public Animation getAnimation( String name, int orientation, int color ) {

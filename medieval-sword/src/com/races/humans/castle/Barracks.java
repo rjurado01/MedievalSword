@@ -1,4 +1,4 @@
-package com.races.humands.castle;
+package com.races.humans.castle;
 
 import com.game.Constants;
 import com.modules.castle.CastleBuilding;
@@ -17,9 +17,7 @@ public class Barracks extends CastleBuilding {
 	private CastleBuildingLevel getFirstLevel() {
 		CastleBuildingLevel level_1 = new CastleBuildingLevel() {
 
-			public void passDay( TopCastle castle ) {
-				castle.getOwner().addGold( 1000 );
-			}
+			public void passDay( TopCastle castle ) {}
 
 			public void up( TopCastle castle ) {
 				castle.enableUnit( Constants.CRUSADER );
@@ -35,7 +33,7 @@ public class Barracks extends CastleBuilding {
 		level_1.setStonePrice(5);
 
 		level_1.setName("Barracks");
-		level_1.setBuildTexture("barracks");
+		level_1.setBuildTexture("humans-barracks");
 		level_1.setDescription("The Barracks allow you to recruit\nCrusaders.");
 
 		return level_1;

@@ -7,26 +7,43 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
 import com.game.Assets;
 import com.game.Stack;
+import com.modules.battle.UnitIcon;
 
+/**
+ * Show the castle army and the hero army if there is an hero in the castle.
+ * It allows the player pass units of castle army to hero army.
+ */
 public class HomePage extends Group {
 
 	final int N_UNITS = 5;
-	final int BX_SIZE = 50; // space between two buildings squares of castle units
+	final int SPACE_W = UnitIcon.SIZE_W - 2; // space between two UnitIcons
+	final int HOME_X = 185;
+	final int ROW2_Y = 60;
+	final int ROW1_Y = 220;
+	final int ALL_BUTTON_X = 705;
+	final int ALL_BUTTON_Y = 175;
 
 	Army castle_army;
 	Army hero_army;
 
-	ArmyUnitIcon[] castle_army_icons;	 // units that are inside of castle army
-	ArmyUnitIcon[] hero_army_icons;  // units that are inside of hero army
+	ArmyUnitIcon[] castle_army_icons;	// units that are inside of castle army
+	ArmyUnitIcon[] hero_army_icons;  	// units that are inside of hero army
 
+	Image castle_icon;
+	Image hero_icon;
+	Image pass_all_disabled;
 	Button pass_all;
 
-	public HomePage( Army castle_army, Army hero_army ) {
+	int color;	// owner color (player)
+
+	public HomePage( Army castle_army, Army hero_army, int color ) {
 		this.castle_army = castle_army;
 		this.hero_army = hero_army;
+		this.color = color;
 
 		castle_army_icons = new ArmyUnitIcon[5];
 		hero_army_icons = new ArmyUnitIcon[5];
@@ -34,11 +51,12 @@ public class HomePage extends Group {
 		loadCastleArmy( castle_army );
 		loadHeroArmy( hero_army );
 		loadButtons();
+		loadIcons();
 	}
 
 	private void loadCastleArmy( Army army ) {
 		for( int i = 0; i < N_UNITS; i++ ) {
-			this.castle_army_icons[i] = new ArmyUnitIcon( 75 + 38 * i, 100 );
+			this.castle_army_icons[i] = new ArmyUnitIcon( HOME_X + SPACE_W * i, ROW1_Y );
 			addActor( this.castle_army_icons[i] );
 		}
 
@@ -47,7 +65,7 @@ public class HomePage extends Group {
 
 	private void loadHeroArmy( Army army ) {
 		for( int i = 0; i < N_UNITS; i++ ) {
-			this.hero_army_icons[i] = new ArmyUnitIcon( 75 + 38 * i, 30 );
+			this.hero_army_icons[i] = new ArmyUnitIcon( HOME_X + SPACE_W * i, ROW2_Y );
 			addActor( this.hero_army_icons[i] );
 		}
 
@@ -61,12 +79,11 @@ public class HomePage extends Group {
 	 */
 	public void updateArmy( Army army, ArmyUnitIcon[] representation ) {
 		for( int i = 0; i < army.getStacks().size(); i++ ) {
-			if( representation[i].empty() ) {
-				representation[i].addUnit( army.getStacks().get(i).getUnit() );
-				representation[i].updateNumber( army.getStacks().get(i).getNumber() );
-			}
-			else
-				representation[i].updateNumber( army.getStacks().get(i).getNumber() );
+			if( representation[i].empty() )
+				representation[i].addUnit( army.getStacks().get(i).getUnit(), color );
+
+			representation[i].setNumber( army.getStacks().get(i).getNumber() );
+			representation[i].showNumberLabel();
 		}
 	}
 
@@ -75,26 +92,57 @@ public class HomePage extends Group {
 		updateArmy( army, hero_army_icons );
 	}
 
-
 	private void loadButtons() {
-		pass_all = new Button(
-				Assets.getTextureRegion("stats"),
-				Assets.getTextureRegion("number") );
+		if( hero_army != null ) {
+			pass_all = new Button(
+					Assets.getFrame("btnPassAll", 1),
+					Assets.getFrame("btnPassAll", 2) );
 
-		pass_all.x = 280;
-		pass_all.y = 70;
-		pass_all.width = 30;
-		pass_all.height = 50;
+			pass_all.width = CastlePanel.BUTTONS_SIZE;
+			pass_all.height = CastlePanel.BUTTONS_SIZE;
+			pass_all.x = ALL_BUTTON_X;
+			pass_all.y = ALL_BUTTON_Y;
 
-		pass_all.setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) {
-				passAllUnits();
-			}
-		});
+			pass_all.setClickListener( new ClickListener() {
+				public void click(Actor actor, float x, float y) {
+					passAllUnits();
+				}
+			});
 
-		addActor( pass_all );
+			addActor( pass_all );
+		} else {
+			pass_all_disabled = new Image( Assets.getFrame("btnPassAll" ,3) );
+			pass_all_disabled.width = CastlePanel.BUTTONS_SIZE;
+			pass_all_disabled.height = CastlePanel.BUTTONS_SIZE;
+			pass_all_disabled.x = ALL_BUTTON_X;
+			pass_all_disabled.y = ALL_BUTTON_Y;
+			addActor( pass_all_disabled );
+		}
 	}
 
+	private void loadIcons() {
+		castle_icon = new Image( Assets.getTextureRegion("iconCastle") );
+
+		castle_icon.x = ALL_BUTTON_X;
+		castle_icon.y = ALL_BUTTON_Y + 100;
+		castle_icon.width = CastlePanel.BUTTONS_SIZE;
+		castle_icon.height = CastlePanel.BUTTONS_SIZE;
+
+		addActor( castle_icon );
+
+		hero_icon = new Image( Assets.getTextureRegion("iconHero") );
+
+		hero_icon.x = ALL_BUTTON_X;
+		hero_icon.y = ALL_BUTTON_Y - 100;
+		hero_icon.width = CastlePanel.BUTTONS_SIZE;
+		hero_icon.height = CastlePanel.BUTTONS_SIZE;
+
+		addActor( hero_icon );
+	}
+
+	/**
+	 * Pass all castle units to hero army
+	 */
 	public void passAllUnits() {
 		int last = -1;
 
@@ -131,11 +179,15 @@ public class HomePage extends Group {
 		}
 	}
 
-	public void updateCastleArmy( Army army ) {
+	/**
+	 * Reload castle army
+	 * @param castle_army new castle army
+	 */
+	public void updateCastleArmy( Army castle_army ) {
 		for( int i = 0; i < 5; i++ ) {
 			castle_army_icons[i].removeUnit();
 		}
 
-		updateArmy( army, castle_army_icons );
+		updateArmy( castle_army, castle_army_icons );
 	}
 }

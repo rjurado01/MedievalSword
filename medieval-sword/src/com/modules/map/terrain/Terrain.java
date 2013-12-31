@@ -3,14 +3,21 @@ package com.modules.map.terrain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Assets;
 import com.modules.castle.TopCastle;
 import com.modules.map.MapActor;
+import com.modules.map.MapConstants;
 import com.modules.map.ui.MiniMap;
 import com.utils.Vector2i;
 
+/**
+ *	This class save information about terrain drawing in the map
+ *	and all elements that it contains.
+ */
 public class Terrain {
 
 	static final int GRASS = 0;
@@ -37,6 +44,8 @@ public class Terrain {
 	SquareTerrain terrain[][];
 	int explored[][];
 
+	Group path_layer;
+
 	Stage stage;
 
 
@@ -47,8 +56,9 @@ public class Terrain {
 		initializeTerrain();
 
 		path_drawn = new ArrayList<SquarePath>();
+		path_layer = new Group();
 	}
-	
+
 	public void setMiniMap( MiniMap mini_map ) {
 		this.mini_map = mini_map;
 	}
@@ -67,23 +77,23 @@ public class Terrain {
 	}
 
 	public void addSquareTerrain( Vector2i square_number, int type, String texture ) {
-		terrain[square_number.y][square_number.x] = 
+		terrain[square_number.y][square_number.x] =
 				new SquareTerrain( square_number, type );
 
 		terrain[square_number.y][square_number.x].setRegion(
 				Assets.getTextureRegion( texture ) );
 	}
-	 
+
 	public SquareTerrain getSquareTerrain( Vector2i square_number ) {
 		return terrain[square_number.y][square_number.x];
 	}
 
 	public int getWidth() {
-		return SQUARES_X * SquareTerrain.WIDTH;
+		return SQUARES_X * MapConstants.SQUARE_TERRAIN_W;
 	}
 
 	public int getHeight() {
-		return SQUARES_Y * SquareTerrain.HEIGHT;
+		return SQUARES_Y * MapConstants.SQUARE_TERRAIN_H;
 	}
 
 	public Vector2 getSquarePosition( Vector2i square_number ) {
@@ -93,9 +103,11 @@ public class Terrain {
 	public void addStage( Stage stage ) {
 		this.stage = stage;
 
-		for( int i = 0; i < SQUARES_Y; i++)
+		for( int i = SQUARES_Y - 1; i >= 0; i--)
 			for( int j = 0; j < SQUARES_X; j++)
 				stage.addActor( terrain[i][j] );
+
+		stage.addActor( path_layer );
 	}
 
 	public Stage getStage() {
@@ -126,15 +138,19 @@ public class Terrain {
 		for( Vector2i item : path ) {
 			SquarePath square_path;
 
-			if( terrain[item.y][item.x].isRoadAvailable() ) {
+			if( i == path.size() -1 ) {
 				if( i < mobility )
-					square_path = new SquarePath( getSquarePosition( item ), true );
+					square_path = new SquarePath( getSquarePosition( item ), true, true );
 				else
-					square_path = new SquarePath( getSquarePosition( item ), false );
-
-				path_drawn.add( square_path );
-				stage.addActor( square_path );
+					square_path = new SquarePath( getSquarePosition( item ), false, true );
 			}
+			else if( i < mobility )
+				square_path = new SquarePath( getSquarePosition( item ), true, false );
+			else
+				square_path = new SquarePath( getSquarePosition( item ), false, false );
+
+			path_drawn.add( square_path );
+			path_layer.addActor( square_path );
 
 			i++;
 		}
@@ -142,7 +158,7 @@ public class Terrain {
 
 	public void removePathDrawn() {
 		while( path_drawn.size() > 0 ) {
-			stage.removeActor( path_drawn.get( 0 ) );
+			path_layer.removeActor( path_drawn.get( 0 ) );
 			path_drawn.remove( 0 );
 		}
 	}
@@ -155,8 +171,9 @@ public class Terrain {
 	}
 
 	public void passTurn( int day ) {
-		for( ResourceStructure structure : getResourceStructures() )
-			structure.turnAction();
+		if( resource_structures != null )
+			for( ResourceStructure structure : resource_structures )
+				structure.turnAction();
 
 		for( TopCastle castle : castles )
 			castle.passTurn( day );
@@ -228,7 +245,7 @@ public class Terrain {
 
 	/**
 	 * Update structure squares with the owner color so that mini_map will be updated
-	 * Also, explore map into the vision range of structure 
+	 * Also, explore map into the vision range of structure
 	 * @param structure
 	 */
 	public void captureStructure( ResourceStructure structure ) {
@@ -251,7 +268,7 @@ public class Terrain {
 	public void setObjects( List<MapActor> objects ) {
 		this.objects = objects;
 	}
-	
+
 	public List<ResourcePile> getResourcePiles() {
 		return resource_piles;
 	}
@@ -278,5 +295,18 @@ public class Terrain {
 
 	public Vector2i getSize() {
 		return new Vector2i( getWidth(), getHeight() );
+	}
+
+	public Group getPathLayer() {
+		return path_layer;
+	}
+
+	public void centerCamera( Vector2 vector2 ) {
+		Camera camera = stage.getCamera();
+
+		camera.translate(
+				vector2.x - camera.position.x,
+				vector2.y - camera.position.y,
+				0);
 	}
 }

@@ -14,18 +14,56 @@ import com.game.Constants;
 import com.modules.castle.TopCastle;
 import com.modules.map.MapConstants;
 import com.modules.map.MapController;
+import com.modules.map.MapInputProcessor;
 import com.modules.map.heroes.CreaturesGroup;
 import com.modules.map.heroes.HeroTop;
 import com.modules.map.terrain.Terrain;
 
 /**
- * Show HUD in the map screen at left
+ * Show the HUD in the map screen at left
  */
 public class HUD extends Group {
 
 	final int GOLD_INDICATOR = 0;
 	final int WOOD_INDICATOR = 1;
 	final int STONE_INDICATOR = 2;
+
+	final float BUTTONS_W = 68;
+	final float BUTTONS_H = 68;
+	final float BUTTONS_1_X = 24;
+	final float BUTTONS_2_X = 99;
+	final float BUTTONS_Y = 204;
+
+	final int RI_X = 24;
+	final int RI1_Y = 508;
+	final int RI2_Y = 465;
+	final int RI3_Y = 422;
+
+	final float INFOBOX_W = 68;
+	final float INFOBOX_H = 100;
+	final int INFOBOX_Y = 295;
+	final int INFOBOX_1_X = 24;
+	final int INFOBOX_2_X = 99;
+
+	final int INFOBOX_ICON_W = 50;
+	final int INFOBOX_ICON_H = 68;
+	final int INFOBOX_ICON_X = 10;
+	final int INFOBOX_ICON_Y = 15;
+
+	final int DAYS_X = 26;
+	final int DAYS_Y = 40;
+	final int DAYS_W = 140;
+	final int DAYS_H = 140;
+
+	final int TURN_X = 46;
+	final int TURN_Y = 60;
+	final int TURN_W = 100;
+	final int TURN_H = 100;
+
+	final int DISABLE_X = 15;
+	final int DISABLE_Y = 20;
+	final int DISABLE_W = 162;
+	final int DISABLE_H = 544;
 
 	MiniMap mini_map;
 
@@ -45,6 +83,7 @@ public class HUD extends Group {
 
 	Image hero_selected;
 	Image enemy_selected;
+	Image disabled_background;
 
 	Map<Integer, ResourceIndicator> resource_indicators;
 
@@ -62,9 +101,15 @@ public class HUD extends Group {
 	}
 
 	private void loadBackground() {
-		background = new Image(Assets.getTextureRegion( "menu" ) );
+		background = new Image( Assets.getTextureRegion( "background" ) );
 		background.height = height;
 		background.width = width;
+
+		disabled_background = new Image( Assets.getTextureRegion("disabledBackground") );
+		disabled_background.height = DISABLE_H;
+		disabled_background.width = DISABLE_W;
+		disabled_background.x = DISABLE_X;
+		disabled_background.y = DISABLE_Y;
 
 		addActor( background );
 	}
@@ -79,27 +124,25 @@ public class HUD extends Group {
 				Assets.getTextureRegion( "options" ),
 				Assets.getTextureRegion( "number" ) );
 
-		system.height = 30;
-		system.width = 32;
-		system.x = 5;
-		system.y = 70;
+		system.height = BUTTONS_H;
+		system.width = BUTTONS_W;
+		system.x = BUTTONS_1_X;
+		system.y = BUTTONS_Y;
 
 		system.setClickListener( new ClickListener() {
-
-			@Override
 			public void click(Actor actor, float x, float y) {
 				System.out.println("System");
 			}
 		});
 
 		game = new Button(
-				Assets.getTextureRegion( "stats" ),
+				Assets.getTextureRegion( "objetive" ),
 				Assets.getTextureRegion( "number" ) );
 
-		game.height = 30;
-		game.width = 32;
-		game.x = 42;
-		game.y = 70;
+		game.height = BUTTONS_H;
+		game.width = BUTTONS_W;
+		game.x = BUTTONS_2_X;
+		game.y = BUTTONS_Y;
 
 		addActor( system );
 		addActor( game );
@@ -109,13 +152,13 @@ public class HUD extends Group {
 
 	private void loadPassTurnButton() {
 		pass_turn = new Button(
-				Assets.getFrame( "passTurn", 2 ),
-				Assets.getFrame( "passTurn", 1 ) );
+				Assets.getFrame( "turn", 1 ),
+				Assets.getFrame( "turn", 2 ) );
 
-		pass_turn.height = 36;
-		pass_turn.width = 60;
-		pass_turn.x = 10;
-		pass_turn.y = 22;
+		pass_turn.height = TURN_H;
+		pass_turn.width = TURN_W;
+		pass_turn.x = TURN_X;
+		pass_turn.y = TURN_Y;
 
 		pass_turn.setClickListener( new ClickListener() {
 			public void click( Actor actor, float x, float y ) {
@@ -123,11 +166,11 @@ public class HUD extends Group {
 			}
 		} );
 
-		day_counter = new Image( Assets.getFrame( "dayCounter", 1 ) );
-		day_counter.width = 70;
-		day_counter.height = 50;
-		day_counter.x = 5;
-		day_counter.y = 15;
+		day_counter = new Image( Assets.getFrame( "turnDays", 1 ) );
+		day_counter.width = DAYS_H;
+		day_counter.height = DAYS_W;
+		day_counter.x = DAYS_X;
+		day_counter.y = DAYS_Y;
 
 		addActor( pass_turn );
 		addActor( day_counter );
@@ -136,17 +179,17 @@ public class HUD extends Group {
 	private void loadIndicators() {
 		resource_indicators = new HashMap<Integer, ResourceIndicator>();
 
-		ResourceIndicator gold_indicator = new ResourceIndicator( 5, 206 );
-		gold_indicator.setIcon( Assets.getTextureRegion( "goldIcon" ) );
-		gold_indicator.updateAmount( 10000 );
+		ResourceIndicator gold_indicator = new ResourceIndicator( RI_X, RI1_Y );
+		gold_indicator.setIcon( Assets.getTextureRegion( "iconGold" ) );
+		gold_indicator.updateText( 10000 );
 
-		ResourceIndicator wood_indicator = new ResourceIndicator( 5, 188 );
-		wood_indicator.setIcon( Assets.getTextureRegion( "woodIcon" ) );
-		wood_indicator.updateAmount( 1000 );
+		ResourceIndicator wood_indicator = new ResourceIndicator( RI_X, RI2_Y );
+		wood_indicator.setIcon( Assets.getTextureRegion( "iconWood" ) );
+		wood_indicator.updateText( 1000 );
 
-		ResourceIndicator stone_indicator = new ResourceIndicator( 5, 170 );
-		stone_indicator.setIcon( Assets.getTextureRegion( "stoneIcon" ) );
-		stone_indicator.updateAmount( 100 );
+		ResourceIndicator stone_indicator = new ResourceIndicator( RI_X, RI3_Y );
+		stone_indicator.setIcon( Assets.getTextureRegion( "iconStone" ) );
+		stone_indicator.updateText( 100 );
 
 		resource_indicators.put( GOLD_INDICATOR, gold_indicator );
 		resource_indicators.put( WOOD_INDICATOR, wood_indicator );
@@ -158,11 +201,11 @@ public class HUD extends Group {
 	}
 
 	private void loadInfoBoxes() {
-		info_box_1 = new Image(Assets.getTextureRegion( "content" ) );
-		info_box_1.height = 60;
-		info_box_1.width = 35;
-		info_box_1.x = 5;
-		info_box_1.y = 105;
+		info_box_1 = new Image(Assets.getTextureRegion( "rect" ) );
+		info_box_1.height = INFOBOX_H;
+		info_box_1.width = INFOBOX_W;
+		info_box_1.x = INFOBOX_1_X;
+		info_box_1.y = INFOBOX_Y;
 
 		info_box_1.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
@@ -170,11 +213,11 @@ public class HUD extends Group {
 			}
 		});
 
-		info_box_2 = new Image(Assets.getTextureRegion( "content" ) );
-		info_box_2.height = 60;
-		info_box_2.width = 35;
-		info_box_2.x = 40;
-		info_box_2.y = 105;
+		info_box_2 = new Image(Assets.getTextureRegion( "rect" ) );
+		info_box_2.height = INFOBOX_H;
+		info_box_2.width = INFOBOX_W;
+		info_box_2.x = INFOBOX_2_X;
+		info_box_2.y = INFOBOX_Y;
 
 		info_box_2.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
@@ -187,15 +230,15 @@ public class HUD extends Group {
 	}
 
 	public void updateGold( int new_gold ) {
-		resource_indicators.get( GOLD_INDICATOR ).updateAmount( new_gold );
+		resource_indicators.get( GOLD_INDICATOR ).updateText( new_gold );
 	}
 
 	public void updateWood( int new_wood ) {
-		resource_indicators.get( WOOD_INDICATOR ).updateAmount( new_wood );
+		resource_indicators.get( WOOD_INDICATOR ).updateText( new_wood );
 	}
 
 	public void updateStone( int new_stone ) {
-		resource_indicators.get( STONE_INDICATOR ).updateAmount( new_stone );
+		resource_indicators.get( STONE_INDICATOR ).updateText( new_stone );
 	}
 
 	public MiniMap getMiniMap() {
@@ -207,10 +250,10 @@ public class HUD extends Group {
 			hero_selected.remove();
 
 		hero_selected = new Image( selected_hero.getIconTextureRegion() );
-		hero_selected.width = 30;
-		hero_selected.height = 30;
-		hero_selected.x = 8;
-		hero_selected.y = 130;
+		hero_selected.width = INFOBOX_ICON_W;
+		hero_selected.height = INFOBOX_ICON_H;
+		hero_selected.x = INFOBOX_1_X + INFOBOX_ICON_X;
+		hero_selected.y = INFOBOX_Y + INFOBOX_ICON_Y;
 
 		addActor( hero_selected );
 	}
@@ -227,10 +270,10 @@ public class HUD extends Group {
 			enemy_selected.remove();
 
 		enemy_selected = new Image( group.getIconTextureRegion() );
-		enemy_selected.width = 30;
-		enemy_selected.height = 30;
-		enemy_selected.x = 38;
-		enemy_selected.y = 130;
+		enemy_selected.width = 70;
+		enemy_selected.height = 70;
+		enemy_selected.x = INFOBOX_2_X;
+		enemy_selected.y = INFOBOX_Y + INFOBOX_ICON_Y;
 
 		addActor( enemy_selected );
 	}
@@ -242,20 +285,30 @@ public class HUD extends Group {
 		}
 	}
 
-	public void passTurn( int day ) {
-		day_counter.setRegion( Assets.getFrame( "dayCounter", day ) );
-	}
-
 	public void selectCastle( TopCastle castle ) {
 		if( enemy_selected != null )
 			enemy_selected.remove();
 
 		enemy_selected = new Image( castle.getIconTextureRegion() );
-		enemy_selected.width = 30;
-		enemy_selected.height = 30;
-		enemy_selected.x = 38;
-		enemy_selected.y = 130;
+		enemy_selected.width = 50;
+		enemy_selected.height = 50;
+		enemy_selected.x = INFOBOX_2_X + ( INFOBOX_W - enemy_selected.width ) / 2;
+		enemy_selected.y = INFOBOX_Y + ( INFOBOX_H - enemy_selected.height ) / 2;
 
 		addActor( enemy_selected );
+	}
+
+	public void passTurn( int day ) {
+		day_counter.setRegion( Assets.getFrame( "turnDays", day ) );
+	}
+
+	public void disable() {
+		addActor( disabled_background );
+		MapInputProcessor.deactivateHUD();
+	}
+
+	public void enable() {
+		removeActor( disabled_background );
+		MapInputProcessor.activateHUD();
 	}
 }

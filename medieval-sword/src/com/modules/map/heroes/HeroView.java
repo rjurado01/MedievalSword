@@ -8,32 +8,35 @@ import com.modules.map.MapConstants;
 import com.modules.map.MapController;
 import com.utils.Vector2i;
 
+/**
+ *	The representation of hero in the map.
+ */
 public class HeroView extends Image {
-	
+
 	HeroTop hero;
-	
+
 	public HeroView( HeroTop hero, Vector2i size ) {
 		this.hero = hero;
 		this.width = size.x;
 		this.height = size.y;
-		
+
 		setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) { 
+			public void click(Actor actor, float x, float y) {
 				clicked();
 			}
 		});
 	}
-	
+
 	private void clicked() {
 		MapController.addEvent( MapConstants.HERO, hero );
 	}
-	
+
 	public Vector2 getPosition() {
 		return new Vector2(x, y);
 	}
-	
+
 	public void setPosition( Vector2 pos ) {
-		this.x = pos.x;
-		this.y = pos.y;
+		this.x = pos.x + MapConstants.SQUARE_X_POSITION;
+		this.y = pos.y + MapConstants.SQUARE_Y_POSITION;
 	}
 }

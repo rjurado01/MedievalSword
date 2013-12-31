@@ -8,8 +8,8 @@ public class TreeCut1 extends MapObject {
 
 	public TreeCut1() {
 		type = MapConstants.TREE_2;
-		texture_name = "cutTree";
-		size = new Vector2i( 30, 20 );
-		position_correction = new Vector2i(10,5);
+		texture_name = "treeShort";
+		size = new Vector2i( 30, 40 );
+		position_correction = new Vector2i(5,5);
 	}
 }

@@ -5,21 +5,18 @@ import com.modules.map.terrain.ResourceStructure;
 import com.utils.Vector2i;
 
 public class StoneMine extends ResourceStructure{
-	
-	/* SIZE */
-	public static final float HEIGHT = 35;
-	public static final float WIDTH = 35;
-
 
 	public StoneMine( Vector2i square_number, Player owner  ) {
 		super( square_number );
 
 		this.owner = owner;
-		this.texture_name = "stoneMine";
-		this.size = new Vector2i( 100, 100 );
+		this.texture_name = "stone-mine";
+		this.size = new Vector2i( 264, 212 );
 		this.vision = 5;
 		this.square_use_number = new Vector2i( 1, -1 );
-		
+		this.position_correction = new Vector2i( 0, 0 );
+		this.flag_position = new Vector2i( 120, 190 );
+
 		createActor();
 	}
 

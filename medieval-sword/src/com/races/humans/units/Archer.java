@@ -1,4 +1,4 @@
-package com.races.humands.units;
+package com.races.humans.units;
 
 import com.game.Constants;
 import com.game.Stack;
@@ -8,19 +8,19 @@ import com.utils.CallBack;
 import com.utils.CustomAnimation;
 
 /**
- * Archer Unit ( distance unit ) 
+ * Archer Unit ( distance unit )
  */
 public class Archer extends Unit {
-	
+
 	/* ANIMATIONS */
 	public static final String PREPARE = "prepare";
 	public static final String SHOOT = "shoot";
 	public static final String WALK = "walk";
-	
+
 	/* SIZE */
-	public static final float HEIGHT = 35;
-	public static final float WIDTH = 35;
-	
+	public static final int HEIGHT = 80;
+	public static final int WIDTH = 80;
+
 	Arrow arrow = null;
 
 
@@ -33,8 +33,8 @@ public class Archer extends Unit {
 
 		id = Constants.ARCHER;
 
-		map_width = 30;
-		map_height = 30;
+		map_width = HEIGHT;
+		map_height = WIDTH;
 
 		enable_description = "You need to build an Archery.";
 		name = "Archer";
@@ -43,7 +43,7 @@ public class Archer extends Unit {
 		loadTextures();
 		loadAnimations();
 	}
-	
+
 	public void loadAnimations() {
 		int [] frames1 = { 1, 3 };
 		int [] frames2 = { 1 };
@@ -63,7 +63,7 @@ public class Archer extends Unit {
 	 */
 	public void walkAction( Stack stack, int orientation ) {
 		stack.addAction( new CustomAnimation(
-				getAnimation( WALK, orientation, stack.getColor() ), 0.8f, null ) );		
+				getAnimation( WALK, orientation, stack.getColor() ), 0.8f, null ) );
 	}
 
 	/**
@@ -72,7 +72,7 @@ public class Archer extends Unit {
 	 * 	- prepare arc and shoot arrow
 	 *  - return to initialize position
 	 */
-	public void attackAction( Stack stack, int orientation, CallBack callback  ) {		
+	public void attackAction( Stack stack, int orientation, CallBack callback  ) {
 		// prepare the arc and throw arrow
 		stack.addAction( new CustomAnimation(
 				getAnimation( PREPARE, orientation, stack.getColor() ), 1, callback) );
@@ -80,5 +80,5 @@ public class Archer extends Unit {
 		// go back to original position
 		stack.addAction( new CustomAnimation(
 				getAnimation( SHOOT, orientation, stack.getColor() ), 0, null) );
-	}	
+	}
 }

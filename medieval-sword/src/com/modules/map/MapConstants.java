@@ -23,12 +23,13 @@ public class MapConstants {
 	public static final int SHOW_UNIT      		= 14;
 	public static final int CLOSE_UNIT          = 15;
 	public static final int BUY_UNITS			= 16;
+	public static final int CLOSE_PANEL         = 17;
 
 	/* MAP SQUARES STATUS */
 	public static final int FREE = 0;
 
 	/* HUD */
-	public static final int HUD_WIDTH = 80;
+	public static final int HUD_WIDTH = Constants.SIZE_W / 6;
 	public static final int HUD_HEIGHT = Constants.SIZE_H;
 
 	/* HUD */
@@ -43,13 +44,22 @@ public class MapConstants {
 	/* MAP OBJECTS */
 	public static final int TREE_1 		= 1;
 	public static final int TREE_2		= 2;
-	public static final int TREE_DRY_1 	= 3;
-	public static final int TREE_DRY_2 	= 4;
+	public static final int PLANT_1 	= 3;
+	public static final int PLANT_2 	= 4;
 	public static final int TREE_CUT_1 	= 5;
 	public static final int ROCK_1 		= 6;
 	public static final int ROCK_2 		= 7;
-	public static final int MOUNTAIN_1	= 8;
 
 	/* UNITS POSITION/LEVEL */
 	public static final int LEVEL_1 = 0;
+
+	/* OTHERS */
+	public static final int SQUARE_X_POSITION = 8;	// x position of object in square
+	public static final int SQUARE_Y_POSITION = 20; // y position of object in square
+	public static final float HERO_SQUARE_TIME = 0.8f;	// animation time for square
+
+	/* SCREEN MEASURES */
+	public static final int SQUARE_TERRAIN_W = Constants.SIZE_W / 12;
+	public static final int SQUARE_TERRAIN_H = Constants.SIZE_H / 8;
+	public static final int SQUARE_TERRAIN_3D = MapConstants.SQUARE_TERRAIN_H / 2;
 }

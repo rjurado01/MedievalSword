@@ -87,4 +87,17 @@ public class TopCastleUnit {
 	public String getEnableDescription() {
 		return unit.getEnableDescription();
 	}
+
+	public int getAvailableTotalPrice() {
+		int amount = castle.getOwner().gold / unit.getPrice();
+
+		if( amount < number_units )
+			return amount * unit.getPrice();
+		else
+			return number_units * unit.getPrice();
+	}
+
+	public Unit getUnit() {
+		return unit;
+	}
 }

@@ -1,4 +1,4 @@
-package com.races.humands.castle;
+package com.races.humans.castle;
 
 import com.modules.castle.CastleBuilding;
 import com.modules.castle.CastleBuildingLevel;
@@ -27,7 +27,7 @@ public class Fort extends CastleBuilding {
 		level_1.setStonePrice(10);
 
 		level_1.setName("Fort");
-		level_1.setBuildTexture("castle");
+		level_1.setBuildTexture("humans-fort");
 		level_1.setDescription("The Fort increases creature\nproduction by 50%.");
 
 		return level_1;

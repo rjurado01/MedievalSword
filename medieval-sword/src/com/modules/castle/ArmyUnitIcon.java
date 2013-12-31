@@ -1,6 +1,7 @@
 package com.modules.castle;
 
 import com.game.Unit;
+import com.modules.battle.UnitIcon;
 
 /**
  * Group that show unit image and the number of units of this type in an army.
@@ -14,20 +15,13 @@ public class ArmyUnitIcon extends UnitIcon {
 		super( x_position, y_position );
 	}
 
-	protected void clicked() {
-		//if( unit != null )
-		//	MapController.addEvent( MapConstants.SHOW_UNIT, unit );
-	}
-
-	public void addUnit( Unit unit ) {
+	public void addUnit( Unit unit, int color ) {
 		this.unit = unit;
-		updateIcon( unit.getIcon() );
+		addIcon( unit.getIcon(color) );
 	}
 
 	public void removeUnit() {
-		removeIcon();
-		removeNumberLabel();
-
+		clearBox();
 		unit = null;
 	}
 

@@ -8,10 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Assets;
 import com.game.Constants;
 import com.game.Player;
+import com.modules.map.MapConstants;
 import com.modules.map.terrain.SquareTerrain;
 import com.modules.map.terrain.Terrain;
 import com.utils.Vector2i;
 
+/**
+ * Little map that are drown it the top of HUD.
+ * Show information about all the map.
+ */
 public class MiniMap extends Group {
 
 	public static final int FOG = 0;
@@ -23,8 +28,8 @@ public class MiniMap extends Group {
 	public static final int GREY = 6;
 	public static final int WHITE = 7;
 
-	final float WIDTH = 75.2f;
-	final float HEIGHT = 80;
+	final float WIDTH = Constants.SIZE_W / 7.16f;
+	final float HEIGHT = Constants.SIZE_H / 4.64f;
 
 	Terrain terrain;
 	Image mini_map [][];
@@ -39,8 +44,9 @@ public class MiniMap extends Group {
 
 		pixel_width = WIDTH / terrain.SQUARES_X;
 		pixel_height = HEIGHT / terrain.SQUARES_Y;
-		position = new Vector2( 2.5f,
-				Constants.HUD_HEIGHT - ( pixel_height * terrain.SQUARES_Y ) - 12f );
+		position = new Vector2(
+				( MapConstants.HUD_WIDTH - WIDTH ) / 2,
+				MapConstants.HUD_HEIGHT / 1.3241f );
 
 		createMiniMap( terrain );
 	}

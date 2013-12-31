@@ -3,7 +3,7 @@ package com.level;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.castles.Castle1;
+import com.castles.HumansCastle;
 import com.game.Army;
 import com.game.Assets;
 import com.game.Player;
@@ -21,7 +21,7 @@ import com.modules.map.terrain.ResourceStructure;
 import com.modules.map.terrain.SquareTerrain;
 import com.modules.map.terrain.Structure;
 import com.modules.map.terrain.Terrain;
-import com.races.humands.heroes.HumandHero1;
+import com.races.humans.heroes.HumandHero1;
 import com.resources.GoldMine;
 import com.resources.GoldPile;
 import com.resources.Sawmill;
@@ -107,9 +107,9 @@ public class Parser {
 
 	public String getSquareTextureName( int id ) {
 		switch ( id ) {
-			case 1: return "mapWater2";
-			case 2: return "mapRoad";
-			default: return "mapGrass";
+			case 1: return "block-water";
+			case 2: return "block-stone";
+			default: return "block-grass";
 		}
 	}
 
@@ -250,7 +250,7 @@ public class Parser {
 	}
 
 	private Castle getNewCastle( int type ) {
-		return new Castle1();
+		return new HumansCastle();
 	}
 
 }
