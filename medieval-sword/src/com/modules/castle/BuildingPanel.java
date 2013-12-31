@@ -39,7 +39,8 @@ public class BuildingPanel extends Group {
 
 		loadBackground();
 		loadPicture( building.getNextBuildingLevel().getBuildTexture() );
-		loadDescription( building.getNextBuildingLevel().getDescription() );
+		loadDescription(
+			building.getNextBuildingLevel().getDescription( Constants.LANGUAGE ) );
 		loadButtons();
 		createPrices(
 			building.getNextBuildingLevel().getGoldPrice(),

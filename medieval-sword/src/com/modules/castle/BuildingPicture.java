@@ -65,7 +65,7 @@ public class BuildingPicture extends Group {
 		name_image.width = width;
 		name_image.height = BuildingsPage.BUILDING_NAME_H;
 
-		String name = building.getNextBuildingLevel().getName();
+		String name = building.getNextBuildingLevel().getName( Constants.LANGUAGE );
 		name_label = new Label( name, Assets.skin );
 		name_label.x = ( width - name.length() * Constants.FONT1_WIDTH ) / 2;
 		name_label.y = 3;

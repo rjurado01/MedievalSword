@@ -102,7 +102,7 @@ public class UnitsPage extends Group {
 				String price = Integer.toString(
 					castle_units.get(i).getAvailableTotalPrice() );
 
-				int x_off = price.length() * Constants.FONT1_WIDTH;
+				float x_off = price.length() * Constants.FONT1_WIDTH;
 
 				Image icon = new Image( Assets.getTextureRegion( "iconPrice" ) );
 				icon.x = buy_all_buttons[i].x + ( UnitIcon.SIZE_W - 45 - x_off ) / 2;

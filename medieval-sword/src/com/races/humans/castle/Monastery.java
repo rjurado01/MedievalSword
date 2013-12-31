@@ -34,9 +34,11 @@ public class Monastery extends CastleBuilding {
 		level_1.setWoodPrice(10);
 		level_1.setStonePrice(10);
 
-		level_1.setName("Monastery");
+		level_1.setName("en", "Monastery");
+		level_1.setName("es", "Monasterio");
 		level_1.setBuildTexture("humans-church");
-		level_1.setDescription("The Monastery allows you to recruit\nMagicians.");
+		level_1.setDescription("en", "The Monastery allows recruit Wizards.");
+		level_1.setDescription("es", "El monasterio permite reclutar \nhechiceros.");
 
 		return level_1;
 	}

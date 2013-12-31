@@ -26,11 +26,12 @@ public class Fort extends CastleBuilding {
 		level_1.setWoodPrice(0);
 		level_1.setStonePrice(10);
 
-		level_1.setName("Fort");
+		level_1.setName("en", "Fort");
+		level_1.setName("es", "Fuerte");
 		level_1.setBuildTexture("humans-fort");
-		level_1.setDescription("The Fort increases creature\nproduction by 50%.");
+		level_1.setDescription("en", "The Fort increases creature \nproduction by 50%.");
+		level_1.setDescription("es", "El fuerte incrementa la produción de \ncriaturas en un 50%.");
 
 		return level_1;
 	}
-
 }

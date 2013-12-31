@@ -32,9 +32,11 @@ public class Barracks extends CastleBuilding {
 		level_1.setWoodPrice(5);
 		level_1.setStonePrice(5);
 
-		level_1.setName("Barracks");
-		level_1.setBuildTexture("humans-barracks");
-		level_1.setDescription("The Barracks allow you to recruit\nCrusaders.");
+		level_1.setName( "en", "Barracks" );
+		level_1.setName( "es", "Barracas" );
+		level_1.setBuildTexture( "humans-barracks" );
+		level_1.setDescription( "en", "The Barracks allow recruit Crusaders." );
+		level_1.setDescription( "es", "Las Barracas permiten reclutar crusados." );
 
 		return level_1;
 	}

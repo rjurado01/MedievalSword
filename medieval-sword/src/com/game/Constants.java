@@ -16,8 +16,9 @@ public class Constants {
 	public static final int DOWN = 3;
 
 	/* GENERAL */
+	public static final String LANGUAGE = "en";
 	public static final int UNDEFINED = -1;
-	public static final int FONT1_WIDTH = 7;
+	public static final float FONT1_WIDTH = 7.7f;
 	public static final int FONT1_HEIGHT = 8;
 
 	/* BATTLE SIDES */

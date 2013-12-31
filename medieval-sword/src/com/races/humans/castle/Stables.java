@@ -32,9 +32,11 @@ public class Stables extends CastleBuilding {
 		level_1.setWoodPrice(10);
 		level_1.setStonePrice(5);
 
-		level_1.setName("Stables");
+		level_1.setName("en", "Stables");
+		level_1.setName("es", "Establos");
 		level_1.setBuildTexture("humans-stables");
-		level_1.setDescription("The Stables allow you to recruit\nKnights.");
+		level_1.setDescription("en", "The Stables allows to recruit Knights.");
+		level_1.setDescription("es", "Los establos permiten reclutar caballeros.");
 
 		return level_1;
 	}

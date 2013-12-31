@@ -30,9 +30,11 @@ public class Archery extends CastleBuilding {
 		level_1.setWoodPrice(10);
 		level_1.setStonePrice(0);
 
-		level_1.setName("Archery");
+		level_1.setName( "en", "Archers Tower");
+		level_1.setName( "es", "Torre arqueros");
 		level_1.setBuildTexture("humans-archery");
-		level_1.setDescription("The Archery allows you to recruit\nArchers.");
+		level_1.setDescription( "en", "The Archers Tower allows recruit Archers.");
+		level_1.setDescription( "es", "La torre de arqueros permite reclutar \nArqueros.");
 
 		return level_1;
 	}

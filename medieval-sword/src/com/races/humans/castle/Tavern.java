@@ -29,9 +29,11 @@ public class Tavern extends CastleBuilding {
 		level_1.setWoodPrice(0);
 		level_1.setStonePrice(0);
 
-		level_1.setName("Tavern");
+		level_1.setName("en", "Tavern");
+		level_1.setName("es", "Taberna");
 		level_1.setBuildTexture("humans-tavern");
-		level_1.setDescription("The Tavern allows you to recruit heroes.");
+		level_1.setDescription("en", "The Tavern allows to recruit heroes.");
+		level_1.setDescription("es", "La taberna permite reclutar nuevos \nheroes.");
 
 		return level_1;
 	}

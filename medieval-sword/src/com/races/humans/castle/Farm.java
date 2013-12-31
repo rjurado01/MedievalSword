@@ -35,9 +35,11 @@ public class Farm extends CastleBuilding {
 		level_1.setWoodPrice(5);
 		level_1.setStonePrice(0);
 
-		level_1.setName("Farm");
+		level_1.setName("en", "Farm");
+		level_1.setName("es", "Granja");
 		level_1.setBuildTexture("humans-farm");
-		level_1.setDescription("The Farm allows you to recruit\nVillagers.");
+		level_1.setDescription("en", "The Farm allows recruit Villagers.");
+		level_1.setDescription("es", "La granja permite reclutar Aldeanos.");
 
 		return level_1;
 	}

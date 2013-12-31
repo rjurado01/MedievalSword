@@ -1,4 +1,4 @@
-package com.castles;
+package com.races.humans.castle;
 
 import com.game.Assets;
 import com.game.Constants;

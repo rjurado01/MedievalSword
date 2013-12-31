@@ -3,7 +3,6 @@ package com.level;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.castles.HumansCastle;
 import com.game.Army;
 import com.game.Assets;
 import com.game.Player;
@@ -21,6 +20,7 @@ import com.modules.map.terrain.ResourceStructure;
 import com.modules.map.terrain.SquareTerrain;
 import com.modules.map.terrain.Structure;
 import com.modules.map.terrain.Terrain;
+import com.races.humans.castle.HumansCastle;
 import com.races.humans.heroes.HumandHero1;
 import com.resources.GoldMine;
 import com.resources.GoldPile;
