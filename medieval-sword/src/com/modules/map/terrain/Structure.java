@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Assets;
+import com.game.Constants;
 import com.modules.map.MapConstants;
 import com.utils.Vector2i;
 
@@ -12,8 +13,12 @@ import com.utils.Vector2i;
  *	Basic class that save the properties of map structure.
  */
 public abstract class Structure {
-	public Vector2i square_position_number;
+
+	protected int vision;
+
+	public Vector2i square_number;
 	public int type;
+	public int color;
 
 	// position from square_position_number for use structure
 	protected Vector2i square_use_number;
@@ -28,17 +33,18 @@ public abstract class Structure {
 	Image flag;
 	Image image;
 
-	public Structure( int type, Vector2i square ) {
+	public Structure( int type, Vector2i square_number ) {
 		this.type = type;
-		this.square_position_number = square;
+		this.square_number = square_number;
 		this.position_correction = new Vector2i(0, 0);
+		this.color = Constants.GREY;
 	}
 
 	protected void createActor() {
 		actor = new Group();
-		actor.x = MapConstants.SQUARE_TERRAIN_W * square_position_number.x
+		actor.x = MapConstants.SQUARE_TERRAIN_W * square_number.x
 				+ position_correction.x;
-		actor.y = MapConstants.SQUARE_TERRAIN_H * square_position_number.y
+		actor.y = MapConstants.SQUARE_TERRAIN_H * square_number.y
 				+ position_correction.y;
 
 		image = new Image( Assets.getTextureRegion( texture_name ) );
@@ -65,14 +71,22 @@ public abstract class Structure {
 		return actor;
 	}
 
+	public void showFlag( int color ) {
+		flag.setRegion( Assets.getTextureRegion( "flag" + color ) );
+		flag.visible = true;
+		this.color = color;
+	}
+
+	public void removeFlag() {
+		flag.visible = false;
+	}
+
 	public Vector2i getUseSquareNumber() {
-		Vector2i square_number = null;
-
-		if( square_position_number != null && square_use_number != null )
-			square_number = new Vector2i(
-					square_position_number.x + square_use_number.x,
-					square_position_number.y + square_use_number.y );
-
-		return square_number;
+		if( square_number != null && square_use_number != null )
+			return new Vector2i(
+				square_number.x + square_use_number.x,
+				square_number.y + square_use_number.y );
+		else
+			return null;
 	}
 }

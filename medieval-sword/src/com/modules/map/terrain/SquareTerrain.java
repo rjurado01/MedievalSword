@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
 import com.game.Assets;
 import com.game.Constants;
-import com.game.Player;
 import com.modules.map.MapConstants;
 import com.modules.map.MapController;
 import com.modules.map.heroes.CreaturesGroup;
@@ -203,12 +202,8 @@ public class SquareTerrain extends Group {
 			fog.remove();
 	}
 
-	public void setStructure(Player owner) {
+	public void setStructure( int new_color ) {
 		status = RESOURCE_STRUCTURE;
-
-		if( owner == null )
-			color = NO_COLOR;
-		else
-			color = owner.color;
+		color = new_color;
 	}
 }

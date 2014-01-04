@@ -83,7 +83,7 @@ public class MiniMap extends Group {
 		  new TextureRegion( Assets.minimap_textures.get( square.getMiniMapColor() ) ) );
 	}
 
-	public void drawStructure(Vector2i position, Vector2i size, Player owner) {
+	public void drawStructure( Vector2i position, Vector2i size, Player owner ) {
 		for( int y = position.y; y < position.y + size.y; y++ )
 			for( int x = position.x; x < position.x + size.x; x++ )
 				mini_map[y][x].setRegion( getOwnerTexture( owner) );
@@ -100,7 +100,7 @@ public class MiniMap extends Group {
 			return null;
 	}
 
-	public void updateRange(Vector2i position, Vector2i size ) {
+	public void updateRange( Vector2i position, Vector2i size ) {
 		for( int y = position.y; y < position.y + size.y; y++ )
 			for( int x = position.x; x < position.x + size.x; x++ )
 				updatePosition( new Vector2i( x, y ) );

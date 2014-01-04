@@ -132,7 +132,7 @@
 	"map_castles":[
 		{
 			"type": 0,
-			"owner": 1,
+			"owner": 0,
 			"square_number":{"x":18,"y":16},
 			"stacks":[
 				{"type":12,"number":4}

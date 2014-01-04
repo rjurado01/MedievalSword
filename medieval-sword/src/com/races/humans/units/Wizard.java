@@ -5,25 +5,25 @@ import com.game.Stack;
 import com.game.Unit;
 import com.utils.CallBack;
 
-public class Crusader extends Unit {
+public class Wizard extends Unit {
 
-	public Crusader() {
-		life 	 = 30;
-		defense  = 10;
-		range 	 = 0;
-		damage 	 = 18;
+	public Wizard() {
+		life 	 = 40;
+		defense  = 16;
+		range 	 = 5;
+		damage 	 = 20;
 		mobility = 5;
-		price = 230;
+		price = 380;
 
-		id = Constants.CRUSADER;
+		id = Constants.WIZARD;
 
 		map_width = 80;
 		map_height = 80;
 
-		enable_description.put("en", "You need to build the Barracks.");
-		enable_description.put("es", "Necesitas construir las barracas.");
-		name.put("en", "Crusader");
-		name.put("es", "Crusado");
+		enable_description.put("en", "You need to build the Monastery.");
+		enable_description.put("es", "Necesitas construir el monasterio.");
+		name.put("en", "Wizard");
+		name.put("es", "Hechizero");
 
 		loadTextures();
 		loadAnimations();
@@ -46,4 +46,5 @@ public class Crusader extends Unit {
 		// TODO Auto-generated method stub
 
 	}
+
 }

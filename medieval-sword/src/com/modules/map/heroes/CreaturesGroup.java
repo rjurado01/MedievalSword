@@ -80,7 +80,7 @@ public class CreaturesGroup {
 			return "+100";
 	}
 
-	public String getUnitName() {
-		return unit.getName();
+	public String getUnitName( String language ) {
+		return unit.getName( language );
 	}
 }

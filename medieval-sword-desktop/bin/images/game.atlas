@@ -38,6 +38,13 @@ humans-castleIcon
   orig: 50, 50
   offset: 0, 0
   index: -1
+humans-castleIconLarge
+  rotate: false
+  xy: 499, 64
+  size: 90, 79
+  orig: 90, 79
+  offset: 0, 0
+  index: -1
 humans-church
   rotate: false
   xy: 499, 145
@@ -695,6 +702,13 @@ Crusader31
   orig: 80, 80
   offset: 0, 0
   index: -1
+CrusaderIcon1
+  rotate: false
+  xy: 637, 11
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
 Knight31
   rotate: false
   xy: 165, 1
@@ -702,37 +716,51 @@ Knight31
   orig: 80, 80
   offset: 0, 0
   index: -1
-Magus31
+KnightIcon1
+  rotate: false
+  xy: 709, 11
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+Villager30
   rotate: false
   xy: 247, 1
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
-Villager30
+Villager31
   rotate: false
   xy: 329, 1
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
-Villager31
-  rotate: false
-  xy: 411, 1
-  size: 80, 80
-  orig: 80, 80
-  offset: 0, 0
-  index: -1
 VillagerIcon0
   rotate: false
-  xy: 637, 11
+  xy: 781, 11
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 VillagerIcon1
   rotate: false
-  xy: 709, 11
+  xy: 853, 11
+  size: 70, 70
+  orig: 70, 70
+  offset: 0, 0
+  index: -1
+Wizard31
+  rotate: false
+  xy: 411, 1
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+WizardIcon1
+  rotate: false
+  xy: 925, 11
   size: 70, 70
   orig: 70, 70
   offset: 0, 0

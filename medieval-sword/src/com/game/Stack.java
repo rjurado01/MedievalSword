@@ -47,7 +47,7 @@ public class Stack {
 	}
 
 	public void receiveDamage(int damage) {
-		if( damage >= ( first_life + unit.getDefense() ) ) 
+		if( damage >= ( first_life + unit.getDefense() ) )
 			killUnits( damage );
 		else if ( damage > unit.getDefense() )
 			first_life -= ( damage - unit.getDefense() );
@@ -73,7 +73,7 @@ public class Stack {
 		updateLastUnitWoundLife( damage );
 		updateNumberWithDeaths( deaths );
 
-		if( number_units > 0 )	
+		if( number_units > 0 )
 			view.updateTextNumber( number_units );
 	}
 
@@ -140,7 +140,7 @@ public class Stack {
 	public void setNumber( int number ) {
 		this.number_units = number;
 	}
-	
+
 	public void setBattleSide( int side ) {
 		this.battle_side = side;
 	}

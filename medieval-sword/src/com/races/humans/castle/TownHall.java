@@ -25,7 +25,7 @@ public class TownHall extends CastleBuilding {
 			public void up( TopCastle castle ) {}
 
 			public void passWeek(TopCastle castle) {
-				// TODO Auto-generated method stub
+				// nothing to do
 			}
 		};
 
@@ -52,7 +52,9 @@ public class TownHall extends CastleBuilding {
 				castle.getOwner().addGold( 2000 );
 			}
 
-			public void passWeek(TopCastle castle) {}
+			public void passWeek(TopCastle castle) {
+				// nothing to do
+			}
 		};
 
 		level_1.setGoldPrice(6000);

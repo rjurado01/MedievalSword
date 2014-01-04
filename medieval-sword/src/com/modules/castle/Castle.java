@@ -17,10 +17,13 @@ public class Castle {
 	protected List<CastleBuilding> buildings;
 	protected List<Unit> units;
 
+	public String name;
 	protected String texture_name;
 	protected String icon_name;
 	protected Vector2i size;
 	protected Vector2i square_use_number;
+	protected Vector2i flag_position;
+	protected int vision;
 	public Vector2i position_correction;
 
 	public Castle() {

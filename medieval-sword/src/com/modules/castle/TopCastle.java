@@ -5,15 +5,13 @@ import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
 import com.game.Assets;
+import com.game.Constants;
 import com.game.Player;
 import com.game.Stack;
 import com.game.Unit;
-import com.modules.map.MapConstants;
-import com.modules.map.MapController;
+import com.modules.map.terrain.Structure;
 import com.utils.Vector2i;
 
 /**
@@ -26,42 +24,25 @@ public class TopCastle {
 	Player owner;
 	Army army;
 
-	Image image;
-	Vector2i square_position;
+	TopCastleView castle_view;
 
 	List<TopCastleBuilding> buildings;
 	List<TopCastleUnit> units;
 
 	boolean built; 	// show whether this turn the player has constructed a building
+	float production_percent; // the percent that units are produced in a week (1 == 100%)
 
-	public TopCastle( Castle castle, Vector2i position, Player owner ) {
+
+	public TopCastle( Castle castle, Vector2i square_number, Player owner ) {
 		this.castle = castle;
-		this.square_position = position;
 		this.owner = owner;
 		this.army = new Army();
 		this.built = false;
+		this.production_percent = 1;
+		this.castle_view = new TopCastleView( this, square_number );
 
-		loadImage();
 		loadBuildings();
 		loadUnits();
-	}
-
-	private void loadImage() {
-		image = new Image( Assets.getTextureRegion( castle.texture_name ));
-		image.width = castle.size.x;
-		image.height = castle.size.y;
-		image.x = MapConstants.SQUARE_TERRAIN_W *
-				square_position.x + castle.position_correction.x;
-		image.y = MapConstants.SQUARE_TERRAIN_H *
-				square_position.y + castle.position_correction.y;
-
-		image.setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) { clicked(); }
-		});
-	}
-
-	private void clicked() {
-		MapController.addEvent( MapConstants.CASTLE, this );
 	}
 
 	private void loadBuildings() {
@@ -78,27 +59,20 @@ public class TopCastle {
 			this.units.add( new TopCastleUnit( this, unit ) );
 	}
 
-	public Image getImage() {
-		return image;
-	}
-
 	public String getIconTextureName() {
 		return castle.texture_name;
 	}
 
 	public Vector2i getUseSquareNumber() {
-		Vector2i square_number = null;
-
-		if( square_position != null && castle.square_use_number != null )
-			square_number = new Vector2i(
-					square_position.x + castle.square_use_number.x,
-					square_position.y + castle.square_use_number.y );
-
-		return square_number;
+		return castle_view.getUseSquareNumber();
 	}
 
 	public TextureRegion getIconTextureRegion() {
 		return Assets.getTextureRegion( castle.icon_name );
+	}
+
+	public TextureRegion getLargeIconTextureRegion() {
+		return Assets.getTextureRegion( castle.icon_name + "Large" );
 	}
 
 	public Player getOwner() {
@@ -114,14 +88,17 @@ public class TopCastle {
 	public void addUnitToArmy( Unit unit, int amount ) {
 		// if the army of castle is empty create new and add it
 		if( army.getStacks().size() == 0 ) {
-			army.addStack( new Stack(unit, amount, owner.color) );
+			if( owner == null )
+				army.addStack( new Stack(unit, amount, Constants.GREY ) );
+			else
+				army.addStack( new Stack(unit, amount, owner.color ) );
 		}
 		else {
 			boolean new_stack = true;
 
 			// check if there is an army of this unit type
 			for( Stack stack : army.getStacks() )
-				if( stack.getUnit().getName() == unit.getName() ) {
+				if( stack.getUnit().systemName() == unit.systemName() ) {
 					new_stack = false;
 					stack.addUnits( amount );
 					break;
@@ -129,8 +106,12 @@ public class TopCastle {
 
 			// if there is not any army of this unit type
 			// and there is a hole create new stack
-			if( new_stack && army.getStacks().size() < 5  )
-				army.addStack( new Stack(unit, amount, owner.color) );
+			if( new_stack && army.getStacks().size() < 5  ) {
+				if( owner == null )
+					army.addStack( new Stack(unit, amount, Constants.GREY ) );
+				else
+					army.addStack( new Stack(unit, amount, owner.color ) );
+			}
 		}
 	}
 
@@ -143,8 +124,12 @@ public class TopCastle {
 			units.get( position ).setNumberUnits(number);
 	}
 
-	public void addNumberUnits( int position, int number ) {
-		units.get( position ).addUnits( number );
+	public void addNumberUnits( int id, int number ) {
+		for( TopCastleUnit unit : units )
+			if( unit.getUnitId() == id ) {
+				unit.addUnits( number );
+				return;
+			}
 	}
 
 	public void enableUnit( int unit_id ) {
@@ -170,5 +155,34 @@ public class TopCastle {
 
 		for( TopCastleBuilding building : buildings )
 			building.passDay( day );
+	}
+
+	public float getProductionPercent() {
+		return production_percent;
+	}
+
+	public String getName() {
+		return castle.name;
+	}
+
+	public Actor getView() {
+		return castle_view.getActor();
+	}
+
+	public Structure getStructure() {
+		return castle_view;
+	}
+
+	/**
+	 * Called when player captured it
+	 * @param player the player who captured it
+	 */
+	public void use( Player player ) {
+		owner = player;
+		castle_view.showFlag( player.color );
+	}
+
+	public void setProductionPercent( float percent ) {
+		production_percent = percent;
 	}
 }

@@ -52,8 +52,8 @@ public class Constants {
 	public static final int VILLAGER = 11;
 	public static final int ARCHER = 12;
 	public static final int CRUSADER = 13;
-	public static final int KNIGHT = 14;
-	public static final int MAGUS = 15;
+	public static final int WIZARD = 14;
+	public static final int KNIGHT = 15;
 
 	/* GAME */
 	public static final int WEEK_DAYS = 7;

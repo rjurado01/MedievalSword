@@ -1,6 +1,5 @@
 package com.modules.map.terrain;
 
-import com.game.Assets;
 import com.game.Player;
 import com.modules.map.MapConstants;
 import com.modules.map.MapController;
@@ -13,8 +12,6 @@ import com.utils.Vector2i;
 public abstract class ResourceStructure extends Structure {
 
 	protected Player owner;
-	protected int color;
-	protected int vision;
 
 	public ResourceStructure( Vector2i square_number ) {
 		super( 1, square_number );
@@ -33,6 +30,6 @@ public abstract class ResourceStructure extends Structure {
 	 */
 	public void use( Player player ) {
 		owner = player;
-		flag.setRegion( Assets.getTextureRegion( "flag" + player.color ) );
+		showFlag( player.color );
 	}
 }

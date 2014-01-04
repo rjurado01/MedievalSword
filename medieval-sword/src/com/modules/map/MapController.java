@@ -28,6 +28,7 @@ import com.modules.map.terrain.ResourceStructure;
 import com.modules.map.terrain.SquareTerrain;
 import com.modules.map.terrain.Terrain;
 import com.modules.map.ui.ArmyInfoPanel;
+import com.modules.map.ui.CastleInfoPanel;
 import com.modules.map.ui.CreaturesGroupPanel;
 import com.modules.map.ui.HeroPanel;
 import com.modules.map.ui.MapUserInterface;
@@ -47,16 +48,22 @@ public class MapController {
 	static final int INFO1 = 2;
 	static final int INFO2 = 3;
 
+	MyGdxGame game;
 	List<Player> players;
 	Terrain terrain;
 	TweenManager manager;
-	ArmyInfoPanel army_info_panel;
+	MapUserInterface ui;
+
+	// Castle panels
 	CastlePanel castle_panel;
 	BuildingPanel building_panel;
 	UnitPanel unit_panel;
-	MyGdxGame game;
-	MapUserInterface ui;
 
+	// Map info panels
+	ArmyInfoPanel army_info_panel;
+	CastleInfoPanel castle_info_panel;
+
+	// Selected things
 	HeroTop selected_hero;
 	HeroTop selected_hero_enemy;
 	TopCastle selected_castle;
@@ -455,7 +462,9 @@ public class MapController {
 			status = INFO2;
 		}
 		else {
-			army_info_panel.remove();
+			if( army_info_panel != null )
+				army_info_panel.remove();
+
 			status = NORMAL;
 		}
 	}
@@ -477,15 +486,10 @@ public class MapController {
 			MapInputProcessor.activatePanel();
 		}
 		else if( selected_castle != null ) {
-			ui.disableAll();
-
-			if( selected_hero != null )
-				castle_panel = new CastlePanel( selected_castle, selected_hero.getArmy() );
+			if(  selected_castle.getOwner() == getTurnPlayer() )
+				showCastlePanel();
 			else
-				castle_panel = new CastlePanel( selected_castle, null );
-
-			ui.getStage().addActor( castle_panel );
-			MapInputProcessor.activatePanel();
+				showCastleInfoPanel();
 		}
 	}
 
@@ -593,12 +597,24 @@ public class MapController {
 		}
 	}
 
-	/*private void closeCastlePanel() {
-		status = NORMAL;
-		selected_castle = null;
-		ui.getHUD().unselectEnemy();
-		MapInputProcessor.deactivateHUD();
-	}*/
+	private void showCastleInfoPanel() {
+		ui.disableAll();
+		castle_info_panel = new CastleInfoPanel( selected_castle );
+		ui.getStage().addActor( castle_info_panel );
+		MapInputProcessor.activatePanel();
+	}
+
+	private void showCastlePanel() {
+		ui.disableAll();
+
+		if( selected_hero != null )
+			castle_panel = new CastlePanel( selected_castle, selected_hero.getArmy() );
+		else
+			castle_panel = new CastlePanel( selected_castle, null );
+
+		ui.getStage().addActor( castle_panel );
+		MapInputProcessor.activatePanel();
+	}
 
 	private boolean isHeroOnCastleSquare() {
 		return selected_castle.getUseSquareNumber().equal(
@@ -606,7 +622,23 @@ public class MapController {
 	}
 
 	private void useSelectedCastle() {
-		showSecondInfoPanel();
+		if( selected_hero == null ) {
+			if( selected_castle.getOwner() == getTurnPlayer() )
+				showCastlePanel();
+			else
+				showCastleInfoPanel();
+		}
+		else if( selected_castle.getOwner() == null ) {
+			selected_castle.use( getTurnPlayer() );
+			terrain.captureStructure( selected_castle.getStructure() );
+			showCastlePanel();
+		}
+		else if( selected_castle.getOwner() == getTurnPlayer() ) {
+			showCastlePanel();
+		}
+		else {
+			// batlle
+		}
 	}
 
 	private TweenCallback getCastleCallback() {

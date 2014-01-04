@@ -17,22 +17,21 @@ public class Monastery extends CastleBuilding {
 	private CastleBuildingLevel getFirstLevel() {
 		CastleBuildingLevel level_1 = new CastleBuildingLevel() {
 
-			public void passDay( TopCastle castle ) {
-				castle.getOwner().addGold( 1000 );
-			}
-
 			public void up(TopCastle castle) {
-				castle.enableUnit( Constants.MAGUS );
+				castle.enableUnit( Constants.WIZARD );
 			}
 
-			public void passWeek(TopCastle castle) {
-				// TODO Auto-generated method stub
+			public void passDay( TopCastle castle ) {}
+
+			public void passWeek( TopCastle castle ) {
+				int number = 4 * Math.round( castle.getProductionPercent() );
+				castle.addNumberUnits( Constants.WIZARD, number );
 			}
 		};
 
-		level_1.setGoldPrice(12000);
-		level_1.setWoodPrice(10);
-		level_1.setStonePrice(10);
+		level_1.setGoldPrice(8000);
+		level_1.setWoodPrice(6);
+		level_1.setStonePrice(15);
 
 		level_1.setName("en", "Monastery");
 		level_1.setName("es", "Monasterio");

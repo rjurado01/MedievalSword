@@ -84,11 +84,14 @@ public class TopCastleUnit {
 		return unit.getId();
 	}
 
-	public String getEnableDescription() {
-		return unit.getEnableDescription();
+	public String getEnableDescription( String language ) {
+		return unit.getEnableDescription( language );
 	}
 
 	public int getAvailableTotalPrice() {
+		if( number_units == 0 || unit.getPrice() == 0 )
+			return 0;
+
 		int amount = castle.getOwner().gold / unit.getPrice();
 
 		if( amount < number_units )
@@ -99,5 +102,9 @@ public class TopCastleUnit {
 
 	public Unit getUnit() {
 		return unit;
+	}
+
+	public boolean anyToBuy() {
+		return available && number_units > 0;
 	}
 }

@@ -27,11 +27,17 @@ public class HumansCastle extends Castle {
 
 		units.add( Assets.getUnit( Constants.VILLAGER ) );
 		units.add( Assets.getUnit( Constants.ARCHER ) );
+		units.add( Assets.getUnit( Constants.CRUSADER ));
+		units.add( Assets.getUnit( Constants.WIZARD ));
+		units.add( Assets.getUnit( Constants.KNIGHT ));
 
 		texture_name = "humans-castle";
 		icon_name = "humans-castleIcon";
 		size = new Vector2i( 496, 436 );
 		square_use_number = new Vector2i( 2, -1 );
 		position_correction = new Vector2i( -1, -2 );
+		flag_position = new Vector2i( 5, 300 );
+		name = "Clifton";
+		vision = 8;
 	}
 }

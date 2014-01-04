@@ -107,7 +107,7 @@ public class UnitPanel extends Group {
 
 	private void loadName() {
 		UiLabel name = new UiLabel( COL_2_X, ROW_1_Y );
-		name.updateText( tc_unit.unit.getName() );
+		name.updateText( tc_unit.unit.getName( Constants.LANGUAGE ) );
 		addActor( name );
 	}
 
@@ -138,7 +138,7 @@ public class UnitPanel extends Group {
 	}
 
 	private void createEnableDescription() {
-		String text = tc_unit.getEnableDescription();
+		String text = tc_unit.getEnableDescription( Constants.LANGUAGE );
 		enable_description = new Label( text, Assets.skin );
 		enable_description.x = ( SIZE_W - text.length() * Constants.FONT1_WIDTH ) / 2;
 		enable_description.y = ROW_2_Y - 75;

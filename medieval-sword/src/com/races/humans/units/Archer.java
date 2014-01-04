@@ -25,20 +25,22 @@ public class Archer extends Unit {
 
 
 	public Archer() {
-		life 	 = 6;
+		life 	 = 10;
 		defense  = 3;
-		range 	 = 3;
-		damage 	 = 8;
+		range 	 = 4;
+		damage 	 = 9;
 		mobility = 4;
+		price = 100;
 
 		id = Constants.ARCHER;
 
 		map_width = HEIGHT;
 		map_height = WIDTH;
 
-		enable_description = "You need to build an Archery.";
-		name = "Archer";
-		price = 80;
+		enable_description.put("en", "You need to build the Archery tower.");
+		enable_description.put("es", "Necesitas construir la Torre de arqueros.");
+		name.put("en", "Archer");
+		name.put("es", "Arquero");
 
 		loadTextures();
 		loadAnimations();

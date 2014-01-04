@@ -16,8 +16,8 @@ import com.utils.CallBack;
 public abstract class Unit {
 
 	protected int id;
-	protected String name;
-	protected String enable_description;
+	protected Map<String, String> name;
+	protected Map<String, String> enable_description;
 	protected int position_number;
 
 	/* Attributes */
@@ -35,7 +35,10 @@ public abstract class Unit {
 	protected Map<String, Animation> animations  = new HashMap<String, Animation>();
 
 
-	public Unit() {}
+	public Unit() {
+		name = new HashMap<String, String>();
+		enable_description = new HashMap<String, String>();
+	}
 
 	public abstract void loadAnimations();
 
@@ -43,51 +46,57 @@ public abstract class Unit {
 
 	public abstract void attackAction( Stack stack, int orientation, CallBack callback );
 
+	public String systemName() {
+		return name.get("en");
+	}
+
 	/**
 	 * Load normal textures of unit ( when unit is stop texture and icon )
 	 */
 	public void loadTextures() {
 		textures = new HashMap<String, TextureRegion>();
-		
+
 		loadUnitTextures();
 		loadUnitIcons();
 	}
 
 	/**
-	 * Load normal texture ( for all orientations and in all colors ) 
+	 * Load normal texture ( for all orientations and in all colors )
 	 */
 	private void loadUnitTextures() {
 		for( int orientation = 0; orientation < Constants.N_ORIENTATIONS; orientation++ )
-			for( int color = 0; color < Constants.N_COLORS; color++ ) 
+			for( int color = 0; color < Constants.N_COLORS; color++ )
 				textures.put( "normal" + orientation + color,
-						Assets.getTextureRegion( name + orientation + color ) );
+						Assets.getTextureRegion( systemName() + orientation + color ) );
 	}
 
 	/**
-	 * Load icon ( in all colors ) 
+	 * Load icon ( in all colors )
 	 */
 	private void loadUnitIcons() {
 		for( int color = 0; color < Constants.N_COLORS; color++ )
-			textures.put( "icon" + color, Assets.getTextureRegion( name + "Icon" + color ) );
+			textures.put(
+				"icon" + color,
+				Assets.getTextureRegion( systemName() + "Icon" + color ) );
 	}
 
 	/**
 	 * Load animation to animations map (initialize)
-	 * 
+	 *
 	 * @param animation_name 	name of animation
 	 * @param nframes 			number of frames texture ( see TexturePacker)
 	 * @param orientation 		unit orientation
 	 * @param loop 				if animation is loop animation ( true / false )
 	 * @param time 				duration of animation
 	 */
-	public void loadAnimation( String animation_name, int [] nframes, int orientation, 
-			int color, boolean loop, float time ) 
-	{	
+	public void loadAnimation( String animation_name, int [] nframes, int orientation,
+			int color, boolean loop, float time )
+	{
 		Animation animation = new Animation( time,
 				getAnimationFrames( nframes, orientation, color ) );
-		
+
 		if( loop ) animation.setPlayMode( Animation.LOOP );
-		
+
 		animations.put( animation_name + orientation + color, animation );
 	}
 
@@ -96,13 +105,13 @@ public abstract class Unit {
 	 * @return array with animation textures
 	 */
 	private ArrayList<TextureRegion> getAnimationFrames(int [] nframes,
-			int orientation, int color ) 
-	{	
+			int orientation, int color )
+	{
 		ArrayList<TextureRegion> frames = new ArrayList<TextureRegion>();
-		
+
 		for( int i = 0; i < nframes.length; i++ )
-			frames.add( Assets.getFrame( name + orientation + color, nframes[i] ) );
-		
+			frames.add( Assets.getFrame( systemName() + orientation + color, nframes[i] ));
+
 		return frames;
 	}
 
@@ -129,12 +138,12 @@ public abstract class Unit {
 		return textures.get( name );
 	}
 
-	public String getName() {
-		return name;
+	public String getName( String language) {
+		return name.get( language );
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setName( String name, String language ) {
+		this.name.put( language, name );
 	}
 
 	public int getLife() {
@@ -189,7 +198,7 @@ public abstract class Unit {
 		return id;
 	}
 
-	public String getEnableDescription() {
-		return enable_description;
+	public String getEnableDescription( String language ) {
+		return enable_description.get( language );
 	}
 }

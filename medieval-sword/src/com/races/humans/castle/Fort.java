@@ -16,10 +16,13 @@ public class Fort extends CastleBuilding {
 	private CastleBuildingLevel getFirstLevel() {
 		CastleBuildingLevel level_1 = new CastleBuildingLevel() {
 
-			public void up( TopCastle castle ) {}
+			public void up( TopCastle castle ) {
+				castle.setProductionPercent( 1.5f );
+			}
 
 			public void passDay( TopCastle castle ) {}
-			public void passWeek(TopCastle castle) {}
+
+			public void passWeek( TopCastle castle ) {}
 		};
 
 		level_1.setGoldPrice(5000);

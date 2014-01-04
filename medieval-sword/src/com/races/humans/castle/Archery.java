@@ -15,20 +15,22 @@ public class Archery extends CastleBuilding {
 
 	private CastleBuildingLevel getFirstLevel() {
 		CastleBuildingLevel level_1 = new CastleBuildingLevel() {
-			public void passDay( TopCastle castle ) {}
 
 			public void up(TopCastle castle) {
 				castle.enableUnit( Constants.ARCHER );
 			}
 
 			public void passWeek(TopCastle castle) {
-				// TODO Auto-generated method stub
+				int number = Math.round( 12 * castle.getProductionPercent() );
+				castle.addNumberUnits( Constants.ARCHER, number );
 			}
+
+			public void passDay( TopCastle castle ) {}
 		};
 
 		level_1.setGoldPrice(2500);
 		level_1.setWoodPrice(10);
-		level_1.setStonePrice(0);
+		level_1.setStonePrice(5);
 
 		level_1.setName( "en", "Archers Tower");
 		level_1.setName( "es", "Torre arqueros");

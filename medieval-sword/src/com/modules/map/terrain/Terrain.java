@@ -250,13 +250,13 @@ public class Terrain {
 	 * Update terrain squares where there is a structure
 	 * @param structure
 	 */
-	public void addStructure( ResourceStructure structure ) {
-		Vector2i position = structure.square_position_number;
+	public void addStructure( Structure structure ) {
+		Vector2i number = structure.square_number;
 		Vector2i size = structure.squares_size;
 
-		for( int y = position.y; y < position.y + size.y; y++ )
-			for( int x = position.x; x < position.x + size.x; x++ )
-				terrain[y][x].setStructure( structure.owner );
+		for( int y = number.y; y < number.y + size.y; y++ )
+			for( int x = number.x; x < number.x + size.x; x++ )
+				terrain[y][x].setStructure( structure.color );
 	}
 
 	/**
@@ -264,15 +264,15 @@ public class Terrain {
 	 * Also, explore map into the vision range of structure
 	 * @param structure
 	 */
-	public void captureStructure( ResourceStructure structure ) {
-		Vector2i position = structure.square_position_number;
+	public void captureStructure( Structure structure ) {
+		Vector2i number = structure.square_number;
 		Vector2i size = structure.squares_size;
 
-		explore( position, size, structure.vision );
+		explore( number, size, structure.vision );
 
-		for( int y = position.y; y < position.y + size.y; y++ )
-			for( int x = position.x; x < position.x + size.x; x++ ) {
-					terrain[y][x].setStructure( structure.owner );
+		for( int y = number.y; y < number.y + size.y; y++ )
+			for( int x = number.x; x < number.x + size.x; x++ ) {
+					terrain[y][x].setStructure( structure.color );
 					mini_map.updatePosition( new Vector2i(x,y) );
 			}
 	}

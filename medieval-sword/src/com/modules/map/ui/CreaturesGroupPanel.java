@@ -1,6 +1,7 @@
 package com.modules.map.ui;
 
 import com.game.Assets;
+import com.game.Constants;
 import com.modules.map.heroes.CreaturesGroup;
 import com.utils.Vector2i;
 
@@ -10,7 +11,7 @@ import com.utils.Vector2i;
  */
 public class CreaturesGroupPanel extends ArmyInfoPanel {
 
-	final static int SIZE_W = 395;
+	final static int SIZE_W = 415;
 	final static int SIZE_H = 340;
 
 	public CreaturesGroupPanel( CreaturesGroup group ) {
@@ -23,11 +24,11 @@ public class CreaturesGroupPanel extends ArmyInfoPanel {
 	private void createGroupInfo( CreaturesGroup group ) {
 		createIcon( group.getIconTextureRegion(), new Vector2i( 70, 70 ) );
 
-		ResourceIndicator name_label = new ResourceIndicator( 190, 200 );
+		ResourceIndicator name_label = new ResourceIndicator( 210, 200 );
 		name_label.setIcon( Assets.getTextureRegion( "iconHero2" ) );
-		name_label.updateText( group.getUnitName() );
+		name_label.updateText( group.getUnitName( Constants.LANGUAGE ) );
 
-		ResourceIndicator amount_label = new ResourceIndicator( 190, 150 );
+		ResourceIndicator amount_label = new ResourceIndicator( 210, 150 );
 		amount_label.setIcon( Assets.getTextureRegion( "iconUnits" ) );
 		amount_label.updateText( group.getAmount() );
 

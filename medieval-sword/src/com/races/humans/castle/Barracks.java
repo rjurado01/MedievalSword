@@ -24,7 +24,8 @@ public class Barracks extends CastleBuilding {
 			}
 
 			public void passWeek(TopCastle castle) {
-				// TODO Auto-generated method stub
+				int number = 8 * Math.round( castle.getProductionPercent() );
+				castle.addNumberUnits( Constants.CRUSADER, number );
 			}
 		};
 

@@ -24,13 +24,14 @@ public class Stables extends CastleBuilding {
 			}
 
 			public void passWeek(TopCastle castle) {
-				// TODO Auto-generated method stub
+				int number = 2 * Math.round( castle.getProductionPercent() );
+				castle.addNumberUnits( Constants.KNIGHT, number );
 			}
 		};
 
-		level_1.setGoldPrice(10000);
-		level_1.setWoodPrice(10);
-		level_1.setStonePrice(5);
+		level_1.setGoldPrice(12000);
+		level_1.setWoodPrice(20);
+		level_1.setStonePrice(10);
 
 		level_1.setName("en", "Stables");
 		level_1.setName("es", "Establos");

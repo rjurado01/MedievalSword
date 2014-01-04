@@ -36,13 +36,13 @@ public class Assets {
 	static public Map<Integer, Unit> units;
 
 	// Skin with font
-	public static Skin skin;	
+	public static Skin skin;
 	public static LabelStyle font2;
 	public static LabelStyle font_black;
 
 	// Levels
 	int level1[][];
-	
+
 	// MiniMap textures
 	public static Map<Integer, Texture> minimap_textures;
 
@@ -59,7 +59,7 @@ public class Assets {
 
 	public static TextureRegion getFrame( String name, int frame ) {
 		return atlas.findRegion(name, frame);
-	}	
+	}
 
 	public static void loadFonts() {
 		skin = new Skin( Gdx.files.internal( "skin/uiskin.json" ) );
@@ -92,11 +92,11 @@ public class Assets {
         pixmap.fillRectangle(0, 0, 2, 2);
 		minimap_textures.put( MiniMap.ROAD,  new Texture( pixmap, Format.RGB888, false ) );
 
-        pixmap.setColor(Color.BLUE);
+        pixmap.setColor( new Color(0.3f, 0.6f, 1f, 1) );
         pixmap.fillRectangle(0, 0, 2, 2);
         minimap_textures.put( MiniMap.WHATER,  new Texture( pixmap, Format.RGB888, false ) );
 
-        pixmap.setColor( new Color(0.2f, 1, 0.2f, 1));
+        pixmap.setColor( new Color(0.3f, 1, 0.3f, 1));
         pixmap.fillRectangle(0, 0, 2, 2);
         minimap_textures.put( MiniMap.GRASS,  new Texture( pixmap, Format.RGB888, false ) );
 
@@ -104,7 +104,7 @@ public class Assets {
         pixmap.fillRectangle(0, 0, 2, 2);
         minimap_textures.put( MiniMap.GREY,  new Texture( pixmap, Format.RGB888, false ) );
 
-        pixmap.setColor( Color.CYAN );
+        pixmap.setColor( Color.BLUE );
         pixmap.fillRectangle(0, 0, 2, 2);
         minimap_textures.put( MiniMap.BLUE,  new Texture( pixmap, Format.RGB888, false ) );
 
@@ -121,7 +121,7 @@ public class Assets {
 		Gson gson = new Gson();
 
 		String file = "levels/level" + Integer.toString( level_number ) + ".json";
-		Level level = gson.fromJson( Gdx.files.internal( file ).readString(), Level.class ); 
+		Level level = gson.fromJson( Gdx.files.internal( file ).readString(), Level.class );
 
 		return level;
 	}
@@ -146,9 +146,9 @@ public class Assets {
                 line = bufRead.readLine();
             }
 
-            bufRead.close();			
+            bufRead.close();
         } catch (ArrayIndexOutOfBoundsException e){
-			System.out.println("Usage: java ReadFile filename\n");			
+			System.out.println("Usage: java ReadFile filename\n");
 		} catch (IOException e){
             e.printStackTrace();
         }
@@ -160,6 +160,9 @@ public class Assets {
 		units = new HashMap<Integer, Unit>();
 		units.put( Constants.VILLAGER, new Villager() );
 		units.put( Constants.ARCHER, new Archer() );
+		units.put( Constants.CRUSADER, new Crusader() );
+		units.put( Constants.WIZARD, new Wizard() );
+		units.put( Constants.KNIGHT, new Knight() );
 	}
 
 	public static Unit getUnit( int id ) {

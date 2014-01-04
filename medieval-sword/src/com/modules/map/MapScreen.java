@@ -137,7 +137,8 @@ public class MapScreen implements Screen {
 		terrain.setCastles( parser.getMapCastles(players, level) );
 
 		for( TopCastle castle : terrain.getCastles() ) {
-			terrain_stage.addActor( castle.getImage() );
+			terrain_stage.addActor( castle.getView() );
+			terrain.addStructure( castle.getStructure() );
 		}
 	}
 
