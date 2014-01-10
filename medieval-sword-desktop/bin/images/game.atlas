@@ -40,9 +40,9 @@ humans-castleIcon
   index: -1
 humans-castleIconLarge
   rotate: false
-  xy: 499, 64
-  size: 90, 79
-  orig: 90, 79
+  xy: 499, 53
+  size: 90, 90
+  orig: 90, 90
   offset: 0, 0
   index: -1
 humans-church
@@ -421,37 +421,44 @@ iconMobility2
   orig: 32, 32
   offset: 0, 0
   index: -1
-iconPrice
+iconName
   rotate: false
   xy: 983, 215
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-iconRange
+iconPrice
   rotate: false
   xy: 983, 181
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-iconUnits
+iconRange
   rotate: false
   xy: 987, 443
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-iconUnits2
+iconUnits
   rotate: false
   xy: 987, 409
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-iconUnits3
+iconUnits2
   rotate: false
   xy: 167, 23
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+iconUnits3
+  rotate: false
+  xy: 201, 23
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

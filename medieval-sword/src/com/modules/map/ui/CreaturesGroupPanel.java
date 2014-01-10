@@ -25,7 +25,7 @@ public class CreaturesGroupPanel extends ArmyInfoPanel {
 		createIcon( group.getIconTextureRegion(), new Vector2i( 70, 70 ) );
 
 		ResourceIndicator name_label = new ResourceIndicator( 210, 200 );
-		name_label.setIcon( Assets.getTextureRegion( "iconHero2" ) );
+		name_label.setIcon( Assets.getTextureRegion( "iconName" ) );
 		name_label.updateText( group.getUnitName( Constants.LANGUAGE ) );
 
 		ResourceIndicator amount_label = new ResourceIndicator( 210, 150 );
