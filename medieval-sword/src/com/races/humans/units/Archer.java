@@ -18,10 +18,12 @@ public class Archer extends Unit {
 	public static final String WALK = "walk";
 
 	/* SIZE */
-	public static final int HEIGHT = 80;
-	public static final int WIDTH = 80;
+	public static final int HEIGHT = 90;
+	public static final int WIDTH = 90;
 
 	Arrow arrow = null;
+	float prepare_time;
+	float shoot_time;
 
 
 	public Archer() {
@@ -47,17 +49,21 @@ public class Archer extends Unit {
 	}
 
 	public void loadAnimations() {
-		int [] frames1 = { 1, 3 };
-		int [] frames2 = { 1 };
-		int [] frames3 = { 1, 2 };
+		int [] frames1 = { 10, 11 };
+		int [] frames2 = { 12, 13, 1 };
+		int [] frames3 = { 1, 2, 1, 3 };
 
 		// load animation for all orientations and in all colors
 		for( int orientation = 0; orientation < Constants.N_ORIENTATIONS; orientation++ )
 			for( int color = 0; color < Constants.N_COLORS; color++ ) {
-				loadAnimation( PREPARE, frames1, orientation, color, false, 0.4f );
-				loadAnimation( SHOOT, frames2, orientation, color, false, 0.4f );
-				loadAnimation( WALK, frames3, orientation, color, true, 0.4f );
+				loadAnimation( PREPARE, frames1, orientation, color, false, 0.3f );
+				loadAnimation( SHOOT, frames2, orientation, color, false, 0.3f );
+				loadAnimation( WALK, frames3, orientation, color, true, 0.25f );
 			}
+
+		walk_time = 1f;
+		prepare_time = 1f;
+		shoot_time = 0.9f;
 	}
 
 	/**
@@ -65,7 +71,7 @@ public class Archer extends Unit {
 	 */
 	public void walkAction( Stack stack, int orientation ) {
 		stack.addAction( new CustomAnimation(
-				getAnimation( WALK, orientation, stack.getColor() ), 0.8f, null ) );
+			getAnimation( WALK, orientation, stack.getColor() ), walk_time, null ) );
 	}
 
 	/**
@@ -77,10 +83,10 @@ public class Archer extends Unit {
 	public void attackAction( Stack stack, int orientation, CallBack callback  ) {
 		// prepare the arc and throw arrow
 		stack.addAction( new CustomAnimation(
-				getAnimation( PREPARE, orientation, stack.getColor() ), 1, callback) );
+			getAnimation( PREPARE, orientation, stack.getColor() ), prepare_time, callback) );
 
 		// go back to original position
 		stack.addAction( new CustomAnimation(
-				getAnimation( SHOOT, orientation, stack.getColor() ), 0, null) );
+			getAnimation( SHOOT, orientation, stack.getColor() ), shoot_time, null) );
 	}
 }

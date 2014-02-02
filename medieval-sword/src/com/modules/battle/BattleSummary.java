@@ -1,6 +1,8 @@
 package com.modules.battle;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -23,19 +25,20 @@ public class BattleSummary extends Group {
 	public static final int VICTORY = 0;
 	public static final int DEFEAT = 1;
 
-	final int SIZE_H = 200;
-	final int SIZE_W = 380;
+	final int SIZE_H = 620;
+	final int SIZE_W = 650;
 
 	final int RESULT_W = 100;
 	final int RESULT_H = 170;
 
 	final int N_CONTENTS = 5;
 
-	float LOST_X = 80;
-	float LOST_Y = 190;
-
-	float DESTROYED_X = 80;
-	float DESTROYED_Y = 105;
+	float panel_x;
+	float panel_y;
+	float col1_x;
+	float col2_x;
+	float lost_y;
+	float destroyed_y;
 
 	Image alpha;
 	Image background;
@@ -47,6 +50,7 @@ public class BattleSummary extends Group {
 	Label result_label;
 	Label experience_label;
 
+	//
 	Button exit_btn;
 
 	Array<UnitIcon> lost;
@@ -56,34 +60,62 @@ public class BattleSummary extends Group {
 
 	int result = -1;
 
-	public BattleSummary( MyGdxGame game, Stage stage ) {
+	Map<String, String> victory_msg;
+	Map<String, String> defeat_msg;
 
+	public BattleSummary( MyGdxGame game, Stage stage ) {
 		this.game = game;
 		this.stage = stage;
 		this.width = SIZE_W;
-		this.height = SIZE_H;		
+		this.height = SIZE_H;
+		this.x = 0;
+		this.y = 0;
 
+		loadTranslates();
+		calculatePositions();
 		createAlphaImage();
 		createBackgroundImage();
 		createUnitsPanels();
 	}
 
+	private void loadTranslates() {
+		victory_msg = new HashMap<String, String>();
+		victory_msg.put("es", "Victoria !!");
+		victory_msg.put("en", "Victory !!");
+
+	    defeat_msg = new HashMap<String, String>();
+	    defeat_msg.put("es", "Derrorta");
+	    defeat_msg.put("en", "Defeat");
+	}
+
+	private void calculatePositions() {
+		panel_x = ( Constants.SIZE_W - SIZE_W ) / 2;
+		panel_y = ( Constants.SIZE_H - SIZE_H ) / 2;
+
+		col1_x = panel_x + 80;
+		col2_x = col1_x + N_CONTENTS * UnitIcon.SIZE_W + 40;
+		lost_y = panel_y + SIZE_H / 2 + 25;
+		destroyed_y = panel_y + SIZE_H / 2 - Constants.FONT1_HEIGHT - UnitIcon.SIZE_H - 15;
+	}
+
 	private void createAlphaImage() {
-		alpha = new Image( Assets.getTextureRegion( "greyBackground" ) );
+		alpha = new Image( Assets.getTextureRegion( "disabledBackground" ) );
 		alpha.height = Constants.SIZE_H;
 		alpha.width = Constants.SIZE_W;
-		alpha.color.a = 0.5f;
+
+		alpha.setClickListener( new ClickListener() {
+			public void click(Actor actor, float x, float y) {}
+		});
 
 		this.addActor( alpha );
 	}
 
 	private void createBackgroundImage() {
-		background = new Image( Assets.getTextureRegion( "menu" ) );
+		background = new Image( Assets.getTextureRegion( "backgroundArmy" ) );
 		background.height = SIZE_H;
 		background.width = SIZE_W;
-		background.x = ( Constants.SIZE_W - this.width ) / 2;
-		background.y = ( ( Constants.SIZE_H - this.height - SquareBoard.SIZE_H ) / 2 ) +
-				SquareBoard.SIZE_H;
+		background.x = panel_x;
+		background.y = panel_y;
 
 		this.addActor( background );
 	}
@@ -95,10 +127,12 @@ public class BattleSummary extends Group {
 
 		for( int i = 0; i <  N_CONTENTS; i++ ) {
 			lost.add( new UnitIcon(
-					LOST_X + UnitIcon.SIZE_W * i - ( i * 2 ), LOST_Y ) );
+					col1_x + UnitIcon.SIZE_W * i - ( i * 2 ),
+					lost_y ) );
 
 			destroyed.add( new UnitIcon(
-					DESTROYED_X + UnitIcon.SIZE_W * i - ( i * 2 ), DESTROYED_Y ) );
+					col1_x + UnitIcon.SIZE_W * i - ( i * 2 ),
+					destroyed_y ) );
 
 			this.addActor( lost.get( i ) );
 			this.addActor( destroyed.get( i ) );
@@ -110,12 +144,7 @@ public class BattleSummary extends Group {
 	public void createResultPanel() {
 		createResultImage();
 		createResultLabel();
-		createExperienceLabel();
-
-		this.addActor( result_img );
-		this.addActor( result_label );
-		this.addActor( experience_label );
-
+		// createExperienceLabel();
 		createExitButton();
 	}
 
@@ -123,37 +152,57 @@ public class BattleSummary extends Group {
 		result_img = new Image( Assets.getTextureRegion( "content" ) );
 		result_img.height = RESULT_H - 20;
 		result_img.width = RESULT_W;
-		result_img.x = background.x + background.width - RESULT_W - 35;
-		result_img.y = DESTROYED_Y;
+		result_img.x = panel_x + background.width - RESULT_W - 35;
+		result_img.y = destroyed_y;
+
+		this.addActor( result_img );
 	}
 
 	private void createResultLabel() {
-		if( result == VICTORY )
-			result_label = new Label( "Victory !!", Assets.font2 );
-		else
-			result_label = new Label( "Defeat !!", Assets.font2 );
+		Image result_background;
 
-		result_label.x = Constants.SIZE_W - 165;
-		result_label.y = LOST_Y + 30;
+		if( result == VICTORY ) {
+			result_background = new Image( Assets.getFrame("botBuild", 2 ) );
+			result_label = new Label( victory_msg.get( Constants.LANGUAGE ), Assets.font2 );
+		}
+		else {
+			result_background = new Image( Assets.getFrame("botBuild", 3 ) );
+			result_label = new Label( defeat_msg.get( Constants.LANGUAGE ), Assets.font2 );
+		}
+
+		result_background.width = 140;
+		result_background.height = 32;
+		result_background.x = panel_x + ( SIZE_W - result_background.width ) / 2;
+		result_background.y = panel_y + SIZE_H - 90;
+
+		result_label.x = panel_x + ( SIZE_W - result_label.width ) / 2;
+		result_label.y = result_background.y +
+			( result_background.height - result_label.height ) / 2;
+
+		addActor( result_background );
+		addActor( result_label );
 	}
 
-	private void createExperienceLabel() {
+	/*private void createExperienceLabel() {
 		experience_label = new Label( "Experience:\n\n---- / ----", Assets.skin );
-		experience_label.x = Constants.SIZE_W - 165;;
-		experience_label.y = LOST_Y - 20;
-	}
+		experience_label.x = col2_x;
+		experience_label.y = lost_y - 20;
+
+		this.addActor( experience_label );
+	}*/
 
 	public void createExitButton() {
-		exit_btn = new Button( Assets.getFrame( "exit", 1 ), Assets.getFrame( "exit", 2 ) );
-		exit_btn.height = 25;
-		exit_btn.width = 80;
-		exit_btn.x = Constants.SIZE_W - 175;;
-		exit_btn.y = DESTROYED_Y + 10;
+		exit_btn = new Button(
+			Assets.getFrame( "btnExitLarge", 1 ),
+			Assets.getFrame( "btnExitLarge", 2 ) );
 
-		exit_btn.setClickListener( new ClickListener() 
-		{	
+		exit_btn.height = 64;
+		exit_btn.width = 128;
+		exit_btn.x = panel_x + ( SIZE_W - exit_btn.width ) / 2;
+		exit_btn.y = panel_y + 55;
+
+		exit_btn.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
-				//Gdx.app.exit();
 				game.returnToMapScreen();
 			}
 		});
@@ -163,7 +212,7 @@ public class BattleSummary extends Group {
 
 	public void createTopText() {
 		createLostLabel();
-		createDestroyedLabel();		
+		createDestroyedLabel();
 
 		this.addActor( lost_label );
 		this.addActor( destroyed_label );
@@ -171,22 +220,26 @@ public class BattleSummary extends Group {
 
 	public void createLostLabel() {
 		lost_label = new Label( "Creatures Lost", Assets.skin );
-		lost_label.x = LOST_X;
-		lost_label.y = LOST_Y + UnitIcon.SIZE_H;
+		lost_label.x = panel_x + ( SIZE_W - lost_label.width ) / 2;
+		lost_label.y = lost_y + UnitIcon.SIZE_H + 5;
 	}
 
 	public void createDestroyedLabel() {
 		destroyed_label = new Label( "Creatures Destroyed", Assets.skin );
-		destroyed_label.x = DESTROYED_X;
-		destroyed_label.y = DESTROYED_Y + UnitIcon.SIZE_H;
+		destroyed_label.x = panel_x + ( SIZE_W - destroyed_label.width ) / 2;
+		destroyed_label.y = destroyed_y + UnitIcon.SIZE_H + 5;
 	}
 
 	public void setSummaryStacks( ArrayList<Stack> u_lost, ArrayList<Stack> u_destroyed ) {
-		for( int i = 0; i < u_lost.size(); i++ )
+		for( int i = 0; i < u_lost.size(); i++ ) {
 			u_lost.get( i ).setSummary( lost.get( i ) );
-		
-		for( int i = 0; i < u_destroyed.size(); i++ )
+			lost.get(i).showNumberLabel();
+		}
+
+		for( int i = 0; i < u_destroyed.size(); i++ ) {
 			u_destroyed.get( i ).setSummary( destroyed.get( i ) );
+			destroyed.get(i).showNumberLabel();
+		}
 	}
 
 	public void show( int result ) {

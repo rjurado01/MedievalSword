@@ -31,6 +31,8 @@ public abstract class Unit {
 	protected int map_width;
 	protected int map_height;
 
+	protected float walk_time;
+
 	protected Map<String, TextureRegion> textures;
 	protected Map<String, Animation> animations  = new HashMap<String, Animation>();
 
@@ -200,5 +202,17 @@ public abstract class Unit {
 
 	public String getEnableDescription( String language ) {
 		return enable_description.get( language );
+	}
+
+	public float getWalkTime() {
+		return walk_time;
+	}
+
+	public float getMapWidth() {
+		return map_width;
+	}
+
+	public float getMapHeight() {
+		return map_height;
 	}
 }

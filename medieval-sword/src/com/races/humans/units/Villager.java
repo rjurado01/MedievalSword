@@ -15,6 +15,7 @@ public class Villager extends Unit{
 	public static final String WALK = "run";
 	public static final String ATTACK = "attack";
 
+	public float attack_time;
 
 	public Villager() {
 		life 	 = 10;
@@ -26,8 +27,8 @@ public class Villager extends Unit{
 
 		id = Constants.VILLAGER;
 
-		map_width = 80;
-		map_height = 80;
+		map_width = 140;
+		map_height = 140;
 
 		enable_description.put("en", "You need to build the Farm.");
 		enable_description.put("es", "Necesitas construir la granja.");
@@ -39,15 +40,18 @@ public class Villager extends Unit{
 	}
 
 	public void loadAnimations() {
-		int [] frames1 = { 1, 2 };
-		int [] frames2 = { 1, 3, 1 };
+		int [] frames1 = { 1, 2, 1, 3 };
+		int [] frames2 = { 1, 1, 10, 11, 12, 12, 13, 13, 12, 12, 13, 13, 1, 1 };
 
 		// Load animation for all orientations and all colors
 		for( int orientation = 0; orientation < Constants.N_ORIENTATIONS; orientation++ )
 			for( int color = 0; color < Constants.N_COLORS; color++ ) {
-				loadAnimation( WALK, frames1, orientation, color, true, 0.4f );
-				loadAnimation( ATTACK, frames2, orientation, color, false, 0.2f );
+				loadAnimation( WALK, frames1, orientation, color, true, 0.25f );
+				loadAnimation( ATTACK, frames2, orientation, color, false, 0.1f );
 			}
+
+		walk_time = 1f;
+		attack_time = frames2.length * 0.1f;
 	}
 
 	/**
@@ -55,14 +59,14 @@ public class Villager extends Unit{
 	 */
 	public void walkAction( Stack stack, int orientation ) {
 		stack.addAction( new CustomAnimation(
-				getAnimation( WALK, orientation, stack.getColor() ), 0.8f, null ) );
+			getAnimation( WALK, orientation, stack.getColor() ), walk_time, null ) );
 	}
 
 	/**
 	 * Add attack action to actions queue of stack
 	 */
 	public void attackAction( Stack stack, int orientation, CallBack callback ) {
-		stack.addAction( new CustomAnimation(
-				getAnimation( ATTACK, orientation, stack.getColor() ), 1, callback ) );
+		stack.addAction(new CustomAnimation(
+			getAnimation( ATTACK, orientation, stack.getColor() ), attack_time, callback ) );
 	}
 }

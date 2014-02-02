@@ -71,6 +71,7 @@ public class UnitIcon extends Group {
 
 	public void addDeaths( int number ) {
 		this.number += number;
+		setNumber( this.number );
 	}
 
 	public void setNumber( int number ) {

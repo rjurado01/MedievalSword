@@ -3,6 +3,53 @@ game.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+battlePanelBackground
+  rotate: false
+  xy: 1, 47
+  size: 333, 80
+  orig: 333, 80
+  offset: 0, 0
+  index: -1
+cancelButton
+  rotate: false
+  xy: 336, 77
+  size: 100, 50
+  orig: 100, 50
+  offset: 0, 0
+  index: 1
+cancelButton
+  rotate: false
+  xy: 438, 77
+  size: 100, 50
+  orig: 100, 50
+  offset: 0, 0
+  index: 2
+magicBook
+  rotate: false
+  xy: 336, 1
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: -1
+okButton
+  rotate: false
+  xy: 412, 25
+  size: 100, 50
+  orig: 100, 50
+  offset: 0, 0
+  index: 1
+okButton
+  rotate: false
+  xy: 540, 77
+  size: 100, 50
+  orig: 100, 50
+  offset: 0, 0
+  index: 2
+
+game2.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
 humans-archery
   rotate: false
   xy: 499, 257
@@ -88,7 +135,7 @@ humans-townhall
   offset: 0, 0
   index: -1
 
-game2.png
+game3.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -478,138 +525,173 @@ unitSquare2
   offset: 0, 0
   index: -1
 
-game3.png
+game4.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+block-dirt
+  rotate: false
+  xy: 487, 364
+  size: 101, 121
+  orig: 101, 121
+  offset: 0, 0
+  index: -1
 block-grass
   rotate: false
-  xy: 594, 134
+  xy: 590, 364
   size: 101, 121
   orig: 101, 121
   offset: 0, 0
   index: -1
 block-stone
   rotate: false
-  xy: 697, 133
+  xy: 384, 363
   size: 101, 122
   orig: 101, 122
   offset: 0, 0
   index: -1
 block-water
   rotate: false
-  xy: 800, 134
+  xy: 693, 364
   size: 101, 121
   orig: 101, 121
   offset: 0, 0
   index: -1
 fog
   rotate: false
-  xy: 1, 79
+  xy: 1, 309
   size: 176, 176
   orig: 176, 176
   offset: 0, 0
   index: -1
 pile-gold
   rotate: false
-  xy: 342, 16
+  xy: 282, 261
   size: 93, 66
   orig: 93, 66
   offset: 0, 0
   index: -1
 pile-stone
   rotate: false
-  xy: 841, 31
+  xy: 377, 225
   size: 93, 66
   orig: 93, 66
   offset: 0, 0
   index: -1
 pile-wood
   rotate: false
-  xy: 99, 9
+  xy: 878, 308
   size: 72, 68
   orig: 72, 68
   offset: 0, 0
   index: -1
 plant1
   rotate: false
-  xy: 445, 32
+  xy: 796, 378
   size: 98, 107
   orig: 98, 107
   offset: 0, 0
   index: -1
 rock1
   rotate: false
-  xy: 741, 33
+  xy: 896, 387
   size: 98, 98
   orig: 98, 98
   offset: 0, 0
   index: -1
 rock2
   rotate: false
-  xy: 1, 9
+  xy: 384, 293
   size: 96, 68
   orig: 96, 68
   offset: 0, 0
   index: -1
 selector
   rotate: false
-  xy: 342, 84
+  xy: 179, 314
   size: 101, 171
   orig: 101, 171
   offset: 0, 0
   index: -1
+squareAttack
+  rotate: false
+  xy: 150, 31
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+squareAvailable
+  rotate: false
+  xy: 232, 31
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
+squareAvailable2
+  rotate: false
+  xy: 262, 179
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
 squareBlue
   rotate: false
-  xy: 545, 101
+  xy: 262, 139
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
 squareBlueSelected
   rotate: false
-  xy: 545, 1
+  xy: 164, 211
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
 squareRed
   rotate: false
-  xy: 936, 59
+  xy: 302, 139
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
 squareRedSelected
   rotate: false
-  xy: 643, 1
+  xy: 164, 113
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: -1
+squareSelected
+  rotate: false
+  xy: 796, 296
+  size: 80, 80
+  orig: 80, 80
+  offset: 0, 0
+  index: -1
 tree1
   rotate: false
-  xy: 903, 99
+  xy: 282, 329
   size: 100, 156
   orig: 100, 156
   offset: 0, 0
   index: -1
 tree2
   rotate: false
-  xy: 179, 65
+  xy: 1, 117
   size: 161, 190
   orig: 161, 190
   offset: 0, 0
   index: -1
 trunk
   rotate: false
-  xy: 445, 141
+  xy: 1, 1
   size: 147, 114
   orig: 147, 114
   offset: 0, 0
   index: -1
 
-game4.png
+game5.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -677,103 +759,704 @@ BlazhIcon1
   offset: 0, 0
   index: -1
 
-game5.png
+game6.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-Archer30
-  rotate: false
-  xy: 1, 1
-  size: 80, 80
-  orig: 80, 80
-  offset: 0, 0
-  index: -1
 ArcherIcon0
   rotate: false
-  xy: 493, 11
+  xy: 1, 145
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 ArcherIcon1
   rotate: false
-  xy: 565, 11
+  xy: 1, 73
   size: 70, 70
   orig: 70, 70
-  offset: 0, 0
-  index: -1
-Crusader31
-  rotate: false
-  xy: 83, 1
-  size: 80, 80
-  orig: 80, 80
   offset: 0, 0
   index: -1
 CrusaderIcon1
   rotate: false
-  xy: 637, 11
+  xy: 73, 145
   size: 70, 70
   orig: 70, 70
-  offset: 0, 0
-  index: -1
-Knight31
-  rotate: false
-  xy: 165, 1
-  size: 80, 80
-  orig: 80, 80
   offset: 0, 0
   index: -1
 KnightIcon1
   rotate: false
-  xy: 709, 11
+  xy: 1, 1
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
-Villager30
+VillagerIcon
   rotate: false
-  xy: 247, 1
-  size: 80, 80
-  orig: 80, 80
-  offset: 0, 0
-  index: -1
-Villager31
-  rotate: false
-  xy: 329, 1
-  size: 80, 80
-  orig: 80, 80
+  xy: 73, 73
+  size: 70, 70
+  orig: 70, 70
   offset: 0, 0
   index: -1
 VillagerIcon0
   rotate: false
-  xy: 781, 11
+  xy: 145, 145
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 VillagerIcon1
   rotate: false
-  xy: 853, 11
+  xy: 73, 1
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
-Wizard31
-  rotate: false
-  xy: 411, 1
-  size: 80, 80
-  orig: 80, 80
-  offset: 0, 0
-  index: -1
 WizardIcon1
   rotate: false
-  xy: 925, 11
+  xy: 145, 73
   size: 70, 70
   orig: 70, 70
   offset: 0, 0
   index: -1
 
-game6.png
+game7.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+arrow0
+  rotate: false
+  xy: 1, 56
+  size: 61, 6
+  orig: 61, 6
+  offset: 0, 0
+  index: -1
+arrow1
+  rotate: false
+  xy: 1, 56
+  size: 61, 6
+  orig: 61, 6
+  offset: 0, 0
+  index: -1
+arrow2
+  rotate: false
+  xy: 64, 1
+  size: 6, 61
+  orig: 6, 61
+  offset: 0, 0
+  index: -1
+arrow3
+  rotate: false
+  xy: 64, 1
+  size: 6, 61
+  orig: 6, 61
+  offset: 0, 0
+  index: -1
+
+game8.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Archer01
+  rotate: false
+  xy: 1, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 1
+Archer01
+  rotate: false
+  xy: 1, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 10
+Archer01
+  rotate: false
+  xy: 93, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 11
+Archer01
+  rotate: false
+  xy: 1, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 12
+Archer01
+  rotate: false
+  xy: 93, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 13
+Archer01
+  rotate: false
+  xy: 185, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 2
+Archer01
+  rotate: false
+  xy: 1, 93
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 3
+Archer11
+  rotate: false
+  xy: 93, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 1
+Archer11
+  rotate: false
+  xy: 185, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 10
+Archer11
+  rotate: false
+  xy: 277, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 11
+Archer11
+  rotate: false
+  xy: 1, 1
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 12
+Archer11
+  rotate: false
+  xy: 93, 93
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 13
+Archer11
+  rotate: false
+  xy: 185, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 2
+Archer11
+  rotate: false
+  xy: 277, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 3
+Archer21
+  rotate: false
+  xy: 369, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 1
+Archer21
+  rotate: false
+  xy: 93, 1
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 10
+Archer21
+  rotate: false
+  xy: 185, 93
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 11
+Archer21
+  rotate: false
+  xy: 277, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 12
+Archer21
+  rotate: false
+  xy: 369, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 13
+Archer21
+  rotate: false
+  xy: 461, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 2
+Archer21
+  rotate: false
+  xy: 185, 1
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 3
+Archer31
+  rotate: false
+  xy: 277, 93
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 1
+Archer31
+  rotate: false
+  xy: 369, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 10
+Archer31
+  rotate: false
+  xy: 461, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 11
+Archer31
+  rotate: false
+  xy: 553, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 12
+Archer31
+  rotate: false
+  xy: 277, 1
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 13
+Archer31
+  rotate: false
+  xy: 369, 93
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 2
+Archer31
+  rotate: false
+  xy: 461, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 3
+
+game9.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Villager01
+  rotate: false
+  xy: 1, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 1
+Villager01
+  rotate: false
+  xy: 1, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 1
+Villager01
+  rotate: false
+  xy: 1, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 11
+Villager01
+  rotate: false
+  xy: 143, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 12
+Villager01
+  rotate: false
+  xy: 1, 569
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 13
+Villager01
+  rotate: false
+  xy: 143, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 2
+Villager01
+  rotate: false
+  xy: 285, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 3
+Villager11
+  rotate: false
+  xy: 1, 427
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 1
+Villager11
+  rotate: false
+  xy: 143, 569
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 10
+Villager11
+  rotate: false
+  xy: 285, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 11
+Villager11
+  rotate: false
+  xy: 427, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 12
+Villager11
+  rotate: false
+  xy: 1, 285
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 13
+Villager11
+  rotate: false
+  xy: 143, 427
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 2
+Villager11
+  rotate: false
+  xy: 285, 569
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 3
+Villager21
+  rotate: false
+  xy: 427, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 1
+Villager21
+  rotate: false
+  xy: 569, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 10
+Villager21
+  rotate: false
+  xy: 1, 143
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 11
+Villager21
+  rotate: false
+  xy: 143, 285
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 12
+Villager21
+  rotate: false
+  xy: 285, 427
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 13
+Villager21
+  rotate: false
+  xy: 427, 569
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 2
+Villager21
+  rotate: false
+  xy: 569, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 3
+Villager31
+  rotate: false
+  xy: 711, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 1
+Villager31
+  rotate: false
+  xy: 1, 1
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 10
+Villager31
+  rotate: false
+  xy: 143, 143
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 11
+Villager31
+  rotate: false
+  xy: 285, 285
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 12
+Villager31
+  rotate: false
+  xy: 427, 427
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 13
+Villager31
+  rotate: false
+  xy: 569, 569
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 2
+Villager31
+  rotate: false
+  xy: 711, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 3
+
+game10.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Villager00
+  rotate: false
+  xy: 1, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 1
+Villager00
+  rotate: false
+  xy: 1, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 10
+Villager00
+  rotate: false
+  xy: 143, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 11
+Villager00
+  rotate: false
+  xy: 1, 569
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 12
+Villager00
+  rotate: false
+  xy: 143, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 13
+Villager00
+  rotate: false
+  xy: 285, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 2
+Villager00
+  rotate: false
+  xy: 1, 427
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 3
+Villager10
+  rotate: false
+  xy: 143, 569
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 1
+Villager10
+  rotate: false
+  xy: 285, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 10
+Villager10
+  rotate: false
+  xy: 427, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 11
+Villager10
+  rotate: false
+  xy: 1, 285
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 12
+Villager10
+  rotate: false
+  xy: 143, 427
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 13
+Villager10
+  rotate: false
+  xy: 285, 569
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 2
+Villager10
+  rotate: false
+  xy: 427, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 3
+Villager20
+  rotate: false
+  xy: 569, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 1
+Villager20
+  rotate: false
+  xy: 1, 143
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 10
+Villager20
+  rotate: false
+  xy: 143, 285
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 11
+Villager20
+  rotate: false
+  xy: 285, 427
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 12
+Villager20
+  rotate: false
+  xy: 427, 569
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 13
+Villager20
+  rotate: false
+  xy: 569, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 2
+Villager20
+  rotate: false
+  xy: 711, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 3
+Villager30
+  rotate: false
+  xy: 1, 1
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 1
+Villager30
+  rotate: false
+  xy: 143, 143
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 10
+Villager30
+  rotate: false
+  xy: 285, 285
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 11
+Villager30
+  rotate: false
+  xy: 427, 427
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 12
+Villager30
+  rotate: false
+  xy: 569, 569
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 13
+Villager30
+  rotate: false
+  xy: 711, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 2
+Villager30
+  rotate: false
+  xy: 853, 853
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 3
+
+game11.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -806,7 +1489,7 @@ stone-mine
   offset: 0, 0
   index: -1
 
-game7.png
+game12.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none

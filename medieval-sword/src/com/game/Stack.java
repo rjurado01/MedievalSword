@@ -24,7 +24,7 @@ public class Stack {
 	int number_units_dead;
 	int battle_side;
 	int color;
-	int first_life; 	// life of first unit of stack
+	int first_life; 	// life of first unit of stack (the first to receive damage)
 	int orientation;
 
 	/* Attributes modifier */
@@ -43,7 +43,7 @@ public class Stack {
 
 		actions_queue = new ArrayList<CustomAnimation>();
 		first_life = unit.getLife();
-		view = new StackView( 40f, 40f, number );
+		view = new StackView( unit.getMapWidth(), unit.getMapHeight(), number );
 	}
 
 	public void receiveDamage(int damage) {
@@ -157,6 +157,7 @@ public class Stack {
 	 * Add attack action to actions queue (implemented in unit type class)
 	 * @param orientation action orientation
 	 * @param callback function to execute when action will finish
+	 * @param manager
 	 */
 	public void addAttackAction( int orientation, CallBack callback ) {
 		if( orientation == Constants.UNDEFINED )
@@ -168,8 +169,8 @@ public class Stack {
 	/**
 	 * Add walk action to actions queue (implemented in unit type class)
 	 */
-	public void addWalkAction() {
-		unit.walkAction( this, orientation );
+	public void addWalkAction( int new_orientation ) {
+		unit.walkAction( this, new_orientation );
 	}
 
 	public StackView getView() {
