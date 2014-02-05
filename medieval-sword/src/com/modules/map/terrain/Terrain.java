@@ -153,17 +153,18 @@ public class Terrain {
 
 		for( Vector2i item : path ) {
 			SquarePath square_path;
+			boolean free = terrain[item.y][item.x].isFree();
 
 			if( i == path.size() -1 ) {
 				if( i < mobility )
-					square_path = new SquarePath( getSquarePosition( item ), true, true );
+					square_path = new SquarePath( getSquarePosition( item ), true, true, free );
 				else
-					square_path = new SquarePath( getSquarePosition( item ), false, true );
+					square_path = new SquarePath( getSquarePosition( item ), false, true, free );
 			}
 			else if( i < mobility )
-				square_path = new SquarePath( getSquarePosition( item ), true, false );
+				square_path = new SquarePath( getSquarePosition( item ), true, false, free );
 			else
-				square_path = new SquarePath( getSquarePosition( item ), false, false );
+				square_path = new SquarePath( getSquarePosition( item ), false, false, free );
 
 			path_drawn.add( square_path );
 			path_layer.addActor( square_path );

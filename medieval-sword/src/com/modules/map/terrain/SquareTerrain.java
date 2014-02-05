@@ -178,6 +178,10 @@ public class SquareTerrain extends Group {
 			return MiniMap.GRASS;
 	}
 
+	public boolean isFree() {
+		return status == FREE;
+	}
+
 	public void setFree() {
 		if( type == ROAD )
 			status = FREE;

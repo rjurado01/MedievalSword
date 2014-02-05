@@ -531,161 +531,175 @@ filter: Nearest,Nearest
 repeat: none
 block-dirt
   rotate: false
-  xy: 487, 364
+  xy: 487, 390
   size: 101, 121
   orig: 101, 121
   offset: 0, 0
   index: -1
 block-grass
   rotate: false
-  xy: 590, 364
+  xy: 590, 390
   size: 101, 121
   orig: 101, 121
   offset: 0, 0
   index: -1
 block-stone
   rotate: false
-  xy: 384, 363
+  xy: 384, 389
   size: 101, 122
   orig: 101, 122
   offset: 0, 0
   index: -1
 block-water
   rotate: false
-  xy: 693, 364
+  xy: 693, 390
   size: 101, 121
   orig: 101, 121
   offset: 0, 0
   index: -1
 fog
   rotate: false
-  xy: 1, 309
+  xy: 1, 335
   size: 176, 176
   orig: 176, 176
   offset: 0, 0
   index: -1
 pile-gold
   rotate: false
-  xy: 282, 261
+  xy: 359, 251
   size: 93, 66
   orig: 93, 66
   offset: 0, 0
   index: -1
 pile-stone
   rotate: false
-  xy: 377, 225
+  xy: 796, 336
   size: 93, 66
   orig: 93, 66
   offset: 0, 0
   index: -1
 pile-wood
   rotate: false
-  xy: 878, 308
+  xy: 248, 8
   size: 72, 68
   orig: 72, 68
   offset: 0, 0
   index: -1
 plant1
   rotate: false
-  xy: 796, 378
+  xy: 796, 404
   size: 98, 107
   orig: 98, 107
   offset: 0, 0
   index: -1
 rock1
   rotate: false
-  xy: 896, 387
+  xy: 896, 413
   size: 98, 98
   orig: 98, 98
   offset: 0, 0
   index: -1
 rock2
   rotate: false
-  xy: 384, 293
+  xy: 384, 319
   size: 96, 68
   orig: 96, 68
   offset: 0, 0
   index: -1
 selector
   rotate: false
-  xy: 179, 314
+  xy: 179, 340
   size: 101, 171
   orig: 101, 171
   offset: 0, 0
   index: -1
 squareAttack
   rotate: false
-  xy: 150, 31
+  xy: 262, 160
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 squareAvailable
   rotate: false
-  xy: 232, 31
+  xy: 262, 78
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 squareAvailable2
   rotate: false
-  xy: 262, 179
+  xy: 344, 160
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 squareBlue
   rotate: false
-  xy: 262, 139
+  xy: 150, 1
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
 squareBlueSelected
   rotate: false
-  xy: 164, 211
+  xy: 164, 237
+  size: 95, 96
+  orig: 95, 96
+  offset: 0, 0
+  index: 1
+squareBlueSelected
+  rotate: false
+  xy: 164, 139
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
-  index: -1
+  index: 2
 squareRed
   rotate: false
-  xy: 302, 139
+  xy: 190, 1
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
 squareRedSelected
   rotate: false
-  xy: 164, 113
+  xy: 150, 41
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
-  index: -1
+  index: 1
+squareRedSelected
+  rotate: false
+  xy: 261, 242
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: 2
 squareSelected
   rotate: false
-  xy: 796, 296
+  xy: 344, 78
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 tree1
   rotate: false
-  xy: 282, 329
+  xy: 282, 355
   size: 100, 156
   orig: 100, 156
   offset: 0, 0
   index: -1
 tree2
   rotate: false
-  xy: 1, 117
+  xy: 1, 143
   size: 161, 190
   orig: 161, 190
   offset: 0, 0
   index: -1
 trunk
   rotate: false
-  xy: 1, 1
+  xy: 1, 27
   size: 147, 114
   orig: 147, 114
   offset: 0, 0
