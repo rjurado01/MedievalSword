@@ -8,6 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -46,11 +48,17 @@ public class Assets {
 	// MiniMap textures
 	public static Map<Integer, Texture> minimap_textures;
 
+	// Sounds and music
+	public static Map<String, Sound> sounds;
+	public static Map<String, Music> music;
+
 
 	public static void load() {
 		atlas = new TextureAtlas( Gdx.files.internal( "images/game.atlas" ) );
 		loadFonts();
 		loadMiniMapTextures();
+		loadMusic();
+		loadSounds();
 	}
 
 	public static TextureRegion getTextureRegion( String name ) {
@@ -111,6 +119,64 @@ public class Assets {
         pixmap.setColor( Color.RED );
         pixmap.fillRectangle(0, 0, 2, 2);
         minimap_textures.put( MiniMap.RED,  new Texture( pixmap, Format.RGB888, false ) );
+	}
+
+	private static void loadMusic() {
+		music = new HashMap<String, Music>();
+
+		music.put( "map_music",
+			Gdx.audio.newMusic(Gdx.files.internal("sounds/map_music.ogg")) );
+	}
+
+	public static void playMusic( String name ) {
+		if( music.containsKey( name ) ) {
+			music.get( name ).setLooping( true );
+			music.get( name ).play();
+		}
+	}
+
+	public static void stopMusic( String name ) {
+		if( music.containsKey( name ) )
+			music.get( name ).stop();
+	}
+
+	private static void loadSounds() {
+		sounds = new HashMap<String, Sound>();
+
+		sounds.put( "hero_walk",
+			Gdx.audio.newSound(Gdx.files.internal("sounds/hero_walk.ogg")) );
+
+		sounds.put( "square_selected",
+			Gdx.audio.newSound(Gdx.files.internal("sounds/square_selected.ogg")) );
+
+		sounds.put( "stone_pile",
+				Gdx.audio.newSound(Gdx.files.internal("sounds/stone_pile.ogg")) );
+
+		sounds.put( "wood_pile",
+				Gdx.audio.newSound(Gdx.files.internal("sounds/wood_pile.ogg")) );
+
+		sounds.put( "gold_pile",
+				Gdx.audio.newSound(Gdx.files.internal("sounds/gold_pile.ogg")) );
+
+		sounds.put( "capture_structure",
+				Gdx.audio.newSound(Gdx.files.internal("sounds/capture_structure.ogg")) );
+
+		sounds.put( "clock",
+				Gdx.audio.newSound(Gdx.files.internal("sounds/clock.ogg")) );
+	}
+
+	public static void playSound( String name, boolean loop ) {
+		if( sounds.containsKey( name ) ) {
+			if( loop )
+				sounds.get( name ).loop();
+			else
+				sounds.get( name ).play();
+		}
+	}
+
+	public static void stopSound( String name ) {
+		if( sounds.containsKey( name ) )
+			sounds.get( name ).stop();
 	}
 
 	public Skin getSkin() {

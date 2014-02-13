@@ -1,5 +1,6 @@
 package com.resources;
 
+import com.game.Assets;
 import com.game.Player;
 import com.modules.map.terrain.ResourcePile;
 import com.utils.Vector2i;
@@ -18,6 +19,7 @@ public class GoldPile extends ResourcePile {
 
 	public void use( Player player ) {
 		player.addGold( amount );
+		Assets.playSound("gold_pile", false);
 	}
 
 }

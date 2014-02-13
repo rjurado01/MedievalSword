@@ -11,6 +11,7 @@ import aurelienribon.tweenengine.equations.Linear;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.game.Assets;
 import com.game.Constants;
 import com.game.MyGdxGame;
 import com.game.Player;
@@ -89,6 +90,8 @@ public class MapController {
 		hero_path = new HeroPath( terrain );
 		manager = new TweenManager();
 		Tween.registerAccessor( MapController.class, new HeroAccessor() );
+
+		Assets.playMusic( MapConstants.MUSIC_MAP );
 
 		//terrain.centerCamera( new Vector2(1800,1500) );
 	}
@@ -188,6 +191,8 @@ public class MapController {
 	}
 
 	private void passTurn() {
+		Assets.playSound("clock", false);
+
 		if( selected_hero != null ) {
 			players.get(turn).selectHero( selected_hero );
 			unselectHero();
@@ -209,6 +214,8 @@ public class MapController {
 
 	private void processMoveEvent( SquareTerrain square ) {
 		if( players.get( turn ).isHeroSelected() ) {
+			Assets.playSound("square_selected", false);
+
 			if(  hero_path.isPathMarked() == false )
 				findPath( square.getNumber() );
 			else {
@@ -248,6 +255,14 @@ public class MapController {
 			// Add callback for when animation has finished'
 			if( callback != null)
 				line.push( Tween.call(callback) );
+
+			line.push( Tween.call( new TweenCallback() {
+				public void onEvent(int type, BaseTween<?> source) {
+					Assets.stopSound("hero_walk");
+				}
+			}));
+
+			Assets.playSound("hero_walk", true );
 
 			line.start( manager );
 		}
@@ -375,6 +390,8 @@ public class MapController {
 
 	private void checkCreaturesGroupEvent( CreaturesGroup group ) {
 		if( selected_hero != null ) {
+			Assets.playSound("square_selected", false);
+
 			SquareTerrain square = group.getSquare();
 
 			selected_group = group;
@@ -508,6 +525,8 @@ public class MapController {
 		selected_resource_structure = structure;
 
 		if( selected_hero != null ) {
+			Assets.playSound("square_selected", false);
+
 			Vector2i square_number = structure.getUseSquareNumber();
 
 			if( hero_path.isPathMarked() && hero_path.isValidDestination( square_number ) ) {
@@ -543,10 +562,13 @@ public class MapController {
 	private void captureResourceStructure() {
 		selected_resource_structure.use( players.get(turn) );
 		terrain.captureStructure( selected_resource_structure );
+		Assets.playSound("capture_structure", false);
 	}
 
 	private void checkResourcePileEvent( ResourcePile pile ) {
 		if( selected_hero != null ) {
+			Assets.playSound("square_selected", false);
+
 			Vector2i square_number = pile.square_position_number;
 
 			if( hero_path.isPathMarked() && hero_path.isValidDestination( square_number ) ) {
