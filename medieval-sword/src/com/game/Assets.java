@@ -135,6 +135,18 @@ public class Assets {
 		}
 	}
 
+	public static void pauseMusic( String name ) {
+		if( music.containsKey( name ) ) {
+			music.get( name ).pause();
+		}
+	}
+
+	public static void setMusicVolume( String name, float volume ) {
+		if( music.containsKey( name ) ) {
+			music.get( name ).setVolume( volume );
+		}
+	}
+
 	public static void stopMusic( String name ) {
 		if( music.containsKey( name ) )
 			music.get( name ).stop();
@@ -163,6 +175,12 @@ public class Assets {
 
 		sounds.put( "clock",
 				Gdx.audio.newSound(Gdx.files.internal("sounds/clock.ogg")) );
+
+		sounds.put( "chainmail1",
+				Gdx.audio.newSound(Gdx.files.internal("sounds/chainmail1.ogg")) );
+
+		sounds.put( "chainmail2",
+				Gdx.audio.newSound(Gdx.files.internal("sounds/chainmail2.ogg")) );
 	}
 
 	public static void playSound( String name, boolean loop ) {

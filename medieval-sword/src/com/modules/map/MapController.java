@@ -191,10 +191,9 @@ public class MapController {
 	}
 
 	private void passTurn() {
-		Assets.playSound("clock", false);
+		passDayAnimation();
 
 		if( selected_hero != null ) {
-			players.get(turn).selectHero( selected_hero );
 			unselectHero();
 		}
 		else {
@@ -210,6 +209,28 @@ public class MapController {
 
 		players.get(turn).passTurn();
 		selectHero( players.get(turn).getHeroSelected() );
+	}
+
+	/**
+	 * Show the animation for pass day
+	 */
+	private void passDayAnimation() {
+		Assets.playSound("clock", false);
+
+		Timeline line = Timeline.createSequence();
+		line.push( Tween.to( null, StackViewAccessor.POSITION_XY, 1 ).ease( Linear.INOUT ) );
+
+		line.push( Tween.call( new TweenCallback() {
+			public void onEvent(int type, BaseTween<?> source) {
+				ui.enableAll();
+				Assets.setMusicVolume( MapConstants.MUSIC_MAP, 1 );
+			}
+		}));
+
+		Assets.setMusicVolume( MapConstants.MUSIC_MAP, 0.5f );
+		ui.disableAll();
+
+		line.start( manager );
 	}
 
 	private void processMoveEvent( SquareTerrain square ) {
@@ -355,14 +376,18 @@ public class MapController {
 	}
 
 	private void checkHeroEvent( HeroTop hero ) {
-		if( selected_hero == null )
+		if( selected_hero == null ) {
 			selectHero( hero );
-		else
-			unselectHero();
+			Assets.playSound( "chainmail1", false );
+		}
+		else {
+			unselectPlayerHero();
+			Assets.playSound( "chainmail2", false );
+		}
 
 		typeEvent = Constants.NONE;
 		objectEvent = null;
-		terrain.removePathDrawn();
+		// terrain.removePathDrawn();
 	}
 
 	private void selectHero( HeroTop hero ) {
@@ -376,6 +401,9 @@ public class MapController {
 		}
 	}
 
+	/**
+	 * Deselect hero_selected from controller
+	 */
 	private void unselectHero() {
 		if( selected_hero != null ) {
 			if( hero_path.isPathMarked() ) {
@@ -383,7 +411,22 @@ public class MapController {
 				hero_path.removePath();
 			}
 
+			selected_hero = null;
+		}
+	}
+
+	/**
+	 * Deselect hero_selected from controller and player hero selected
+	 */
+	private void unselectPlayerHero() {
+		if( selected_hero != null ) {
+			if( hero_path.isPathMarked() ) {
+				selected_hero.setPathMarked( hero_path.getPathList() );
+				hero_path.removePath();
+			}
+
 			ui.getHUD().unselectHero();
+			selected_hero.unselect();
 			selected_hero = null;
 		}
 	}
