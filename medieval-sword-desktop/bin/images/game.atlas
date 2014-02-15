@@ -1528,9 +1528,65 @@ backgroundArmy
   orig: 675, 434
   offset: 0, 0
   index: -1
+btnMusic
+  rotate: false
+  xy: 143, 319
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: 1
+btnMusic
+  rotate: false
+  xy: 143, 243
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: 2
+btnOptions
+  rotate: false
+  xy: 371, 377
+  size: 68, 68
+  orig: 68, 68
+  offset: 0, 0
+  index: 1
+btnOptions
+  rotate: false
+  xy: 219, 189
+  size: 68, 68
+  orig: 68, 68
+  offset: 0, 0
+  index: 2
+btnReturn
+  rotate: false
+  xy: 143, 167
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: 1
+btnReturn
+  rotate: false
+  xy: 219, 335
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: 2
+btnSave
+  rotate: false
+  xy: 219, 259
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: 1
+btnSave
+  rotate: false
+  xy: 295, 335
+  size: 74, 74
+  orig: 74, 74
+  offset: 0, 0
+  index: 2
 defenseIcon
   rotate: false
-  xy: 143, 205
+  xy: 143, 117
   size: 48, 48
   orig: 48, 48
   offset: 0, 0
@@ -1551,14 +1607,14 @@ font-0
   index: -1
 iconGold
   rotate: false
-  xy: 371, 413
+  xy: 371, 343
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 iconStone
   rotate: false
-  xy: 143, 171
+  xy: 441, 413
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
@@ -1579,21 +1635,14 @@ indicator
   index: -1
 objetive
   rotate: false
-  xy: 143, 325
-  size: 68, 68
-  orig: 68, 68
-  offset: 0, 0
-  index: -1
-options
-  rotate: false
-  xy: 143, 255
+  xy: 295, 265
   size: 68, 68
   orig: 68, 68
   offset: 0, 0
   index: -1
 powerIcon
   rotate: false
-  xy: 405, 413
+  xy: 405, 343
   size: 32, 32
   orig: 32, 32
   offset: 0, 0

@@ -23,7 +23,8 @@ public class MapConstants {
 	public static final int SHOW_UNIT      		= 14;
 	public static final int CLOSE_UNIT          = 15;
 	public static final int BUY_UNITS			= 16;
-	public static final int CLOSE_PANEL         = 17;
+	public static final int SHOW_OPTIONS        = 17;
+	public static final int CLOSE_PANEL         = 18;
 
 	/* MAP SQUARES STATUS */
 	public static final int FREE = 0;
@@ -63,6 +64,6 @@ public class MapConstants {
 	public static final int SQUARE_TERRAIN_H = Constants.SIZE_H / 8;
 	public static final int SQUARE_TERRAIN_3D = MapConstants.SQUARE_TERRAIN_H / 2;
 
-	/* SOUNDS NAMES */
+	/* MUSIC */
 	public static final String MUSIC_MAP = "map_music";
 }

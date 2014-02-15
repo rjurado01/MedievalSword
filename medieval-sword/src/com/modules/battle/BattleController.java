@@ -68,7 +68,9 @@ public class BattleController {
 	private void createBattleElements() {
 		board = new Board( stage );
 		panel = new BattlePanel();
-		menu  = new BattleExitAlert();
+		menu  = new BattleExitAlert(
+			new Vector2i( Constants.SIZE_W, Constants.SIZE_H),
+			new Vector2i( 0, 0 ) );
 
 		stage.addActor( panel );
 

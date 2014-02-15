@@ -121,8 +121,8 @@ public class HUD extends Group {
 
 	private void loadButtons() {
 		system = new Button(
-				Assets.getTextureRegion( "options" ),
-				Assets.getTextureRegion( "number" ) );
+			Assets.getFrame( "btnOptions", 1 ),
+			Assets.getFrame( "btnOptions", 2 ) );
 
 		system.height = BUTTONS_H;
 		system.width = BUTTONS_W;
@@ -131,7 +131,7 @@ public class HUD extends Group {
 
 		system.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
-				System.out.println("System");
+				MapController.addEvent( MapConstants.SHOW_OPTIONS, null );
 			}
 		});
 

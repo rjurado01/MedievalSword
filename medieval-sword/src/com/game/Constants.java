@@ -15,8 +15,13 @@ public class Constants {
 	public static final int TOP = 2;
 	public static final int DOWN = 3;
 
+	/* LANGUAGES */
+	public static final int LANGUAGE_EN = 0;
+	public static final int LANGUAGE_ES = 1;
+
 	/* GENERAL */
 	public static final String LANGUAGE = "en";
+	public static final int LANGUAGE_CODE = LANGUAGE_EN;
 	public static final int UNDEFINED = -1;
 	public static final float FONT1_WIDTH = 7.7f;
 	public static final int FONT1_HEIGHT = 8;
@@ -57,5 +62,5 @@ public class Constants {
 
 	/* GAME */
 	public static final int WEEK_DAYS = 7;
-
+	public static boolean MUSIC_ON = true;
 }

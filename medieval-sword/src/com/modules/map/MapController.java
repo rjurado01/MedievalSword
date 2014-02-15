@@ -164,6 +164,10 @@ public class MapController {
 			case MapConstants.TURN:
 				passTurn();
 				break;
+			case MapConstants.SHOW_OPTIONS:
+				MapInputProcessor.activatePanel();
+				ui.showOptionsPanel();
+				break;
 			case MapConstants.CLOSE_PANEL:
 				closePanel();
 				break;

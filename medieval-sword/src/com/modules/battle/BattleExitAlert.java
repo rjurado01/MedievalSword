@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.game.Assets;
 import com.game.Constants;
+import com.utils.Vector2i;
 
 /**
  * Represent options menu in battle screen.
@@ -33,13 +34,13 @@ public class BattleExitAlert extends Group {
 
 	protected Map<String, String> alert_msg;
 
-	public BattleExitAlert() {
+	public BattleExitAlert( Vector2i window_size, Vector2i window_position ) {
 		alert_msg = new HashMap<String, String>();
 		alert_msg.put("es", "¿Seguro que quiere salir?");
 		alert_msg.put("en", "Are you sure you want to exit?");
 
 		createAlphaImage();
-		createBackgroundImage();
+		createBackgroundImage( window_size, window_position );
 		createAlertLabel();
 		createExitButton();
 		createResumeButton();
@@ -58,12 +59,12 @@ public class BattleExitAlert extends Group {
 		addActor( alpha );
 	}
 
-	private void createBackgroundImage() {
+	private void createBackgroundImage( Vector2i window_size, Vector2i window_position ) {
 		background = new Image( Assets.getTextureRegion( "battlePanelBackground" ) );
 		background.height = SIZE_H;
 		background.width = SIZE_W;
-		background.x = ( Constants.SIZE_W - SIZE_W ) / 2;
-		background.y = ( Constants.SIZE_H - SIZE_H ) / 2;
+		background.x = window_position.x + ( window_size.x - SIZE_W ) / 2;
+		background.y = window_position.y + ( window_size.y - SIZE_H ) / 2;
 		addActor( background );
 	}
 
@@ -116,5 +117,4 @@ public class BattleExitAlert extends Group {
 		stage.removeActor( this );
 		BattleController.mutex = false;
 	}
-
 }

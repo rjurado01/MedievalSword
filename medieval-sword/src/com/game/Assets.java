@@ -129,26 +129,26 @@ public class Assets {
 	}
 
 	public static void playMusic( String name ) {
-		if( music.containsKey( name ) ) {
+		if( Constants.MUSIC_ON && music.containsKey( name ) ) {
 			music.get( name ).setLooping( true );
 			music.get( name ).play();
 		}
 	}
 
 	public static void pauseMusic( String name ) {
-		if( music.containsKey( name ) ) {
+		if( Constants.MUSIC_ON && music.containsKey( name ) ) {
 			music.get( name ).pause();
 		}
 	}
 
 	public static void setMusicVolume( String name, float volume ) {
-		if( music.containsKey( name ) ) {
+		if( Constants.MUSIC_ON && music.containsKey( name ) ) {
 			music.get( name ).setVolume( volume );
 		}
 	}
 
 	public static void stopMusic( String name ) {
-		if( music.containsKey( name ) )
+		if( Constants.MUSIC_ON && music.containsKey( name ) )
 			music.get( name ).stop();
 	}
 

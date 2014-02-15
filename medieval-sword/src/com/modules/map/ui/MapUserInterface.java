@@ -15,9 +15,9 @@ import com.modules.map.terrain.Terrain;
 public class MapUserInterface {
 
 	HUD hud;
-	HeroPanel army_panel;
 	Stage stage;
 	Image alpha;
+	OptionsPanel options_panel;
 
 	public MapUserInterface( Stage stage ) {
 		this.stage = stage;
@@ -32,6 +32,8 @@ public class MapUserInterface {
 		alpha.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {}
 		});
+
+		options_panel = new OptionsPanel();
 	}
 
 	public void createHUD( Player player, Terrain terrain ) {
@@ -63,5 +65,15 @@ public class MapUserInterface {
 
 	public void enableAll() {
 		stage.removeActor(alpha);
+	}
+
+	public void showOptionsPanel() {
+		disableAll();
+		stage.addActor( options_panel );
+	}
+
+	public void hideOptionsPanel() {
+		enableAll();
+		stage.removeActor( options_panel );
 	}
 }
