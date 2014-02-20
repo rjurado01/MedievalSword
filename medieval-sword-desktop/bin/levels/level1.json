@@ -65,9 +65,9 @@
 	"players":[
 		{
 			"id":1,
-			"gold":12500,
-			"wood":0,
-			"stone":0,
+			"gold":500,
+			"wood":2,
+			"stone":2,
 			"color":1,
 			"heroes":[
 				{
@@ -131,6 +131,7 @@
 	],
 	"map_castles":[
 		{
+		    "id": 1,
 			"type": 0,
 			"owner": 0,
 			"square_number":{"x":18,"y":16},

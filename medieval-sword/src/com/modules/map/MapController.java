@@ -24,6 +24,7 @@ import com.modules.castle.UnitPanel;
 import com.modules.map.heroes.CreaturesGroup;
 import com.modules.map.heroes.HeroPath;
 import com.modules.map.heroes.HeroTop;
+import com.modules.map.objetives.LevelObjectives;
 import com.modules.map.terrain.ResourcePile;
 import com.modules.map.terrain.ResourceStructure;
 import com.modules.map.terrain.SquareTerrain;
@@ -54,6 +55,7 @@ public class MapController {
 	Terrain terrain;
 	TweenManager manager;
 	MapUserInterface ui;
+	LevelObjectives objectives;
 
 	// Castle panels
 	CastlePanel castle_panel;
@@ -81,18 +83,19 @@ public class MapController {
 	static int status = NORMAL; 	// Semaphore
 
 
-	public MapController( MyGdxGame game, List<Player> players, Terrain terrain, MapUserInterface ui ) {
+	public MapController( MyGdxGame game, List<Player> players, Terrain terrain,
+			MapUserInterface ui, LevelObjectives objectives ) {
 		this.game = game;
 		this.players = players;
 		this.terrain = terrain;
 		this.ui = ui;
+		this.objectives = objectives;
 
 		hero_path = new HeroPath( terrain );
 		manager = new TweenManager();
 		Tween.registerAccessor( MapController.class, new HeroAccessor() );
 
 		Assets.playMusic( MapConstants.MUSIC_MAP );
-
 		//terrain.centerCamera( new Vector2(1800,1500) );
 	}
 
@@ -168,6 +171,10 @@ public class MapController {
 				MapInputProcessor.activatePanel();
 				ui.showOptionsPanel();
 				break;
+			case MapConstants.SHOW_OBJECTIVES:
+				MapInputProcessor.activatePanel();
+				ui.showObjectivesPanel();
+				break;
 			case MapConstants.CLOSE_PANEL:
 				closePanel();
 				break;
@@ -177,6 +184,8 @@ public class MapController {
 			typeEvent = Constants.NONE;
 			objectEvent = null;
 		}
+
+		checkObjectives();
 	}
 
 	public Player getTurnPlayer() {
@@ -777,5 +786,23 @@ public class MapController {
 
 	public void centerCamera(Vector2 position) {
 		terrain.centerCamera( position );
+	}
+
+	private void checkObjectives() {
+		int aux = objectives.checkObjetives( getTurnPlayer(), terrain.getCastles() );
+
+		if( aux == Constants.OBJ_WIN ) {
+			ui.completeAllObjectives();
+			ui.showEndPanel(true);
+			Assets.playSound( "objective_completed", false );
+		}
+		else if( aux == Constants.OBJ_LOST ) {
+			ui.showEndPanel(false);
+			Assets.playSound( "objective_completed", false );
+		}
+		else if( aux >= 0 ) {
+			ui.completeObjective( aux );
+			Assets.playSound( "objective_completed", false );
+		}
 	}
 }

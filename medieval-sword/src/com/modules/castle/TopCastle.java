@@ -185,4 +185,13 @@ public class TopCastle {
 	public void setProductionPercent( float percent ) {
 		production_percent = percent;
 	}
+
+	public boolean isBuilt( int position, int level ) {
+		for( TopCastleBuilding building : buildings ) {
+			if( building.getPositionNumber() == position && building.level >= level )
+				return true;
+		}
+
+		return false;
+	}
 }

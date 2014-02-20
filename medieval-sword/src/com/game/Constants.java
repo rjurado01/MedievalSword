@@ -63,4 +63,9 @@ public class Constants {
 	/* GAME */
 	public static final int WEEK_DAYS = 7;
 	public static boolean MUSIC_ON = true;
+
+	/* OBJECTIVES */
+	public static final int OBJ_NOTHING = -1;
+	public static final int OBJ_WIN = -2;
+	public static final int OBJ_LOST = -3;
 }

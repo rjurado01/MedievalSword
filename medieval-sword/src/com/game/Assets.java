@@ -181,6 +181,9 @@ public class Assets {
 
 		sounds.put( "chainmail2",
 				Gdx.audio.newSound(Gdx.files.internal("sounds/chainmail2.ogg")) );
+
+		sounds.put( "objective_completed",
+				Gdx.audio.newSound(Gdx.files.internal("sounds/objective_completed.ogg")) );
 	}
 
 	public static void playSound( String name, boolean loop ) {

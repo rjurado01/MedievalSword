@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Assets;
 import com.game.Constants;
 import com.game.Player;
+import com.modules.map.objetives.LevelObjectives;
 import com.modules.map.terrain.Terrain;
 
 /**
@@ -17,9 +18,11 @@ public class MapUserInterface {
 	HUD hud;
 	Stage stage;
 	Image alpha;
-	OptionsPanel options_panel;
 
-	public MapUserInterface( Stage stage ) {
+	OptionsPanel options_panel;
+	ObjectivesPanel objectives_panel;
+
+	public MapUserInterface( Stage stage, LevelObjectives objectives ) {
 		this.stage = stage;
 
 		alpha = new Image( Assets.getTextureRegion( "disabledBackground" ) );
@@ -34,6 +37,7 @@ public class MapUserInterface {
 		});
 
 		options_panel = new OptionsPanel();
+		objectives_panel = new ObjectivesPanel( objectives );
 	}
 
 	public void createHUD( Player player, Terrain terrain ) {
@@ -72,8 +76,21 @@ public class MapUserInterface {
 		stage.addActor( options_panel );
 	}
 
-	public void hideOptionsPanel() {
-		enableAll();
-		stage.removeActor( options_panel );
+	public void showObjectivesPanel() {
+		disableAll();
+		stage.addActor( objectives_panel );
+	}
+
+	public void completeObjective( int n ) {
+		objectives_panel.completeObjective(n);
+	}
+
+	public void showEndPanel( boolean win ) {
+		objectives_panel.setEndGame(win);
+		showObjectivesPanel();
+	}
+
+	public void completeAllObjectives() {
+		objectives_panel.completeAllObjectives();
 	}
 }

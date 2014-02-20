@@ -1528,6 +1528,20 @@ backgroundArmy
   orig: 675, 434
   offset: 0, 0
   index: -1
+btnCheck
+  rotate: false
+  xy: 655, 567
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: 1
+btnCheck
+  rotate: false
+  xy: 479, 454
+  size: 20, 20
+  orig: 20, 20
+  offset: 0, 0
+  index: 2
 btnMusic
   rotate: false
   xy: 143, 319

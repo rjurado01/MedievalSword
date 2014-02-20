@@ -144,6 +144,12 @@ public class HUD extends Group {
 		game.x = BUTTONS_2_X;
 		game.y = BUTTONS_Y;
 
+		game.setClickListener( new ClickListener() {
+			public void click(Actor actor, float x, float y) {
+				MapController.addEvent( MapConstants.SHOW_OBJECTIVES, null );
+			}
+		});
+
 		addActor( system );
 		addActor( game );
 

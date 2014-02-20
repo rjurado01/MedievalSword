@@ -25,6 +25,6 @@ public class GoldMine extends ResourceStructure {
 
 	public void turnAction() {
 		if( owner != null )
-			owner.gold += 1;
+			owner.gold += 500;
 	}
 }

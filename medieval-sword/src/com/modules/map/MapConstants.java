@@ -20,11 +20,12 @@ public class MapConstants {
 	public static final int SHOW_BUILDING       = 11;
 	public static final int CLOSE_BUILDING      = 12;
 	public static final int BUILD_BUILDING      = 13;
-	public static final int SHOW_UNIT      		= 14;
+	public static final int SHOW_UNIT           = 14;
 	public static final int CLOSE_UNIT          = 15;
-	public static final int BUY_UNITS			= 16;
+	public static final int BUY_UNITS           = 16;
 	public static final int SHOW_OPTIONS        = 17;
-	public static final int CLOSE_PANEL         = 18;
+	public static final int SHOW_OBJECTIVES     = 18;
+	public static final int CLOSE_PANEL         = 19;
 
 	/* MAP SQUARES STATUS */
 	public static final int FREE = 0;

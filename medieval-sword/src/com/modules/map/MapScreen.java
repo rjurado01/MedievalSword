@@ -17,6 +17,8 @@ import com.level.Parser;
 import com.modules.castle.TopCastle;
 import com.modules.map.heroes.CreaturesGroup;
 import com.modules.map.heroes.HeroTop;
+import com.modules.map.objetives.LevelObjectives;
+import com.modules.map.objetives.LevelObjectives1;
 import com.modules.map.terrain.MapObjectsTypes;
 import com.modules.map.terrain.ResourcePile;
 import com.modules.map.terrain.ResourceStructure;
@@ -44,6 +46,7 @@ public class MapScreen implements Screen {
 	MapController controller;
 	MapInputProcessor input;
 	MapUserInterface ui;
+	LevelObjectives objectives;
 
 	public MapScreen( MyGdxGame game, Level level ) {
 		this.game = game;
@@ -62,6 +65,7 @@ public class MapScreen implements Screen {
 		loadCastles();
 		loadHeroes();
 		loadFog();
+		loadObjectives();
 		loadUserInterface();
 
 		terrain_stage.getCamera().translate( -Constants.HUD_WIDTH, 0, 0 );
@@ -83,9 +87,14 @@ public class MapScreen implements Screen {
 			terrain_stage.addActor( object.getActor() );
 	}
 
+	private void loadObjectives() {
+		if( level.level == 1 )
+			objectives = new LevelObjectives1();
+	}
+
 	private void loadUserInterface() {
 		ui_stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true );
-		ui = new MapUserInterface( ui_stage );
+		ui = new MapUserInterface( ui_stage, objectives );
 		ui.createHUD( humand_player, terrain );
 
 		terrain.setMiniMap( ui.getHUD().getMiniMap() );
@@ -165,7 +174,7 @@ public class MapScreen implements Screen {
 
 	public void show() {
 		if( controller == null )
-			controller = new MapController( game, players, terrain, ui );
+			controller = new MapController( game, players, terrain, ui, objectives );
 		else
 			controller.returnToBattle();
 
