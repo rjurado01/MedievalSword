@@ -1072,6 +1072,200 @@ game9.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
+Archer00
+  rotate: false
+  xy: 1, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 1
+Archer00
+  rotate: false
+  xy: 1, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 10
+Archer00
+  rotate: false
+  xy: 93, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 11
+Archer00
+  rotate: false
+  xy: 1, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 12
+Archer00
+  rotate: false
+  xy: 93, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 13
+Archer00
+  rotate: false
+  xy: 185, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 2
+Archer00
+  rotate: false
+  xy: 1, 93
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 3
+Archer10
+  rotate: false
+  xy: 93, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 1
+Archer10
+  rotate: false
+  xy: 185, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 10
+Archer10
+  rotate: false
+  xy: 277, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 11
+Archer10
+  rotate: false
+  xy: 1, 1
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 12
+Archer10
+  rotate: false
+  xy: 93, 93
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 13
+Archer10
+  rotate: false
+  xy: 185, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 2
+Archer10
+  rotate: false
+  xy: 277, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 3
+Archer20
+  rotate: false
+  xy: 369, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 1
+Archer20
+  rotate: false
+  xy: 93, 1
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 10
+Archer20
+  rotate: false
+  xy: 185, 93
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 11
+Archer20
+  rotate: false
+  xy: 277, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 12
+Archer20
+  rotate: false
+  xy: 369, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 13
+Archer20
+  rotate: false
+  xy: 461, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 2
+Archer20
+  rotate: false
+  xy: 185, 1
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 3
+Archer30
+  rotate: false
+  xy: 277, 93
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 1
+Archer30
+  rotate: false
+  xy: 369, 185
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 11
+Archer30
+  rotate: false
+  xy: 461, 277
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 12
+Archer30
+  rotate: false
+  xy: 553, 369
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 13
+Archer30
+  rotate: false
+  xy: 277, 1
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 2
+Archer30
+  rotate: false
+  xy: 369, 93
+  size: 90, 90
+  orig: 90, 90
+  offset: 0, 0
+  index: 3
+
+game10.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
 Villager01
   rotate: false
   xy: 1, 853
@@ -1269,7 +1463,7 @@ Villager31
   offset: 0, 0
   index: 3
 
-game10.png
+game11.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -1470,7 +1664,7 @@ Villager30
   offset: 0, 0
   index: 3
 
-game11.png
+game12.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
@@ -1503,7 +1697,7 @@ stone-mine
   offset: 0, 0
   index: -1
 
-game12.png
+game13.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none

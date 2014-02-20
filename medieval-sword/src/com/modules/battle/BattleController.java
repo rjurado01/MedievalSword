@@ -70,7 +70,7 @@ public class BattleController {
 		panel = new BattlePanel();
 		menu  = new BattleExitAlert(
 			new Vector2i( Constants.SIZE_W, Constants.SIZE_H),
-			new Vector2i( 0, 0 ) );
+			new Vector2i( 0, 0 ), null );
 
 		stage.addActor( panel );
 

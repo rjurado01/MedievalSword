@@ -24,6 +24,8 @@ public class BattleExitAlert extends Group {
 	static final int SIZE_H = 200;
 	static final int SIZE_W = 300;
 
+	Actor resume_panel;
+
 	Image alpha;
 	Image background;
 
@@ -34,10 +36,11 @@ public class BattleExitAlert extends Group {
 
 	protected Map<String, String> alert_msg;
 
-	public BattleExitAlert( Vector2i window_size, Vector2i window_position ) {
+	public BattleExitAlert( Vector2i window_size, Vector2i window_position, Actor actor ) {
 		alert_msg = new HashMap<String, String>();
 		alert_msg.put("es", "¿Seguro que quiere salir?");
 		alert_msg.put("en", "Are you sure you want to exit?");
+		resume_panel = actor;
 
 		createAlphaImage();
 		createBackgroundImage( window_size, window_position );
@@ -114,6 +117,9 @@ public class BattleExitAlert extends Group {
 	}
 
 	public void close() {
+		if( resume_panel != null )
+			resume_panel.visible = true;
+
 		stage.removeActor( this );
 		BattleController.mutex = false;
 	}

@@ -19,6 +19,7 @@ public class OptionsPanel extends Group {
 	final static int SIZE_H = 210;
 	final int BUTTON_SIZE = 74;
 
+	Actor panel_actor = this;
 	Image background;
 	Image music_on, music_off;
 
@@ -141,8 +142,10 @@ public class OptionsPanel extends Group {
 			public void click(Actor actor, float x, float y) {
 				BattleExitAlert alert = new BattleExitAlert(
 					new Vector2i( Constants.SIZE_W - Constants.HUD_WIDTH, Constants.SIZE_H),
-					new Vector2i( Constants.HUD_WIDTH, 0 ) );
+					new Vector2i( Constants.HUD_WIDTH, 0 ), panel_actor );
 				alert.show( stage );
+
+				panel_actor.visible = false;
 			}
 		});
 
