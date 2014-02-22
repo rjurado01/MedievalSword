@@ -103,6 +103,7 @@ public class ObjectivesPanel extends Group {
 
 		exit_btn.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound("button", false);
 				removePanel();
 			}
 		});
@@ -158,6 +159,7 @@ public class ObjectivesPanel extends Group {
 
 		exit_btn.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound("button", false);
 				Gdx.app.exit();
 			}
 		});

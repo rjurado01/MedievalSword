@@ -203,6 +203,7 @@ public class BattleSummary extends Group {
 
 		exit_btn.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound("button", false);
 				game.returnToMapScreen();
 			}
 		});
@@ -244,6 +245,11 @@ public class BattleSummary extends Group {
 
 	public void show( int result ) {
 		this.result = result;
+
+		if( result == VICTORY )
+			Assets.playSound( "battle_win", false );
+		else
+			Assets.playSound( "battle_lost", false );
 
 		for( int i = 0; i < N_CONTENTS; i ++ ) {
 			lost.get( i ).createNumberLabel();

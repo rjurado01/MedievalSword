@@ -10,6 +10,7 @@ import java.util.Map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -155,35 +156,10 @@ public class Assets {
 	private static void loadSounds() {
 		sounds = new HashMap<String, Sound>();
 
-		sounds.put( "hero_walk",
-			Gdx.audio.newSound(Gdx.files.internal("sounds/hero_walk.ogg")) );
-
-		sounds.put( "square_selected",
-			Gdx.audio.newSound(Gdx.files.internal("sounds/square_selected.ogg")) );
-
-		sounds.put( "stone_pile",
-				Gdx.audio.newSound(Gdx.files.internal("sounds/stone_pile.ogg")) );
-
-		sounds.put( "wood_pile",
-				Gdx.audio.newSound(Gdx.files.internal("sounds/wood_pile.ogg")) );
-
-		sounds.put( "gold_pile",
-				Gdx.audio.newSound(Gdx.files.internal("sounds/gold_pile.ogg")) );
-
-		sounds.put( "capture_structure",
-				Gdx.audio.newSound(Gdx.files.internal("sounds/capture_structure.ogg")) );
-
-		sounds.put( "clock",
-				Gdx.audio.newSound(Gdx.files.internal("sounds/clock.ogg")) );
-
-		sounds.put( "chainmail1",
-				Gdx.audio.newSound(Gdx.files.internal("sounds/chainmail1.ogg")) );
-
-		sounds.put( "chainmail2",
-				Gdx.audio.newSound(Gdx.files.internal("sounds/chainmail2.ogg")) );
-
-		sounds.put( "objective_completed",
-				Gdx.audio.newSound(Gdx.files.internal("sounds/objective_completed.ogg")) );
+		FileHandle dirHandle = Gdx.files.internal("./bin/sounds");
+		for (FileHandle entry: dirHandle.list()) {
+			sounds.put( entry.nameWithoutExtension(), Gdx.audio.newSound( entry ) );
+		}
 	}
 
 	public static void playSound( String name, boolean loop ) {

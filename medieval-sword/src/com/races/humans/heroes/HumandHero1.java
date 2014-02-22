@@ -41,6 +41,6 @@ public class HumandHero1 extends Hero {
 	public void walkAction( HeroTop hero, int orientation ) {
 		hero.addAction( new CustomAnimation(
 				getAnimation( RUN, orientation, hero.getColor() ),
-				MapConstants.HERO_SQUARE_TIME - 0.02f, null ) );
+				MapConstants.HERO_SQUARE_TIME - 0.02f, null, null ) );
 	}
 }

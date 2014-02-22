@@ -59,14 +59,18 @@ public class Villager extends Unit{
 	 */
 	public void walkAction( Stack stack, int orientation ) {
 		stack.addAction( new CustomAnimation(
-			getAnimation( WALK, orientation, stack.getColor() ), walk_time, null ) );
+			getAnimation( WALK, orientation, stack.getColor() ),
+			walk_time, null, "unit_walk" )
+		);
 	}
 
 	/**
 	 * Add attack action to actions queue of stack
 	 */
 	public void attackAction( Stack stack, int orientation, CallBack callback ) {
-		stack.addAction(new CustomAnimation(
-			getAnimation( ATTACK, orientation, stack.getColor() ), attack_time, callback ) );
+		stack.addAction( new CustomAnimation(
+			getAnimation( ATTACK, orientation, stack.getColor() ),
+			attack_time, callback, "villager_attack" )
+		);
 	}
 }

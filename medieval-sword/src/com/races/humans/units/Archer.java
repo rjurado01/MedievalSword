@@ -71,7 +71,9 @@ public class Archer extends Unit {
 	 */
 	public void walkAction( Stack stack, int orientation ) {
 		stack.addAction( new CustomAnimation(
-			getAnimation( WALK, orientation, stack.getColor() ), walk_time, null ) );
+			getAnimation( WALK, orientation, stack.getColor() ),
+			walk_time, null, "unit_walk" )
+		);
 	}
 
 	/**
@@ -83,10 +85,14 @@ public class Archer extends Unit {
 	public void attackAction( Stack stack, int orientation, CallBack callback  ) {
 		// prepare the arc and throw arrow
 		stack.addAction( new CustomAnimation(
-			getAnimation( PREPARE, orientation, stack.getColor() ), prepare_time, callback) );
+			getAnimation( PREPARE, orientation, stack.getColor() ),
+			prepare_time, callback, null )
+		);
 
 		// go back to original position
 		stack.addAction( new CustomAnimation(
-			getAnimation( SHOOT, orientation, stack.getColor() ), shoot_time, null) );
+			getAnimation( SHOOT, orientation, stack.getColor() ),
+			shoot_time, null, "arrow" )
+		);
 	}
 }

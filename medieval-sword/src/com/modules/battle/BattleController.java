@@ -12,9 +12,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
+import com.game.Assets;
 import com.game.Constants;
 import com.game.MyGdxGame;
 import com.game.Stack;
+import com.modules.map.MapConstants;
 import com.utils.CallBack;
 import com.utils.ImageAccessor;
 import com.utils.StackViewAccessor;
@@ -169,10 +171,21 @@ public class BattleController {
 		turn = getNextTurn();
 
 		// Check if player has any unit or battle has finished
-		if( armies[turn].getStacks().size() == 0 )
-			summary.show( getNextTurn() );
-		else
+		if( armies[turn].getStacks().size() == 0 ) {
+			Timeline line = Timeline.createSequence();
+			line.push( Tween.to( null, StackViewAccessor.POSITION_XY, 1.5f ).ease( Linear.INOUT ) );
+
+			line.push( Tween.call( new TweenCallback() {
+				public void onEvent(int type, BaseTween<?> source) {
+					summary.show( getNextTurn() );
+				}
+			}));
+
+			line.start( manager );
+		}
+		else {
 			selectNextStack();
+		}
 	}
 
 	public void selectNextStack() {
@@ -323,6 +336,7 @@ public class BattleController {
 			target.receiveDamage( stack_selected.getAttackDamage() );
 
 			if(  target.isDead() ) {
+				Assets.playSound( "slight_screem2", false );
 				target.getSquare().setFree();
 				stage.removeActor( target.getView() );
 				armies[ getNextTurn() ].deleteStack( target );

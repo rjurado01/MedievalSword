@@ -131,6 +131,7 @@ public class HUD extends Group {
 
 		system.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound("button", false);
 				MapController.addEvent( MapConstants.SHOW_OPTIONS, null );
 			}
 		});
@@ -146,6 +147,7 @@ public class HUD extends Group {
 
 		game.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound("button", false);
 				MapController.addEvent( MapConstants.SHOW_OBJECTIVES, null );
 			}
 		});

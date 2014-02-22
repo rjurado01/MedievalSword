@@ -77,7 +77,8 @@ public class ArmyInfoPanel extends Group {
 		exit_btn.y = 50;
 
 		exit_btn.setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) {
+			public void click( Actor actor, float x, float y ) {
+				Assets.playSound( "button", false );
 				removePanel();
 			}
 		});

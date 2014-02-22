@@ -1275,189 +1275,189 @@ Villager01
   index: 1
 Villager01
   rotate: false
-  xy: 1, 853
-  size: 140, 140
-  orig: 140, 140
-  offset: 0, 0
-  index: 1
-Villager01
-  rotate: false
   xy: 1, 711
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 11
+  index: 10
 Villager01
   rotate: false
   xy: 143, 853
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 12
+  index: 11
 Villager01
   rotate: false
   xy: 1, 569
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 13
+  index: 12
 Villager01
   rotate: false
   xy: 143, 711
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 2
+  index: 13
 Villager01
   rotate: false
   xy: 285, 853
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 3
-Villager11
+  index: 2
+Villager01
   rotate: false
   xy: 1, 427
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 1
+  index: 3
 Villager11
   rotate: false
   xy: 143, 569
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 10
+  index: 1
 Villager11
   rotate: false
   xy: 285, 711
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 11
+  index: 10
 Villager11
   rotate: false
   xy: 427, 853
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 12
+  index: 11
 Villager11
   rotate: false
   xy: 1, 285
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 13
+  index: 12
 Villager11
   rotate: false
   xy: 143, 427
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 2
+  index: 13
 Villager11
   rotate: false
   xy: 285, 569
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 3
-Villager21
+  index: 2
+Villager11
   rotate: false
   xy: 427, 711
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 1
+  index: 3
 Villager21
   rotate: false
   xy: 569, 853
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 10
+  index: 1
 Villager21
   rotate: false
   xy: 1, 143
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 11
+  index: 10
 Villager21
   rotate: false
   xy: 143, 285
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 12
+  index: 11
 Villager21
   rotate: false
   xy: 285, 427
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 13
+  index: 12
 Villager21
   rotate: false
   xy: 427, 569
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 2
+  index: 13
 Villager21
   rotate: false
   xy: 569, 711
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 3
-Villager31
+  index: 2
+Villager21
   rotate: false
   xy: 711, 853
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 1
+  index: 3
 Villager31
   rotate: false
   xy: 1, 1
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 10
+  index: 1
 Villager31
   rotate: false
   xy: 143, 143
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 11
+  index: 10
 Villager31
   rotate: false
   xy: 285, 285
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 12
+  index: 11
 Villager31
   rotate: false
   xy: 427, 427
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 13
+  index: 12
 Villager31
   rotate: false
   xy: 569, 569
   size: 140, 140
   orig: 140, 140
   offset: 0, 0
-  index: 2
+  index: 13
 Villager31
   rotate: false
   xy: 711, 711
+  size: 140, 140
+  orig: 140, 140
+  offset: 0, 0
+  index: 2
+Villager31
+  rotate: false
+  xy: 853, 853
   size: 140, 140
   orig: 140, 140
   offset: 0, 0

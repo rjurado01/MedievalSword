@@ -62,7 +62,8 @@ public class BattlePanel extends Group {
 		shield.y = ( background.height - shield.height ) / 2;
 
 		shield.setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) {
+			public void click( Actor actor, float x, float y ){
+				Assets.playSound( "battle_turn", false );
 				BattleController.addEvent( Constants.SHIELD, null );
 			}
 		});
@@ -101,6 +102,7 @@ public class BattlePanel extends Group {
 
 		settings.setClickListener( new ClickListener() {
 			public void click( Actor actor, float x, float y ) {
+				Assets.playSound("button", false);
 				BattleController.addEvent( Constants.SETTINGS, null );
 			}
 		} );

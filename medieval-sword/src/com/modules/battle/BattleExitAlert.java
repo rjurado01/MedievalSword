@@ -89,7 +89,10 @@ public class BattleExitAlert extends Group {
 		exit_btn.y = background.y + 50;
 
 		exit_btn.setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) { Gdx.app.exit(); }
+			public void click( Actor actor, float x, float y ) {
+				Assets.playSound( "button", false );
+				Gdx.app.exit();
+			}
 		});
 
 		this.addActor( exit_btn );
@@ -106,7 +109,10 @@ public class BattleExitAlert extends Group {
 		resume_btn.y = background.y + 50;
 
 		resume_btn.setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) { close(); }
+			public void click( Actor actor, float x, float y ) {
+				Assets.playSound( "button", false );
+				close();
+			}
 		});
 
 		this.addActor( resume_btn );

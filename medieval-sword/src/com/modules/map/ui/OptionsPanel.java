@@ -77,6 +77,7 @@ public class OptionsPanel extends Group {
 
 		music_on.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound("button", false);
 				Assets.pauseMusic( MapConstants.MUSIC_MAP );
 				Constants.MUSIC_ON = false;
 				removeActor( music_on );
@@ -86,6 +87,7 @@ public class OptionsPanel extends Group {
 
 		music_off.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound("button", false);
 				Constants.MUSIC_ON = true;
 				Assets.playMusic( MapConstants.MUSIC_MAP );
 				removeActor( music_off );
@@ -121,6 +123,7 @@ public class OptionsPanel extends Group {
 
 		return_btn.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound("button", false);
 				removePanel();
 			}
 		});
@@ -140,6 +143,7 @@ public class OptionsPanel extends Group {
 
 		exit_btn.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound("button", false);
 				BattleExitAlert alert = new BattleExitAlert(
 					new Vector2i( Constants.SIZE_W - Constants.HUD_WIDTH, Constants.SIZE_H),
 					new Vector2i( Constants.HUD_WIDTH, 0 ), panel_actor );

@@ -509,12 +509,15 @@ public class MapController {
 	 * Show army selected info panel
 	 */
 	private void showArmyInfoPanel() {
-		ui.disableAll();
+		if( selected_hero != null ) {
+			Assets.playSound("button", false);
+			ui.disableAll();
 
-		army_info_panel = new HeroPanel( selected_hero );
-		ui.getStage().addActor( army_info_panel );
+			army_info_panel = new HeroPanel( selected_hero );
+			ui.getStage().addActor( army_info_panel );
 
-		MapInputProcessor.activatePanel();
+			MapInputProcessor.activatePanel();
+		}
 	}
 
 	/**
@@ -660,6 +663,7 @@ public class MapController {
 		ui.getHUD().selectCastle( castle );
 
 		if( selected_hero != null ) {
+			Assets.playSound("square_selected", false);
 			Vector2i square_number = castle.getUseSquareNumber();
 
 			if( hero_path.isPathMarked() && hero_path.isValidDestination( square_number ) ) {
