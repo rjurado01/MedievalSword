@@ -105,7 +105,10 @@ public class HomePage extends Group {
 
 			pass_all.setClickListener( new ClickListener() {
 				public void click(Actor actor, float x, float y) {
-					passAllUnits();
+					if( castle_army.getStacks().size() > 0 ) {
+						Assets.playSound( "pass_all", false );
+						passAllUnits();
+					}
 				}
 			});
 

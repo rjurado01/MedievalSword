@@ -257,6 +257,7 @@ public class BattleSummary extends Group {
 		}
 
 		createResultPanel();
+		Assets.stopMusic( Constants.MUSIC_BATTLE );
 
 		stage.addActor( this );
 	}

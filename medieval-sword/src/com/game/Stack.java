@@ -129,8 +129,11 @@ public class Stack {
 		square = sq;
 	}
 
-	public int getAttackDamage() {
-		return number_units * unit.getDamage();
+	public int getAttackDamage( int distance ) {
+		if( unit.getRange() > 0 && unit.getRange() < distance )
+			return ( number_units * unit.getDamage() ) / 2;
+		else
+			return number_units * unit.getDamage();
 	}
 
 	public int getNumber() {

@@ -159,6 +159,7 @@ public class UnitPanel extends Group {
 		add_unit.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
 				if( tc_unit.canBuy( n_units + 1 ) ) {
+					Assets.playSound( "button", false );
 					n_units += 1;
 					updateInfo();
 				}
@@ -177,6 +178,7 @@ public class UnitPanel extends Group {
 		remove_unit.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
 				if( n_units > 0 ) {
+					Assets.playSound( "button", false );
 					n_units -= 1;
 					updateInfo();
 				}
@@ -223,6 +225,7 @@ public class UnitPanel extends Group {
 			accept_button.setClickListener( new ClickListener() {
 				public void click(Actor actor, float x, float y) {
 					if( n_units > 0 ) {
+						Assets.playSound( "buy", false );
 						tc_unit.buy( n_units );
 						MapController.addEvent( MapConstants.BUY_UNITS, null );
 					}
@@ -237,6 +240,7 @@ public class UnitPanel extends Group {
 
 		cancel_button.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound( "button", false );
 				MapController.addEvent( MapConstants.CLOSE_UNIT, null );
 			}
 		});

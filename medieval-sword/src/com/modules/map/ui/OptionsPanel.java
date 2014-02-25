@@ -78,7 +78,7 @@ public class OptionsPanel extends Group {
 		music_on.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
 				Assets.playSound("button", false);
-				Assets.pauseMusic( MapConstants.MUSIC_MAP );
+				Assets.pauseMusic( Constants.MUSIC_MAP );
 				Constants.MUSIC_ON = false;
 				removeActor( music_on );
 				addActor( music_off );
@@ -89,7 +89,7 @@ public class OptionsPanel extends Group {
 			public void click(Actor actor, float x, float y) {
 				Assets.playSound("button", false);
 				Constants.MUSIC_ON = true;
-				Assets.playMusic( MapConstants.MUSIC_MAP );
+				Assets.playMusic( Constants.MUSIC_MAP );
 				removeActor( music_off );
 				addActor( music_on );
 			}

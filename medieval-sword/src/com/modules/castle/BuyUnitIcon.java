@@ -2,6 +2,7 @@ package com.modules.castle;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.game.Assets;
 import com.modules.battle.UnitIcon;
 import com.modules.map.MapConstants;
 import com.modules.map.MapController;
@@ -23,8 +24,10 @@ public class BuyUnitIcon extends UnitIcon {
 	}
 
 	protected void clicked() {
-		if( tc_unit != null )
+		if( tc_unit != null ) {
+			Assets.playSound( "button", false );
 			MapController.addEvent( MapConstants.SHOW_UNIT, tc_unit );
+		}
 	}
 
 	public void addUnit( TopCastleUnit unit ) {

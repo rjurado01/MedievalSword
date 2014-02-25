@@ -106,6 +106,7 @@ public class CastlePanel extends Group {
 
 		init_button.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound( "button", false );
 				removeActor( buildings_page );
 				removeActor( units_page );
 				addActor( home_page );
@@ -128,6 +129,7 @@ public class CastlePanel extends Group {
 
 		buildings_button.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound( "button", false );
 				removeActor( home_page );
 				removeActor( units_page );
 				addActor( buildings_page );
@@ -150,6 +152,7 @@ public class CastlePanel extends Group {
 
 		units_button.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound( "button", false );
 				removeActor( home_page );
 				removeActor( buildings_page );
 				addActor( units_page );
@@ -167,6 +170,7 @@ public class CastlePanel extends Group {
 
 		exit_button.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound( "button", false );
 				MapController.addEvent( MapConstants.CLOSE_PANEL, null );
 				remove();
 			}

@@ -16,7 +16,6 @@ import com.game.Assets;
 import com.game.Constants;
 import com.game.MyGdxGame;
 import com.game.Stack;
-import com.modules.map.MapConstants;
 import com.utils.CallBack;
 import com.utils.ImageAccessor;
 import com.utils.StackViewAccessor;
@@ -333,7 +332,7 @@ public class BattleController {
 	public void makeDamage() {
 		if( canAttackEnemyStack() ) {
 			Stack target = attacked_enemy_square.getStack();
-			target.receiveDamage( stack_selected.getAttackDamage() );
+			target.receiveDamage( stack_selected.getAttackDamage( getDistance() ) );
 
 			if(  target.isDead() ) {
 				Assets.playSound( "slight_screem2", false );
@@ -345,17 +344,28 @@ public class BattleController {
 	}
 
 	private boolean canAttackEnemyStack() {
+		if( stack_selected.getRange() > 0 )
+			return true;
+
 		Vector2i position = attacked_enemy_square.getNumber();
 		Vector2i init = stack_selected.getSquare().getNumber();
 
-		if( stack_selected.getRange() > 0 )
-			return true;
 		if( Math.abs(init.x - position.x) == 1 )
 			return true;
 		if( Math.abs(init.y - position.y) == 1 )
 			return true;
 
 		return false;
+	}
+
+	private int getDistance() {
+		Vector2i position = attacked_enemy_square.getNumber();
+		Vector2i init = stack_selected.getSquare().getNumber();
+
+		int distance_x = Math.abs( init.x - position.x );
+		int distance_y = Math.abs( init.y - position.y );
+
+		return Math.max( distance_x, distance_y );
 	}
 
 	public void throwArrow() {

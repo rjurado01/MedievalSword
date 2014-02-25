@@ -68,4 +68,8 @@ public class Constants {
 	public static final int OBJ_NOTHING = -1;
 	public static final int OBJ_WIN = -2;
 	public static final int OBJ_LOST = -3;
+
+	/* MUSIC */
+	public static final String MUSIC_MAP = "map_music";
+	public static final String MUSIC_BATTLE = "battle_music";
 }

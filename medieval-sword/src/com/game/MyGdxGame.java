@@ -11,7 +11,7 @@ import com.modules.map.MapScreen;
  * Also load assets when start.
  */
 public class MyGdxGame extends Game {
-	
+
 	final int MAP = 1;
 	final int BATTLE = 2;
 
@@ -19,18 +19,18 @@ public class MyGdxGame extends Game {
 	Screen mapScreen;
 	Screen castleScreen;
 	Screen battleScreen;
-	
-	
+
+
 	public void create() {
 		Assets.load();
-		
+
 		// we need decide if it is new level or load saved game
 		Level level = Assets.getLevel( 1 );
-		
-		mapScreen = new MapScreen( this, level );		
+
+		mapScreen = new MapScreen( this, level );
 		setScreen( mapScreen );
 	}
-	
+
 	public void changeScreen( int screen ) {
 		switch ( screen ) {
 			case MAP:
@@ -41,13 +41,17 @@ public class MyGdxGame extends Game {
 				break;
 		}
 	}
-	
+
 	public void throwBattleScreen( Army player_army, Army enemy_army ) {
+		Assets.pauseMusic( Constants.MUSIC_MAP );
+		Assets.playMusic( Constants.MUSIC_BATTLE );
 		battleScreen = new BattleScreen( this, player_army, enemy_army );
 		setScreen( battleScreen );
 	}
-	
+
 	public void returnToMapScreen() {
+		Assets.stopMusic( Constants.MUSIC_BATTLE );
+		Assets.playMusic( Constants.MUSIC_MAP );
 		setScreen( mapScreen );
 	}
 }

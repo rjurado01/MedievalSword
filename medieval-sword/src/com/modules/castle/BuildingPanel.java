@@ -86,33 +86,41 @@ public class BuildingPanel extends Group {
 	}
 
 	private void loadButtons() {
-		accept_button = new Button(
-				Assets.getFrame( "btnBuy", 1 ),
-				Assets.getFrame( "btnBuy", 2 ) );
-		cancel_button = new Button(
-				Assets.getFrame( "btnExit", 1 ),
-				Assets.getFrame( "btnExit", 2 ) );
-
-		accept_button.height = CastlePanel.BUTTONS_SIZE;
-		accept_button.width = CastlePanel.BUTTONS_SIZE;
-		accept_button.x = width / 2 - accept_button.width;
-		accept_button.y = 50;
-
 		if( building.canBuildLevel() ) {
+			accept_button = new Button(
+					Assets.getFrame( "btnBuy", 1 ),
+					Assets.getFrame( "btnBuy", 2 ) );
+
 			accept_button.setClickListener( new ClickListener() {
 				public void click(Actor actor, float x, float y) {
+					Assets.playSound( "build", false );
 					MapController.addEvent( MapConstants.BUILD_BUILDING, null );
 				}
 			});
 		}
+		else {
+			accept_button = new Button(
+					Assets.getFrame( "btnBuy", 3 ),
+					Assets.getFrame( "btnBuy", 3 ) );
+		}
+
+		accept_button.height = CastlePanel.BUTTONS_SIZE;
+		accept_button.width = CastlePanel.BUTTONS_SIZE;
+		accept_button.x = width / 2 - accept_button.width;
+		accept_button.y = 60;
+
+		cancel_button = new Button(
+				Assets.getFrame( "btnExit", 1 ),
+				Assets.getFrame( "btnExit", 2 ) );
 
 		cancel_button.height = CastlePanel.BUTTONS_SIZE;
 		cancel_button.width = CastlePanel.BUTTONS_SIZE;
 		cancel_button.x = width / 2 + 10;
-		cancel_button.y = 50;
+		cancel_button.y = 60;
 
 		cancel_button.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
+				Assets.playSound( "button", false );
 				MapController.addEvent( MapConstants.CLOSE_BUILDING, null );
 			}
 		});

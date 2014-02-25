@@ -11,6 +11,7 @@ import aurelienribon.tweenengine.equations.Linear;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Assets;
 import com.game.Constants;
 import com.game.MyGdxGame;
@@ -35,6 +36,7 @@ import com.modules.map.ui.CreaturesGroupPanel;
 import com.modules.map.ui.HeroPanel;
 import com.modules.map.ui.MapUserInterface;
 import com.utils.HeroAccessor;
+import com.utils.ImageAlphaAccessor;
 import com.utils.StackViewAccessor;
 import com.utils.Vector2i;
 
@@ -94,8 +96,9 @@ public class MapController {
 		hero_path = new HeroPath( terrain );
 		manager = new TweenManager();
 		Tween.registerAccessor( MapController.class, new HeroAccessor() );
+		Tween.registerAccessor( Image.class, new ImageAlphaAccessor() );
 
-		Assets.playMusic( MapConstants.MUSIC_MAP );
+		Assets.playMusic( Constants.MUSIC_MAP );
 		//terrain.centerCamera( new Vector2(1800,1500) );
 	}
 
@@ -236,11 +239,11 @@ public class MapController {
 		line.push( Tween.call( new TweenCallback() {
 			public void onEvent(int type, BaseTween<?> source) {
 				ui.enableAll();
-				Assets.setMusicVolume( MapConstants.MUSIC_MAP, 1 );
+				Assets.setMusicVolume( Constants.MUSIC_MAP, 1 );
 			}
 		}));
 
-		Assets.setMusicVolume( MapConstants.MUSIC_MAP, 0.5f );
+		Assets.setMusicVolume( Constants.MUSIC_MAP, 0.5f );
 		ui.disableAll();
 
 		line.start( manager );
@@ -445,9 +448,9 @@ public class MapController {
 	}
 
 	private void checkCreaturesGroupEvent( CreaturesGroup group ) {
-		if( selected_hero != null ) {
-			Assets.playSound("square_selected", false);
+		Assets.playSound("square_selected", false);
 
+		if( selected_hero != null ) {
 			SquareTerrain square = group.getSquare();
 
 			selected_group = group;
@@ -479,9 +482,15 @@ public class MapController {
 	}
 
 	private TweenCallback getAttackCallback() {
+		final TweenCallback battle_callback = new TweenCallback() {
+			public void onEvent(int type, BaseTween<?> source) {
+				game.throwBattleScreen( selected_hero.getArmy(), attack_square.getArmy() );
+			}
+		};
+
 		return new TweenCallback() {
 			public void onEvent( int type, BaseTween<?> source ) {
-				game.throwBattleScreen( selected_hero.getArmy(), attack_square.getArmy() );
+				ui.blackAnimation( manager, battle_callback );
 			}
 		};
 	}
@@ -550,18 +559,22 @@ public class MapController {
 	 */
 	private void showSecondInfoPanel() {
 		if( selected_hero_enemy != null ) {
+			Assets.playSound( "button", false );
 			ui.disableAll();
 			army_info_panel = new HeroPanel( selected_hero_enemy );
 			ui.getStage().addActor( army_info_panel );
 			MapInputProcessor.activatePanel();
 		}
 		else if( selected_group != null ) {
+			Assets.playSound( "button", false );
 			ui.disableAll();
 			army_info_panel = new CreaturesGroupPanel( selected_group );
 			ui.getStage().addActor( army_info_panel );
 			MapInputProcessor.activatePanel();
 		}
 		else if( selected_castle != null ) {
+			Assets.playSound( "button", false );
+
 			if(  selected_castle.getOwner() == getTurnPlayer() )
 				showCastlePanel();
 			else
@@ -572,7 +585,9 @@ public class MapController {
 	/**
 	 * Return from battle module to map module
 	 */
-	public void returnToBattle() {
+	public void returnFromBattle() {
+		ui.hideBlack();
+
 		// player has won the battle
 		if( selected_hero.getArmy().getStacks().size() > 0 ) {
 			ui.getHUD().unselectEnemy();
@@ -661,9 +676,9 @@ public class MapController {
 	private void checkCastleEvent( TopCastle castle ) {
 		selected_castle = castle;
 		ui.getHUD().selectCastle( castle );
+		Assets.playSound("square_selected", false);
 
 		if( selected_hero != null ) {
-			Assets.playSound("square_selected", false);
 			Vector2i square_number = castle.getUseSquareNumber();
 
 			if( hero_path.isPathMarked() && hero_path.isValidDestination( square_number ) ) {
@@ -689,9 +704,16 @@ public class MapController {
 	private void showCastlePanel() {
 		ui.disableAll();
 
-		if( selected_hero != null )
-			castle_panel = new CastlePanel( selected_castle, selected_hero.getArmy() );
-		else
+		if( selected_hero != null && selected_castle != null ) {
+			Vector2i hero_square = selected_hero.getSquareTerrain().getNumber();
+			Vector2i castle_square = selected_castle.getUseSquareNumber();
+
+			if( hero_square.equal( castle_square ) )
+				castle_panel = new CastlePanel( selected_castle, selected_hero.getArmy() );
+			else
+				castle_panel = new CastlePanel( selected_castle, null );
+		}
+		else if( selected_castle != null )
 			castle_panel = new CastlePanel( selected_castle, null );
 
 		ui.getStage().addActor( castle_panel );
@@ -796,9 +818,19 @@ public class MapController {
 		int aux = objectives.checkObjetives( getTurnPlayer(), terrain.getCastles() );
 
 		if( aux == Constants.OBJ_WIN ) {
-			ui.completeAllObjectives();
-			ui.showEndPanel(true);
-			Assets.playSound( "objective_completed", false );
+			Timeline line = Timeline.createSequence();
+			line.push( Tween.to( null, StackViewAccessor.POSITION_XY, 1.5f ).ease( Linear.INOUT ) );
+
+			line.push( Tween.call( new TweenCallback() {
+				public void onEvent(int type, BaseTween<?> source) {
+					ui.completeAllObjectives();
+					ui.showEndPanel(true);
+					Assets.stopMusic( Constants.MUSIC_MAP );
+					Assets.playSound( "battle_win", false );
+				}
+			}));
+
+			line.start( manager );
 		}
 		else if( aux == Constants.OBJ_LOST ) {
 			ui.showEndPanel(false);

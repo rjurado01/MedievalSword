@@ -529,177 +529,184 @@ game4.png
 format: RGBA8888
 filter: Nearest,Nearest
 repeat: none
-block-dirt
-  rotate: false
-  xy: 487, 390
-  size: 101, 121
-  orig: 101, 121
-  offset: 0, 0
-  index: -1
-block-grass
-  rotate: false
-  xy: 590, 390
-  size: 101, 121
-  orig: 101, 121
-  offset: 0, 0
-  index: -1
-block-stone
-  rotate: false
-  xy: 384, 389
-  size: 101, 122
-  orig: 101, 122
-  offset: 0, 0
-  index: -1
-block-water
-  rotate: false
-  xy: 693, 390
-  size: 101, 121
-  orig: 101, 121
-  offset: 0, 0
-  index: -1
-fog
+black
   rotate: false
   xy: 1, 335
   size: 176, 176
   orig: 176, 176
   offset: 0, 0
   index: -1
+block-dirt
+  rotate: false
+  xy: 548, 390
+  size: 101, 121
+  orig: 101, 121
+  offset: 0, 0
+  index: -1
+block-grass
+  rotate: false
+  xy: 651, 390
+  size: 101, 121
+  orig: 101, 121
+  offset: 0, 0
+  index: -1
+block-stone
+  rotate: false
+  xy: 445, 389
+  size: 101, 122
+  orig: 101, 122
+  offset: 0, 0
+  index: -1
+block-water
+  rotate: false
+  xy: 754, 390
+  size: 101, 121
+  orig: 101, 121
+  offset: 0, 0
+  index: -1
+fog
+  rotate: false
+  xy: 1, 157
+  size: 176, 176
+  orig: 176, 176
+  offset: 0, 0
+  index: -1
 pile-gold
   rotate: false
-  xy: 359, 251
+  xy: 857, 336
   size: 93, 66
   orig: 93, 66
   offset: 0, 0
   index: -1
 pile-stone
   rotate: false
-  xy: 796, 336
+  xy: 381, 223
   size: 93, 66
   orig: 93, 66
   offset: 0, 0
   index: -1
 pile-wood
   rotate: false
-  xy: 248, 8
+  xy: 379, 151
   size: 72, 68
   orig: 72, 68
   offset: 0, 0
   index: -1
 plant1
   rotate: false
-  xy: 796, 404
+  xy: 857, 404
   size: 98, 107
   orig: 98, 107
   offset: 0, 0
   index: -1
 rock1
   rotate: false
-  xy: 896, 413
+  xy: 281, 221
   size: 98, 98
   orig: 98, 98
   offset: 0, 0
   index: -1
 rock2
   rotate: false
-  xy: 384, 319
+  xy: 281, 151
   size: 96, 68
   orig: 96, 68
   offset: 0, 0
   index: -1
 selector
   rotate: false
-  xy: 179, 340
+  xy: 342, 340
   size: 101, 171
   orig: 101, 171
   offset: 0, 0
   index: -1
 squareAttack
   rotate: false
-  xy: 262, 160
+  xy: 476, 209
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 squareAvailable
   rotate: false
-  xy: 262, 78
+  xy: 453, 127
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 squareAvailable2
   rotate: false
-  xy: 344, 160
+  xy: 443, 45
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 squareBlue
   rotate: false
-  xy: 150, 1
+  xy: 1, 1
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
 squareBlueSelected
   rotate: false
-  xy: 164, 237
-  size: 95, 96
-  orig: 95, 96
-  offset: 0, 0
-  index: 1
-squareBlueSelected
-  rotate: false
-  xy: 164, 139
+  xy: 445, 291
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 2
+squareBlueSelected
+  rotate: false
+  xy: 150, 59
+  size: 95, 96
+  orig: 95, 96
+  offset: 0, 0
+  index: 1
 squareRed
   rotate: false
-  xy: 190, 1
+  xy: 41, 1
   size: 38, 38
   orig: 38, 38
   offset: 0, 0
   index: -1
 squareRedSelected
   rotate: false
-  xy: 150, 41
+  xy: 247, 53
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 1
 squareRedSelected
   rotate: false
-  xy: 261, 242
+  xy: 345, 53
   size: 96, 96
   orig: 96, 96
   offset: 0, 0
   index: 2
 squareSelected
   rotate: false
-  xy: 344, 78
+  xy: 535, 127
   size: 80, 80
   orig: 80, 80
   offset: 0, 0
   index: -1
 tree1
   rotate: false
-  xy: 282, 355
+  xy: 179, 163
   size: 100, 156
   orig: 100, 156
   offset: 0, 0
   index: -1
 tree2
   rotate: false
-  xy: 1, 143
+  xy: 179, 321
   size: 161, 190
   orig: 161, 190
   offset: 0, 0
   index: -1
 trunk
   rotate: false
-  xy: 1, 27
+  xy: 1, 41
   size: 147, 114
   orig: 147, 114
   offset: 0, 0

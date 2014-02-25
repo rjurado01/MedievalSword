@@ -5,6 +5,7 @@ import java.util.List;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
+import com.game.Assets;
 import com.modules.battle.UnitIcon;
 import com.modules.castle.BuyUnitIcon;
 import com.modules.map.MapConstants;
@@ -98,8 +99,8 @@ public class UnitsPage extends Group {
 		for( final TopCastleUnit castle_unit : castle_units ) {
 			if( castle_unit.number_units > 0 ) {
 				buy_all_buttons[count].setClickAction( new ClickListener() {
-
 					public void click(Actor actor, float x, float y) {
+						Assets.playSound( "buy", false );
 						castle_unit.buyAll();
 						MapController.addEvent( MapConstants.BUY_UNITS, null );
 					}

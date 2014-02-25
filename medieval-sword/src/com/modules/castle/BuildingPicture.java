@@ -83,6 +83,7 @@ public class BuildingPicture extends Group {
 	}
 
 	private void clicked() {
+		Assets.playSound( "button", false );
 		MapController.addEvent( MapConstants.SHOW_BUILDING, building );
 	}
 

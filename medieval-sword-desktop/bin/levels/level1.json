@@ -121,9 +121,9 @@
 		},
 		{
 			"stacks":[
+				{"type":12,"number":5},
 				{"type":12,"number":10},
-				{"type":12,"number":20},
-				{"type":12,"number":10}
+				{"type":12,"number":5}
 			],
 			"square_number":{"x":5,"y":14},
 			"type":12
@@ -135,9 +135,7 @@
 			"type": 0,
 			"owner": 0,
 			"square_number":{"x":18,"y":16},
-			"stacks":[
-				{"type":12,"number":4}
-			],
+			"stacks":[],
 			"buildings_levels": [0,-1,0,1,-1,0,-1,-1],
 			"number_units": [2,0,0,0,0]
 		}

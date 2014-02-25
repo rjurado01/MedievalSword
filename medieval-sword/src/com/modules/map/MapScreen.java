@@ -176,7 +176,7 @@ public class MapScreen implements Screen {
 		if( controller == null )
 			controller = new MapController( game, players, terrain, ui, objectives );
 		else
-			controller.returnToBattle();
+			controller.returnFromBattle();
 
 		Gdx.input.setInputProcessor( input );
 	}

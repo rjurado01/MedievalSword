@@ -126,7 +126,10 @@ public class Assets {
 		music = new HashMap<String, Music>();
 
 		music.put( "map_music",
-			Gdx.audio.newMusic(Gdx.files.internal("sounds/map_music.ogg")) );
+			Gdx.audio.newMusic( Gdx.files.internal("music/map_music.ogg")) );
+
+		music.put( "battle_music",
+			Gdx.audio.newMusic( Gdx.files.internal("music/battle_music.ogg")) );
 	}
 
 	public static void playMusic( String name ) {

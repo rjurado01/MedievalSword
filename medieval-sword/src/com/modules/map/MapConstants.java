@@ -64,7 +64,4 @@ public class MapConstants {
 	public static final int SQUARE_TERRAIN_W = Constants.SIZE_W / 12;
 	public static final int SQUARE_TERRAIN_H = Constants.SIZE_H / 8;
 	public static final int SQUARE_TERRAIN_3D = MapConstants.SQUARE_TERRAIN_H / 2;
-
-	/* MUSIC */
-	public static final String MUSIC_MAP = "map_music";
 }

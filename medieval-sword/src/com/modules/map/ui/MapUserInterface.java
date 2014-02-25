@@ -1,5 +1,11 @@
 package com.modules.map.ui;
 
+import aurelienribon.tweenengine.Timeline;
+import aurelienribon.tweenengine.Tween;
+import aurelienribon.tweenengine.TweenCallback;
+import aurelienribon.tweenengine.TweenManager;
+import aurelienribon.tweenengine.equations.Linear;
+
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
@@ -9,6 +15,7 @@ import com.game.Constants;
 import com.game.Player;
 import com.modules.map.objetives.LevelObjectives;
 import com.modules.map.terrain.Terrain;
+import com.utils.ImageAlphaAccessor;
 
 /**
  * Manage the UI stage and all elements that are drown in it.
@@ -18,6 +25,7 @@ public class MapUserInterface {
 	HUD hud;
 	Stage stage;
 	Image alpha;
+	Image black;
 
 	OptionsPanel options_panel;
 	ObjectivesPanel objectives_panel;
@@ -35,6 +43,13 @@ public class MapUserInterface {
 		alpha.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {}
 		});
+
+		black = new Image( Assets.getTextureRegion( "black" ) );
+		black.width = Constants.SIZE_W;
+		black.height = Constants.SIZE_H;
+		black.x = 0;
+		black.y = 0;
+		black.color.a = 0;
 
 		options_panel = new OptionsPanel();
 		objectives_panel = new ObjectivesPanel( objectives );
@@ -92,5 +107,19 @@ public class MapUserInterface {
 
 	public void completeAllObjectives() {
 		objectives_panel.completeAllObjectives();
+	}
+
+	public void blackAnimation( TweenManager manager, TweenCallback callback ) {
+		stage.addActor( black );
+
+		Timeline line = Timeline.createSequence();
+		line.push( Tween.to( black, ImageAlphaAccessor.POSITION_X, 0.5f ).target(1.f).ease( Linear.INOUT ) );
+		line.push( Tween.call( callback ) );
+		line.start( manager );
+	}
+
+	public void hideBlack() {
+		black.color.a = 0;
+		stage.removeActor( black );
 	}
 }
