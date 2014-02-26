@@ -84,7 +84,7 @@ public class SquareBoard extends Group {
 	 * We need to pass this object.
 	 */
 	public void clickSquare() {
-		BattleController.addEvent( Constants.SQUARE, this );
+		BattleController.addEvent( BattleConstants.SQUARE, this );
 	}
 
 	public boolean isFree() {

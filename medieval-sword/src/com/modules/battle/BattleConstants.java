@@ -21,4 +21,13 @@ public class BattleConstants {
 	static final float CORRECT_X = 0;
 
 	public static final float BUTTONS_SIZE = 74;
+
+	/* EVENTS TYPES */
+	public static final int NONE 		= -1;
+	public static final int SQUARE 		= 0;
+	public static final int UNIT 		= 1;
+	public static final int SHIELD 		= 2;
+	public static final int MAGIC 		= 3;
+	public static final int SETTINGS 	= 4;
+	public static final int EXIT        = 5;
 }

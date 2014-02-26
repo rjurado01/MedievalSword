@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.game.Assets;
 import com.game.Constants;
-import com.modules.battle.BattleExitAlert;
 import com.modules.map.MapConstants;
 import com.modules.map.MapController;
 import com.utils.Vector2i;
@@ -144,7 +143,7 @@ public class OptionsPanel extends Group {
 		exit_btn.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
 				Assets.playSound("button", false);
-				BattleExitAlert alert = new BattleExitAlert(
+				ExitAlert alert = new ExitAlert(
 					new Vector2i( Constants.SIZE_W - Constants.HUD_WIDTH, Constants.SIZE_H),
 					new Vector2i( Constants.HUD_WIDTH, 0 ), panel_actor );
 				alert.show( stage );

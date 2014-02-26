@@ -16,6 +16,7 @@ import com.game.Assets;
 import com.game.Constants;
 import com.game.MyGdxGame;
 import com.game.Stack;
+import com.modules.map.ui.ExitAlert;
 import com.utils.CallBack;
 import com.utils.ImageAccessor;
 import com.utils.StackViewAccessor;
@@ -33,7 +34,7 @@ public class BattleController {
 	Board board;
 	Army armies [];
 	BattlePanel panel;
-	BattleExitAlert menu;
+	ExitAlert menu;
 	BattleSummary summary;
 
 	Stage stage;
@@ -69,7 +70,7 @@ public class BattleController {
 	private void createBattleElements() {
 		board = new Board( stage );
 		panel = new BattlePanel();
-		menu  = new BattleExitAlert(
+		menu  = new ExitAlert(
 			new Vector2i( Constants.SIZE_W, Constants.SIZE_H),
 			new Vector2i( 0, 0 ), null );
 
@@ -79,8 +80,8 @@ public class BattleController {
 		summary.setSummaryStacks( armies[0].getStacks(), armies[1].getStacks() );
 	}
 
-	static void addEvent( int type, Object receiver ) {
-		if( typeEvent == Constants.NONE ) {
+	public static void addEvent( int type, Object receiver ) {
+		if( typeEvent == BattleConstants.NONE ) {
 			typeEvent = type;
 			objectEvent = receiver;
 		}
@@ -149,19 +150,23 @@ public class BattleController {
 	public void checkEvents() {
 		if( !mutex )	// check semaphore
 		{
-			if( typeEvent == Constants.SQUARE && objectEvent != null )
+			if( typeEvent == BattleConstants.SQUARE && objectEvent != null )
 				checkSquareEvent( (SquareBoard) objectEvent );
-			else if( typeEvent == Constants.SHIELD )
+			else if( typeEvent == BattleConstants.SHIELD )
 				passTurnByEvent();
-			else if( typeEvent == Constants.SETTINGS )
+			else if( typeEvent == BattleConstants.SETTINGS )
 				showMenu();
-			else if( typeEvent == Constants.MAGIC )
-				typeEvent = Constants.NONE;
+			else if( typeEvent == BattleConstants.MAGIC )
+				typeEvent = BattleConstants.NONE;
+			else if( typeEvent == BattleConstants.EXIT ) {
+				game.changeScreen( Constants.HOME_SCREEN );
+				Assets.stopMusic( Constants.MUSIC_BATTLE );
+			}
 		}
 	}
 
 	private void passTurnByEvent() {
-		typeEvent = Constants.NONE;
+		typeEvent = BattleConstants.NONE;
 		board.resetSquares();
 		passTurn();
 	}
@@ -201,7 +206,7 @@ public class BattleController {
 		menu.show( stage );
 
 		mutex = true;
-		typeEvent = Constants.NONE;
+		typeEvent = BattleConstants.NONE;
 	}
 
 	public void checkSquareEvent( SquareBoard square ) {
@@ -217,7 +222,7 @@ public class BattleController {
 		}
 
 		objectEvent = null;
-		typeEvent = Constants.NONE;
+		typeEvent = BattleConstants.NONE;
 	}
 
 	public void processAttackEvent( SquareBoard enemySquare ) {

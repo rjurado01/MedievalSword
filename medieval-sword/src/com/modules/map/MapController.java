@@ -16,6 +16,7 @@ import com.game.Assets;
 import com.game.Constants;
 import com.game.MyGdxGame;
 import com.game.Player;
+import com.modules.battle.BattleConstants;
 import com.modules.castle.BuildingPanel;
 import com.modules.castle.CastlePanel;
 import com.modules.castle.TopCastle;
@@ -181,10 +182,14 @@ public class MapController {
 			case MapConstants.CLOSE_PANEL:
 				closePanel();
 				break;
+			case MapConstants.EXIT_GAME:
+				game.changeScreen( Constants.HOME_SCREEN );
+				Assets.stopMusic( Constants.MUSIC_MAP );
+				break;
 		}
 
-		if( typeEvent != Constants.NONE ) {
-			typeEvent = Constants.NONE;
+		if( typeEvent != BattleConstants.NONE ) {
+			typeEvent = BattleConstants.NONE;
 			objectEvent = null;
 		}
 
@@ -203,7 +208,7 @@ public class MapController {
 
 
 		objectEvent = null;
-		typeEvent = Constants.NONE;
+		typeEvent = BattleConstants.NONE;
 	}
 
 	private void passTurn() {
@@ -401,7 +406,7 @@ public class MapController {
 			Assets.playSound( "chainmail2", false );
 		}
 
-		typeEvent = Constants.NONE;
+		typeEvent = BattleConstants.NONE;
 		objectEvent = null;
 		// terrain.removePathDrawn();
 	}
@@ -477,7 +482,7 @@ public class MapController {
 			}
 		}
 
-		typeEvent = Constants.NONE;
+		typeEvent = BattleConstants.NONE;
 		objectEvent = null;
 	}
 
@@ -656,7 +661,7 @@ public class MapController {
 				findPath( square_number );
 		}
 
-		typeEvent = Constants.NONE;
+		typeEvent = BattleConstants.NONE;
 		objectEvent = null;
 	}
 

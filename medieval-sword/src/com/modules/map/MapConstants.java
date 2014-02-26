@@ -26,6 +26,7 @@ public class MapConstants {
 	public static final int SHOW_OPTIONS        = 17;
 	public static final int SHOW_OBJECTIVES     = 18;
 	public static final int CLOSE_PANEL         = 19;
+	public static final int EXIT_GAME 			= 20;
 
 	/* MAP SQUARES STATUS */
 	public static final int FREE = 0;

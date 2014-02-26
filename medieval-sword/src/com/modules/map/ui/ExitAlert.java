@@ -1,9 +1,8 @@
-package com.modules.battle;
+package com.modules.map.ui;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,13 +12,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.game.Assets;
 import com.game.Constants;
+import com.modules.battle.BattleConstants;
+import com.modules.battle.BattleController;
+import com.modules.map.MapConstants;
+import com.modules.map.MapController;
 import com.utils.Vector2i;
 
 /**
  * Represent options menu in battle screen.
  * It is show when user touch options button.
  */
-public class BattleExitAlert extends Group {
+public class ExitAlert extends Group {
 
 	static final int SIZE_H = 200;
 	static final int SIZE_W = 300;
@@ -36,7 +39,7 @@ public class BattleExitAlert extends Group {
 
 	protected Map<String, String> alert_msg;
 
-	public BattleExitAlert( Vector2i window_size, Vector2i window_position, Actor actor ) {
+	public ExitAlert( Vector2i window_size, Vector2i window_position, Actor actor ) {
 		alert_msg = new HashMap<String, String>();
 		alert_msg.put("es", "¿Seguro que quiere salir?");
 		alert_msg.put("en", "Are you sure you want to exit?");
@@ -91,7 +94,8 @@ public class BattleExitAlert extends Group {
 		exit_btn.setClickListener( new ClickListener() {
 			public void click( Actor actor, float x, float y ) {
 				Assets.playSound( "button", false );
-				Gdx.app.exit();
+				MapController.addEvent( MapConstants.EXIT_GAME, null );
+				BattleController.addEvent( BattleConstants.EXIT, null );
 			}
 		});
 
@@ -127,6 +131,5 @@ public class BattleExitAlert extends Group {
 			resume_panel.visible = true;
 
 		stage.removeActor( this );
-		BattleController.mutex = false;
 	}
 }

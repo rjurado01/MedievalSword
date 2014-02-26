@@ -1960,3 +1960,106 @@ turnDays
   orig: 140, 140
   offset: 0, 0
   index: 7
+
+game14.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+btnContinueGameEN
+  rotate: false
+  xy: 803, 890
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 1
+btnContinueGameEN
+  rotate: false
+  xy: 803, 778
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 2
+btnContinueGameES
+  rotate: false
+  xy: 803, 666
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 1
+btnContinueGameES
+  rotate: false
+  xy: 1, 225
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 2
+btnExitGameEN
+  rotate: false
+  xy: 1, 113
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 1
+btnExitGameEN
+  rotate: false
+  xy: 223, 225
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 2
+btnExitGameES
+  rotate: false
+  xy: 1, 1
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 1
+btnExitGameES
+  rotate: false
+  xy: 223, 113
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 2
+btnNewGameEN
+  rotate: false
+  xy: 223, 1
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 1
+btnNewGameEN
+  rotate: false
+  xy: 445, 225
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 2
+btnNewGameES
+  rotate: false
+  xy: 445, 113
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 1
+btnNewGameES
+  rotate: false
+  xy: 445, 1
+  size: 220, 110
+  orig: 220, 110
+  offset: 0, 0
+  index: 2
+homeBackground
+  rotate: false
+  xy: 1, 337
+  size: 600, 400
+  orig: 600, 400
+  offset: 0, 0
+  index: -1
+homeSword
+  rotate: false
+  xy: 1, 739
+  size: 800, 261
+  orig: 800, 261
+  offset: 0, 0
+  index: -1
