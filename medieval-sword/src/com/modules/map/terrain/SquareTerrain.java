@@ -10,18 +10,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
 import com.game.Assets;
 import com.game.Constants;
-import com.game.Player;
 import com.modules.map.MapConstants;
 import com.modules.map.MapController;
 import com.modules.map.heroes.CreaturesGroup;
 import com.modules.map.heroes.HeroTop;
-import com.modules.map.hud.MiniMap;
+import com.modules.map.ui.MiniMap;
 import com.utils.Vector2i;
 
+/**
+ * Each square of map.
+ * It saves information about its state, throws events and changes its texture.
+ */
 public class SquareTerrain extends Group {
-	
-	public static int HEIGHT = 40;
-	public static int WIDTH = 40;
 
 	static int NO_COLOR = -1;
 
@@ -29,37 +29,37 @@ public class SquareTerrain extends Group {
 	static final int GRASS = 0;
 	static final int WATHER = 1;
 	static final int ROAD = 2;
-	
+
 	/* ROAD STATUS */
 	static final int FREE = 0;
 	static final int HERO_PLAYER_1 = 1;
 	static final int CREATURES_GROUP = 2;
 	static final int RESOURCE_PILE = 3;
 	static final int RESOURCE_STRUCTURE = 4;
-	
+
 	boolean visible = true;
-	
+
 	int type;
 	int status;
 	int color;
-	
+
 	Vector2i number;
 	Image image;
 	Image fog;
-	
+
 	HeroTop hero;
 	CreaturesGroup group;
 	MiniMap mini_map;
 
 	public SquareTerrain( Vector2i number, int type ) {
-		this.x = number.x * WIDTH;
-		this.y = number.y * HEIGHT;
-		this.width = WIDTH;
-		this.height = HEIGHT;
+		this.x = number.x * MapConstants.SQUARE_TERRAIN_W;
+		this.y = number.y * MapConstants.SQUARE_TERRAIN_H - MapConstants.SQUARE_TERRAIN_3D;
+		this.width = MapConstants.SQUARE_TERRAIN_W;
+		this.height = MapConstants.SQUARE_TERRAIN_W + MapConstants.SQUARE_TERRAIN_3D;
 		this.type = type;
 		this.status = 0;
 		this.number = number;
-		
+
 		image = new Image();
 		image.width = this.width;
 		image.height = this.height;
@@ -72,19 +72,18 @@ public class SquareTerrain extends Group {
 	public void setRegion( TextureRegion region ) {
 		image.setRegion( region );
 	}
-	
+
 	public Vector2 getPosition() {
-		return new Vector2( x, y );
+		return new Vector2( x, y + MapConstants.SQUARE_TERRAIN_3D );
 	}
 
-	public Vector2i getNumber()
-	{
+	public Vector2i getNumber() {
 		return number;
 	}
 
 	private void addClickEvent() {
 		image.setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) { clicked(); }	
+			public void click(Actor actor, float x, float y) { clicked(); }
 		});
 	}
 
@@ -95,14 +94,14 @@ public class SquareTerrain extends Group {
 	public boolean isRoad() {
 		if( type == Terrain.ROAD )
 			return true;
-		else 
+		else
 			return false;
 	}
 
 	public boolean isRoadAvailable() {
 		if( type == Terrain.ROAD && status == FREE )
 			return true;
-		else 
+		else
 			return false;
 	}
 
@@ -144,7 +143,7 @@ public class SquareTerrain extends Group {
 	public int getType() {
 		return type;
 	}
-	
+
 	public CreaturesGroup getGroup() {
 		return group;
 	}
@@ -179,34 +178,36 @@ public class SquareTerrain extends Group {
 			return MiniMap.GRASS;
 	}
 
+	public boolean isFree() {
+		return status == FREE;
+	}
+
 	public void setFree() {
 		if( type == ROAD )
-			status = FREE; 
+			status = FREE;
 	}
 
 	public void setFog( Stage stage ) {
 		visible = false;
 
-		fog = new Image( Assets.getTextureRegion( "greyBackground" ) );
-		fog.width = width;
-		fog.height = height;
-		fog.x = number.x * WIDTH;
-		fog.y = number.y * HEIGHT;
+		fog = new Image( Assets.getTextureRegion( "fog" ) );
+		fog.width = MapConstants.SQUARE_TERRAIN_W + 24;
+		fog.height = MapConstants.SQUARE_TERRAIN_H + 24;
+		fog.x = number.x * MapConstants.SQUARE_TERRAIN_W - 12;
+		fog.y = number.y * MapConstants.SQUARE_TERRAIN_H - 12;
 
 		stage.addActor( fog );
 	}
 
 	public void exprlore() {
 		visible = true;
-		fog.remove();
+
+		if( fog != null )
+			fog.remove();
 	}
 
-	public void setStructure(Player owner) {
+	public void setStructure( int new_color ) {
 		status = RESOURCE_STRUCTURE;
-
-		if( owner == null )
-			color = NO_COLOR;
-		else
-			color = owner.color;
+		color = new_color;
 	}
 }

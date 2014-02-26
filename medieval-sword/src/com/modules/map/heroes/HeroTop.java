@@ -13,6 +13,10 @@ import com.modules.map.terrain.SquareTerrain;
 import com.utils.CustomAnimation;
 import com.utils.Vector2i;
 
+/**
+ * High level representation of hero.
+ * It includes the Hero type and the HeroView (representation in the map)
+ */
 public class HeroTop {
 	Hero hero;
 	HeroView view;
@@ -65,6 +69,10 @@ public class HeroTop {
 
 	public int getActualMobility() {
 		return hero.actual_mobility;
+	}
+
+	public String getName() {
+		return hero.name;
 	}
 
 	public void decreaseMobility() {
@@ -124,16 +132,10 @@ public class HeroTop {
 	}
 
 	private void updateActionFrame() {
-		if( actions_queue.size() > 0 )
+		if( actions_queue.size() > 0 ) {
 			view.setRegion( actions_queue.get(0).getCurrentFrame() );
-		//else
-		//	setFrameSide();
+		}
 	}
-
-	/*public void setFrameSide() {
-		orientation = battle_side == Constants.LEFT_SIDE ? Constants.XR : Constants.XL;
-		view.setFrame( unit.getTexture( "normal" + orientation + color ) );
-	}*/
 
 	public void addWalkAction( int orientation ) {
 		hero.walkAction( this, orientation );
@@ -160,7 +162,7 @@ public class HeroTop {
 	}
 
 	public TextureRegion getIconTextureRegion() {
-		return hero.getIconTextureRegion();
+		return hero.getIconTextureRegion( color );
 	}
 
 	public int getLevel() {
@@ -173,6 +175,10 @@ public class HeroTop {
 
 	public List<Vector2i> getPathMarked() {
 		return path_marked;
+	}
+
+	public void removePathMarked() {
+		path_marked = null;
 	}
 
 	public int getVision() {

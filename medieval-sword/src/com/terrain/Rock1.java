@@ -9,7 +9,7 @@ public class Rock1 extends MapObject {
 	public Rock1() {
 		type = MapConstants.ROCK_1;
 		texture_name = "rock1";
-		size = new Vector2i( 45, 40 );
-		position_correction = new Vector2i(0,0);
+		size = new Vector2i( 96, 96 );
+		position_correction = new Vector2i(0,-5);
 	}
 }

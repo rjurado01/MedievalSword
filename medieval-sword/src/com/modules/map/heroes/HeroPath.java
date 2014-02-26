@@ -76,7 +76,7 @@ public class HeroPath {
 	public boolean isLastMarked( Vector2i marked ) {
 		if( path == null || path.size() == 0 )
 			return false;
-		
+
 		Vector2i end = path.get( path.size() - 1 );
 
 		if( marked.x == end.x &&  marked.y == end.y )
@@ -109,7 +109,7 @@ public class HeroPath {
 		removePath();
 
 		PathFinder path_finder = new PathFinder(
-				terrain.getRoadsMatrix( destination ), terrain.SQUARES_X, terrain.SQUARES_Y );
+			terrain.getRoadsMatrix( destination ), terrain.SQUARES_X, terrain.SQUARES_Y );
 
 		path = path_finder.findWay( origin, destination );
 

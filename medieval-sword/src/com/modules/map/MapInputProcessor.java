@@ -2,105 +2,84 @@ package com.modules.map;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Constants;
-import com.modules.map.hud.HUD;
 import com.modules.map.terrain.Terrain;
+import com.utils.Vector2i;
 
 public class MapInputProcessor implements InputProcessor {
-	
-	Stage terrain_stage;
-	Stage hud_stage;
-	Vector3 last_touch_down = new Vector3();
+
 	Terrain terrain;
-	HUD hud;
-	
-	public MapInputProcessor( Terrain terrain, HUD hud ) {
-		this.terrain_stage = terrain.getStage();
-		this.hud_stage = hud.getStage();
+	Stage ui_stage;
+	Vector3 last_touch_down = new Vector3();
+	Vector2i map_size;
+
+	static private boolean hud_activated = true;
+	static private boolean panel_activated = false;
+
+	public MapInputProcessor( Terrain terrain, Stage ui_stage ) {
 		this.terrain = terrain;
-		this.hud = hud;
+		this.ui_stage = ui_stage;
 	}
 
-	@Override
 	public boolean keyDown(int keycode) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean keyUp(int keycode) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean keyTyped(char character) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
 	public boolean touchDown(int x, int y, int pointer, int button) {
 		last_touch_down.set(x, y, 0);
 
-		if( isHudClicked(x, y) )
-			hud_stage.touchDown(x, y, pointer, button);
-		else
-			terrain_stage.touchDown(x, y, pointer, button );
-		
+		if( hud_activated && isHudClicked(x, y) || panel_activated )
+			ui_stage.touchDown(x, y, pointer, button);
+		else {
+			terrain.getStage().touchDown(x, y, pointer, button );
+		}
+
 		return false;
 	}
 
-	@Override
 	public boolean touchUp(int x, int y, int pointer, int button) {
-		if( isHudClicked(x, y) )
-			hud_stage.touchUp(x, y, pointer, button);
+		if( hud_activated && isHudClicked(x, y) || panel_activated )
+			ui_stage.touchUp(x, y, pointer, button);
 		else
-			terrain_stage.touchUp(x, y, pointer, button );
-		
+			terrain.getStage().touchUp(x, y, pointer, button );
+
 		return false;
 	}
 
-	@Override
 	public boolean touchDragged(int x, int y, int pointer) {
-		if( MapController.status == MapController.NORMAL && isHudClicked(x, y) == false )
-			moveCamera( x, y );		
-		
+		if( hud_activated && panel_activated == false )
+			moveCamera( x, y );
+
 		return false;
 	}
-	
+
 	private void moveCamera( int touch_x, int touch_y ) {
 		Vector3 new_position = getNewCameraPosition( touch_x, touch_y );
-
-		if( !cameraOutOfLimit( new_position ) )
-			terrain_stage.getCamera().translate( new_position.sub( terrain_stage.getCamera().position ) );
-		
+		terrain.centerCamera( new Vector2( new_position.x, new_position.y ) );
 		last_touch_down.set( touch_x, touch_y, 0);
 	}
-	
+
 	private Vector3 getNewCameraPosition( int x, int y ) {
 		Vector3 new_position = last_touch_down;
 		new_position.sub(x, y, 0);
 		new_position.y = -new_position.y;
-		new_position.add( terrain_stage.getCamera().position );
-		
+		new_position.add( terrain.getStage().getCamera().position );
+
 		return new_position;
-	}
-	
-	private boolean cameraOutOfLimit( Vector3 position ) {
-		int x_left_limit = Constants.SIZE_W / 2 - Constants.HUD_WIDTH;
-		int x_right_limit = terrain.getWidth() - Constants.SIZE_W / 2;
-		int y_bottom_limit = Constants.SIZE_H / 2;
-		int y_top_limit = terrain.getHeight() - Constants.SIZE_H / 2;
-		
-		if( position.x < x_left_limit || position.x > x_right_limit )
-			return true;
-		else if( position.y < y_bottom_limit || position.y > y_top_limit )
-			return true;
-		else
-			return false;
 	}
 
 	public boolean touchMoved(int x, int y) {
@@ -109,17 +88,33 @@ public class MapInputProcessor implements InputProcessor {
 	}
 
 	public boolean scrolled(int amount) {
-		terrain_stage.getCamera().viewportHeight += 14 * amount;
-		terrain_stage.getCamera().viewportWidth += 20 * amount;
+		terrain.getStage().getCamera().viewportHeight += 14 * amount;
+		terrain.getStage().getCamera().viewportWidth += 20 * amount;
 		return false;
 	}
 
 	private boolean isHudClicked( int x, int y ) {
-		float hud_width = hud.width * Gdx.graphics.getWidth() / Constants.SIZE_W;
+		float hud_width = MapConstants.HUD_WIDTH * Gdx.graphics.getWidth() / Constants.SIZE_W;
 
 		if( x < hud_width )
 			return true;
 		else
 			return false;
+	}
+
+	static public void activateHUD() {
+		hud_activated = true;
+	}
+
+	static public void deactivateHUD() {
+		hud_activated = false;
+	}
+
+	static public void activatePanel() {
+		panel_activated = true;
+	}
+
+	static public void deactivatePanel() {
+		panel_activated = false;
 	}
 }

@@ -3,13 +3,23 @@ package com.modules.map.terrain;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.game.Assets;
+import com.game.Constants;
+import com.modules.castle.TopCastle;
 import com.modules.map.MapActor;
-import com.modules.map.hud.MiniMap;
+import com.modules.map.MapConstants;
+import com.modules.map.ui.MiniMap;
 import com.utils.Vector2i;
 
+/**
+ *	This class save information about terrain drawing in the map
+ *	and all elements that it contains.
+ */
 public class Terrain {
 
 	static final int GRASS = 0;
@@ -26,14 +36,24 @@ public class Terrain {
 	public int SQUARES_X;
 	public int SQUARES_Y;
 
+	public int width;
+	public int height;
+	public int x_left_limit;
+	public int x_right_limit;
+	public int y_bottom_limit;
+	public int y_top_limit;
+
 	ArrayList<SquarePath> path_drawn;
 	private List<ResourceStructure> resource_structures;
 	private List<ResourcePile> resource_piles;
 	private List<MapActor> objects;
+	private List<TopCastle> castles;
 	MiniMap mini_map;
 
 	SquareTerrain terrain[][];
 	int explored[][];
+
+	Group path_layer;
 
 	Stage stage;
 
@@ -42,11 +62,19 @@ public class Terrain {
 		SQUARES_X = n_squares.x;
 		SQUARES_Y = n_squares.y;
 
+		width = SQUARES_X * MapConstants.SQUARE_TERRAIN_W;
+		height = SQUARES_Y * MapConstants.SQUARE_TERRAIN_H;
+		x_left_limit = Constants.SIZE_W / 2 - Constants.HUD_WIDTH;
+		x_right_limit = width - Constants.SIZE_W / 2;
+		y_bottom_limit = Constants.SIZE_H / 2;
+		y_top_limit = height - Constants.SIZE_H / 2;
+
 		initializeTerrain();
 
 		path_drawn = new ArrayList<SquarePath>();
+		path_layer = new Group();
 	}
-	
+
 	public void setMiniMap( MiniMap mini_map ) {
 		this.mini_map = mini_map;
 	}
@@ -65,23 +93,23 @@ public class Terrain {
 	}
 
 	public void addSquareTerrain( Vector2i square_number, int type, String texture ) {
-		terrain[square_number.y][square_number.x] = 
+		terrain[square_number.y][square_number.x] =
 				new SquareTerrain( square_number, type );
 
 		terrain[square_number.y][square_number.x].setRegion(
 				Assets.getTextureRegion( texture ) );
 	}
-	 
+
 	public SquareTerrain getSquareTerrain( Vector2i square_number ) {
 		return terrain[square_number.y][square_number.x];
 	}
 
 	public int getWidth() {
-		return SQUARES_X * SquareTerrain.WIDTH;
+		return width;
 	}
 
 	public int getHeight() {
-		return SQUARES_Y * SquareTerrain.HEIGHT;
+		return height;
 	}
 
 	public Vector2 getSquarePosition( Vector2i square_number ) {
@@ -91,9 +119,11 @@ public class Terrain {
 	public void addStage( Stage stage ) {
 		this.stage = stage;
 
-		for( int i = 0; i < SQUARES_Y; i++)
+		for( int i = SQUARES_Y - 1; i >= 0; i--)
 			for( int j = 0; j < SQUARES_X; j++)
 				stage.addActor( terrain[i][j] );
+
+		stage.addActor( path_layer );
 	}
 
 	public Stage getStage() {
@@ -123,16 +153,21 @@ public class Terrain {
 
 		for( Vector2i item : path ) {
 			SquarePath square_path;
+			boolean free = terrain[item.y][item.x].isFree();
 
-			if( terrain[item.y][item.x].isRoadAvailable() ) {
+			if( i == path.size() -1 ) {
 				if( i < mobility )
-					square_path = new SquarePath( getSquarePosition( item ), true );
+					square_path = new SquarePath( getSquarePosition( item ), true, true, free );
 				else
-					square_path = new SquarePath( getSquarePosition( item ), false );
-
-				path_drawn.add( square_path );
-				stage.addActor( square_path );
+					square_path = new SquarePath( getSquarePosition( item ), false, true, free );
 			}
+			else if( i < mobility )
+				square_path = new SquarePath( getSquarePosition( item ), true, false, free );
+			else
+				square_path = new SquarePath( getSquarePosition( item ), false, false, free );
+
+			path_drawn.add( square_path );
+			path_layer.addActor( square_path );
 
 			i++;
 		}
@@ -140,7 +175,7 @@ public class Terrain {
 
 	public void removePathDrawn() {
 		while( path_drawn.size() > 0 ) {
-			stage.removeActor( path_drawn.get( 0 ) );
+			path_layer.removeActor( path_drawn.get( 0 ) );
 			path_drawn.remove( 0 );
 		}
 	}
@@ -151,10 +186,14 @@ public class Terrain {
 			path_drawn.remove( 0 );
 		}
 	}
-	
-	public void passTurn() {
-		for( ResourceStructure structure : getResourceStructures() )
-			structure.turnAction();
+
+	public void passTurn( int day ) {
+		if( resource_structures != null )
+			for( ResourceStructure structure : resource_structures )
+				structure.turnAction();
+
+		for( TopCastle castle : castles )
+			castle.passTurn( day );
 	}
 
 	public void exploreSquare( int x, int y ) {
@@ -212,29 +251,29 @@ public class Terrain {
 	 * Update terrain squares where there is a structure
 	 * @param structure
 	 */
-	public void addStructure( ResourceStructure structure ) {
-		Vector2i position = structure.square_position_number;
+	public void addStructure( Structure structure ) {
+		Vector2i number = structure.square_number;
 		Vector2i size = structure.squares_size;
 
-		for( int y = position.y; y < position.y + size.y; y++ )
-			for( int x = position.x; x < position.x + size.x; x++ )
-				terrain[y][x].setStructure( structure.owner );
+		for( int y = number.y; y < number.y + size.y; y++ )
+			for( int x = number.x; x < number.x + size.x; x++ )
+				terrain[y][x].setStructure( structure.color );
 	}
 
 	/**
 	 * Update structure squares with the owner color so that mini_map will be updated
-	 * Also, explore map into the vision range of structure 
+	 * Also, explore map into the vision range of structure
 	 * @param structure
 	 */
-	public void captureStructure( ResourceStructure structure ) {
-		Vector2i position = structure.square_position_number;
+	public void captureStructure( Structure structure ) {
+		Vector2i number = structure.square_number;
 		Vector2i size = structure.squares_size;
 
-		explore( position, size, structure.vision );
+		explore( number, size, structure.vision );
 
-		for( int y = position.y; y < position.y + size.y; y++ )
-			for( int x = position.x; x < position.x + size.x; x++ ) {
-					terrain[y][x].setStructure( structure.owner );
+		for( int y = number.y; y < number.y + size.y; y++ )
+			for( int x = number.x; x < number.x + size.x; x++ ) {
+					terrain[y][x].setStructure( structure.color );
 					mini_map.updatePosition( new Vector2i(x,y) );
 			}
 	}
@@ -246,7 +285,7 @@ public class Terrain {
 	public void setObjects( List<MapActor> objects ) {
 		this.objects = objects;
 	}
-	
+
 	public List<ResourcePile> getResourcePiles() {
 		return resource_piles;
 	}
@@ -261,5 +300,47 @@ public class Terrain {
 
 	public void setResourceStructures(List<ResourceStructure> resource_structures) {
 		this.resource_structures = resource_structures;
+	}
+
+	public List<TopCastle> getCastles() {
+		return castles;
+	}
+
+	public void setCastles( List<TopCastle> castles ) {
+		this.castles = castles;
+	}
+
+	public Vector2i getSize() {
+		return new Vector2i( getWidth(), getHeight() );
+	}
+
+	public Group getPathLayer() {
+		return path_layer;
+	}
+
+	public void centerCamera( Vector2 position ) {
+		Camera camera = stage.getCamera();
+		Vector2 final_position = new Vector2( position );
+
+		if( position.x < x_left_limit || position.x > x_right_limit )
+			final_position.x = camera.position.x;
+
+		if( position.y < y_bottom_limit || position.y > y_top_limit )
+			final_position.y = camera.position.y;
+
+		if( position != final_position )
+			camera.translate(
+				final_position.x - camera.position.x,
+				final_position.y - camera.position.y,
+				0);
+	}
+
+	public boolean cameraOutOfLimit( Vector3 position ) {
+		if( position.x < x_left_limit || position.x > x_right_limit )
+			return true;
+		else if( position.y < y_bottom_limit || position.y > y_top_limit )
+			return true;
+		else
+			return false;
 	}
 }

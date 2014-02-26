@@ -9,8 +9,13 @@ public class Main {
 		LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
 		cfg.title = "my-gdx-game";
 		cfg.useGL20 = false;
-		cfg.width = 720;
-		cfg.height = 480;
+		cfg.width = 1152;
+		cfg.height = 768;
+		cfg.fullscreen = false;
+		
+		/*DisplayMode[] modes = LwjglApplicationConfiguration.getDisplayModes();
+		for( int i = 0; i < modes.length; i++ )
+			System.out.println( modes[i] );*/
 		
 		new LwjglApplication(new MyGdxGame(), cfg);
 	}

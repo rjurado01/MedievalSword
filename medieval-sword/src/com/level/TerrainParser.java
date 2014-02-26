@@ -13,7 +13,7 @@ public class TerrainParser {
 		switch ( id ) {
 			case 1: return "mapWater2";
 			case 2: return "mapRoad";
-			default: return "mapGrass";
+			default: return "block-grass";
 		}
 	}
 	

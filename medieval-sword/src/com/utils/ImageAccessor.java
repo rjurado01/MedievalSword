@@ -12,7 +12,7 @@ public class ImageAccessor implements TweenAccessor<Image> {
 	public static final int POSITION_X = 1;
     public static final int POSITION_Y = 2;
     public static final int POSITION_XY = 3;
-    
+
 	public int getValues( Image target, int tweenType, float[] returnValues ) {
 		switch (tweenType) {
 	        case POSITION_X: returnValues[0] = target.x; return 1;
