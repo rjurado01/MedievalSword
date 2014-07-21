@@ -16,12 +16,14 @@ public class MapInputProcessor implements InputProcessor {
 	Vector3 last_touch_down = new Vector3();
 	Vector2i map_size;
 
-	static private boolean hud_activated = true;
-	static private boolean panel_activated = false;
+	static private boolean hud_activated;
+	static private boolean panel_activated;
 
 	public MapInputProcessor( Terrain terrain, Stage ui_stage ) {
 		this.terrain = terrain;
 		this.ui_stage = ui_stage;
+		hud_activated = true;
+		panel_activated = false;
 	}
 
 	public boolean keyDown(int keycode) {
@@ -44,9 +46,8 @@ public class MapInputProcessor implements InputProcessor {
 
 		if( hud_activated && isHudClicked(x, y) || panel_activated )
 			ui_stage.touchDown(x, y, pointer, button);
-		else {
+		else
 			terrain.getStage().touchDown(x, y, pointer, button );
-		}
 
 		return false;
 	}

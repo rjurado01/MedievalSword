@@ -17,16 +17,19 @@ public class MyGdxGame extends Game {
 	Screen mapScreen;
 	Screen battleScreen;
 
-	Level level;
-
 	public void create() {
 		Assets.load();
 
-		// we need decide if it is new level or load saved game
-		level = Assets.getLevel( 1 );
-
 		homeScreen = new HomeScreen( this );
 		setScreen( homeScreen );
+		Assets.playSound( "intro", false );
+  }
+
+	public void loadNewLevel( int n_level ) {
+		if( n_level < Assets.levels.length ) {
+			mapScreen = new MapScreen( this, Assets.levels[n_level] );
+			changeScreen( Constants.MAP_SCREEN );
+		}
 	}
 
 	public void changeScreen( int screen ) {
@@ -35,7 +38,6 @@ public class MyGdxGame extends Game {
 				setScreen( homeScreen );
 				break;
 			case Constants.MAP_SCREEN:
-				mapScreen = new MapScreen( this, level );
 				setScreen( mapScreen );
 				break;
 			case Constants.BATTLE_SCREEN:

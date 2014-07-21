@@ -34,7 +34,7 @@ public class TownHall extends CastleBuilding {
 		level_1.setStonePrice(0);
 
 		level_1.setName("en", "Town Hall");
-		level_1.setName("es", "Alcaldía");
+		level_1.setName("es", "Alcaldia");
 		level_1.setBuildTexture("humans-townhall");
 		level_1.setDescription("en", "The Town produces 1000 Gold per day.");
 		level_1.setDescription("es", "La alcaldía proporciona 1000 de oro al día.");
@@ -62,8 +62,10 @@ public class TownHall extends CastleBuilding {
 		level_1.setStonePrice(0);
 
 		level_1.setName("en", "Capitole");
+		level_1.setName("es", "Capitolio");
 		level_1.setBuildTexture("humans-capitole");
-		level_1.setDescription("en", "Town Hall second level.");
+		level_1.setDescription("en", "The Capitole produces 2000 Gold per day.");
+		level_1.setDescription("es", "El Capitolio produce 2000 de oro al dia.");
 
 		return level_1;
 	}

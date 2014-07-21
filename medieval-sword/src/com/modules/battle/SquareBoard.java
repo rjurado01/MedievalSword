@@ -154,6 +154,13 @@ public class SquareBoard extends Group {
 			return false;
 	}
 
+	public boolean isAvailableForAttack() {
+		if( texture_status == T_AVAILABLE && hasTexture() )
+			return true;
+		else
+			return false;
+	}
+
 	public Vector2 getPosition() {
 		return new Vector2( x, y );
 	}
@@ -178,6 +185,21 @@ public class SquareBoard extends Group {
 		if( stack_id == STACK_P1 && status == STACK_P2 )
 			return true;
 		else if( stack_id == STACK_P2 && status == STACK_P1 )
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * Check if there is an ally in this square
+	 * @param stack_id id player units
+	 */
+	public boolean hasAlly( int battle_side ) {
+		int stack_id = getStackId( battle_side );
+
+		if( stack_id == STACK_P1 && status == STACK_P1 )
+			return true;
+		else if( stack_id == STACK_P2 && status == STACK_P2 )
 			return true;
 		else
 			return false;

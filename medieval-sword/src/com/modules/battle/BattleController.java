@@ -10,7 +10,6 @@ import aurelienribon.tweenengine.equations.Linear;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
 import com.game.Assets;
 import com.game.Constants;
@@ -34,7 +33,7 @@ public class BattleController {
 	Board board;
 	Army armies [];
 	BattlePanel panel;
-	ExitAlert menu;
+	ExitAlert exit_alert;
 	BattleSummary summary;
 
 	Stage stage;
@@ -42,7 +41,8 @@ public class BattleController {
 
 	int turn;
 	int status = NORMAL;
-	static boolean mutex = false; 	// Semaphore
+	static boolean mutex; 	// Semaphore
+	int player_army;
 
 	SquareBoard attacked_enemy_square = null;
 	Stack stack_selected;
@@ -51,26 +51,28 @@ public class BattleController {
 	MyGdxGame game;
 
 	/* EVENTS INFO */
-	static Object objectEvent = null;
-	static int typeEvent = -1;
+	static Object objectEvent;
+	static int typeEvent;
 
 
-	public BattleController( MyGdxGame game, Army armies[], Stage stage ) {
+	public BattleController( MyGdxGame game, Army armies[], int player_army, Stage stage ) {
 		this.armies = armies;
 		this.stage = stage;
 		this.game = game;
+		this.player_army = player_army;
+
+		objectEvent = null;
+		typeEvent = -1;
+		mutex = false;
 
 		createBattleElements();
-
 		manager = new TweenManager();
-		Tween.registerAccessor( StackView.class, new StackViewAccessor() );
-		Tween.registerAccessor( Image.class, new ImageAccessor() );
 	}
 
 	private void createBattleElements() {
 		board = new Board( stage );
 		panel = new BattlePanel();
-		menu  = new ExitAlert(
+		exit_alert  = new ExitAlert(
 			new Vector2i( Constants.SIZE_W, Constants.SIZE_H),
 			new Vector2i( 0, 0 ), null );
 
@@ -81,7 +83,7 @@ public class BattleController {
 	}
 
 	public static void addEvent( int type, Object receiver ) {
-		if( typeEvent == BattleConstants.NONE ) {
+		if( !mutex && typeEvent == BattleConstants.NONE ) {
 			typeEvent = type;
 			objectEvent = receiver;
 		}
@@ -94,7 +96,20 @@ public class BattleController {
 		placeArmyInBoard( armies[0] );
 		placeArmyInBoard( armies[1] );
 
-		board.selectStack( stack_selected, armies[turn].getBattleSide() );
+		Timeline line = Timeline.createSequence();
+		line.push( Tween.to( null, StackViewAccessor.POSITION_XY, 1.5f ).ease( Linear.INOUT ) );
+
+		line.push( Tween.call( new TweenCallback() {
+			public void onEvent(int type, BaseTween<?> source) {
+				board.selectStack( stack_selected, armies[turn].getBattleSide() );
+
+				if( turn != player_army ) {
+					IA();
+				}
+			}
+		}));
+
+		line.start( manager );
 	}
 
 	public void randomSide() {
@@ -138,6 +153,7 @@ public class BattleController {
 		stack.setSquare( board.getSquare(x, y) );
 		stack.getSquare().setStack( stack );
 		stack.getView().setSquarePosition( board.getSquare( x, y ).getStackPosition() );
+		stack.getView().updateTextNumber( stack.getNumber() );
 
 		stage.addActor( stack.getView() );
 	}
@@ -148,20 +164,17 @@ public class BattleController {
 	}
 
 	public void checkEvents() {
-		if( !mutex )	// check semaphore
-		{
-			if( typeEvent == BattleConstants.SQUARE && objectEvent != null )
-				checkSquareEvent( (SquareBoard) objectEvent );
-			else if( typeEvent == BattleConstants.SHIELD )
-				passTurnByEvent();
-			else if( typeEvent == BattleConstants.SETTINGS )
-				showMenu();
-			else if( typeEvent == BattleConstants.MAGIC )
-				typeEvent = BattleConstants.NONE;
-			else if( typeEvent == BattleConstants.EXIT ) {
-				game.changeScreen( Constants.HOME_SCREEN );
-				Assets.stopMusic( Constants.MUSIC_BATTLE );
-			}
+		if( typeEvent == BattleConstants.SQUARE && objectEvent != null )
+			checkSquareEvent( (SquareBoard) objectEvent );
+		else if( typeEvent == BattleConstants.SHIELD )
+			passTurnByEvent();
+		else if( typeEvent == BattleConstants.SETTINGS )
+			showAlert();
+		else if( typeEvent == BattleConstants.MAGIC )
+			typeEvent = BattleConstants.NONE;
+		else if( typeEvent == BattleConstants.EXIT ) {
+			game.changeScreen( Constants.HOME_SCREEN );
+			Assets.stopMusic( Constants.MUSIC_BATTLE );
 		}
 	}
 
@@ -196,16 +209,51 @@ public class BattleController {
 		armies[turn].selectNexStack();
 		stack_selected = armies[ turn ].getSelectedStack();
 
-		// Update board with available squares (textures) from new unit
-		board.selectStack( stack_selected, armies[turn].getBattleSide() );
+		// set in top
+		stage.removeActor( stack_selected.getView() );
+		stage.addActor( stack_selected.getView() );
 
-		mutex = false;
+		if( turn != player_army ) {
+			mutex = true;
+			panel.blockPanel();
+			Timeline line = Timeline.createSequence();
+			line.push( Tween.to( null, StackViewAccessor.POSITION_XY, 1f ).ease( Linear.INOUT ) );
+
+			line.push( Tween.call( new TweenCallback() {
+				public void onEvent(int type, BaseTween<?> source) {
+					board.selectStack( stack_selected, armies[turn].getBattleSide() );
+					IA();
+				}
+			}));
+
+			line.start( manager );
+		}
+		else {
+			// Update board with available squares (textures) from new unit
+			board.selectStack( stack_selected, armies[turn].getBattleSide() );
+			mutex = false;
+			panel.unlockPanel();
+		}
 	}
 
-	private void showMenu() {
-		menu.show( stage );
+	private void IA() {
+		SquareBoard enemy_square = board.nearEnemySquare( armies[turn].getBattleSide(), stack_selected.getSquare() );
 
-		mutex = true;
+		if( enemy_square != null ) {
+			if( stack_selected.getRange() > 0 )
+				checkSquareEvent( enemy_square );
+			else {
+				showAttackAvailablePositions( enemy_square );
+				checkSquareEvent( board.nearEnemySquareAttack( armies[turn].getBattleSide(), stack_selected.getSquare() ) );
+			}
+		}
+		else {
+			checkSquareEvent( board.getNextSquare( armies[turn].getBattleSide(), stack_selected.getSquare() ) );
+		}
+	}
+
+	private void showAlert() {
+		exit_alert.show( stage );
 		typeEvent = BattleConstants.NONE;
 	}
 
@@ -229,7 +277,7 @@ public class BattleController {
 		if( stack_selected.getRange() > 0 )
 			shootToStack( enemySquare );
 		else
-			showAttackAvailablePositions( enemySquare);
+			showAttackAvailablePositions( enemySquare );
 	}
 
 	public void shootToStack( SquareBoard enemySquare ) {
@@ -254,13 +302,16 @@ public class BattleController {
 	 */
 	public void processMoveEvent( SquareBoard end_square ) {
 		mutex = true;	// block semaphore
+		panel.blockPanel();
 
 		SquareBoard init_square = stack_selected.getSquare();
 
 		if( board.isAchievable( init_square, end_square, stack_selected.getMovility() ) )
 			checkWayAndMoveStack( init_square, end_square );
-		else
+		else {
 			mutex = false;
+			panel.unlockPanel();
+		}
 	}
 
 	public void checkWayAndMoveStack( SquareBoard init_square, SquareBoard end_square ) {

@@ -50,6 +50,9 @@ public class BattleSummary extends Group {
 	Label result_label;
 	Label experience_label;
 
+	String lost_units_msg [] = { "Creatures lost", "Criaturas perdidas" };
+	String destroyed_units_msg [] = { "Creatures destroyed", "Criaturas eliminadas" };
+
 	//
 	Button exit_btn;
 
@@ -220,13 +223,13 @@ public class BattleSummary extends Group {
 	}
 
 	public void createLostLabel() {
-		lost_label = new Label( "Creatures Lost", Assets.skin );
+		lost_label = new Label( lost_units_msg[Constants.LANGUAGE_CODE], Assets.skin );
 		lost_label.x = panel_x + ( SIZE_W - lost_label.width ) / 2;
 		lost_label.y = lost_y + UnitIcon.SIZE_H + 5;
 	}
 
 	public void createDestroyedLabel() {
-		destroyed_label = new Label( "Creatures Destroyed", Assets.skin );
+		destroyed_label = new Label( destroyed_units_msg[Constants.LANGUAGE_CODE], Assets.skin );
 		destroyed_label.x = panel_x + ( SIZE_W - destroyed_label.width ) / 2;
 		destroyed_label.y = destroyed_y + UnitIcon.SIZE_H + 5;
 	}
@@ -245,6 +248,7 @@ public class BattleSummary extends Group {
 
 	public void show( int result ) {
 		this.result = result;
+		Assets.setMusicVolume( Constants.MUSIC_BATTLE, 0.4f );
 
 		if( result == VICTORY )
 			Assets.playSound( "battle_win", false );
@@ -257,8 +261,6 @@ public class BattleSummary extends Group {
 		}
 
 		createResultPanel();
-		Assets.stopMusic( Constants.MUSIC_BATTLE );
-
 		stage.addActor( this );
 	}
 }

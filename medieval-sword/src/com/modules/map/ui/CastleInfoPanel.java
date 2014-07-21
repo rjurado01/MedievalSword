@@ -19,7 +19,7 @@ public class CastleInfoPanel extends ArmyInfoPanel {
 		createIcon( castle.getLargeIconTextureRegion(), new Vector2i( 90, 90 ) );
 
 		ResourceIndicator name_label = new ResourceIndicator( 210, 200 );
-		name_label.setIcon( Assets.getTextureRegion( "iconHero2" ) );
+		name_label.setIcon( Assets.getTextureRegion( "iconCastleMini" ) );
 		name_label.updateText( castle.getName() );
 
 		ResourceIndicator amount_label = new ResourceIndicator( 210, 150 );

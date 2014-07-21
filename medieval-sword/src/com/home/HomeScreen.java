@@ -1,19 +1,14 @@
 package com.home;
 
-import aurelienribon.tweenengine.BaseTween;
 import aurelienribon.tweenengine.Timeline;
 import aurelienribon.tweenengine.Tween;
-import aurelienribon.tweenengine.TweenCallback;
 import aurelienribon.tweenengine.TweenManager;
 import aurelienribon.tweenengine.equations.Linear;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Assets;
 import com.game.Constants;
@@ -28,28 +23,26 @@ import com.utils.ImageAlphaAccessor;
  */
 public class HomeScreen implements Screen {
 
-	final int BUTTON_W = 220;
-	final int BUTTON_H = 110;
-	final int SWORD_W = 800;
-	final int SWORD_H = 260;
-
 	MyGdxGame game;
 	TweenManager manager;
 	Stage stage;
 	Image black;
 	float timer = -1;
 
+	HomeWindow home_window;
+	OptionsWindow options_window;
+	LevelsWindow levels_window;
+
 	public HomeScreen( MyGdxGame game ) {
 		this.game = game;
-
-		manager = new TweenManager();
-		stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true);
-		Gdx.input.setInputProcessor( stage );
-		Tween.registerAccessor( Image.class, new ImageAlphaAccessor() );
+		this.manager = new TweenManager();
+		this.stage = new Stage( Constants.SIZE_W, Constants.SIZE_H, true);
 
 		loadBackground();
-		loadSword();
-		loadButtons();
+
+		home_window = new HomeWindow( this, black, manager );
+		stage.addActor( home_window );
+
 		loadBlack();
 	}
 
@@ -60,85 +53,6 @@ public class HomeScreen implements Screen {
 		background.x = 0;
 		background.y = 0;
 		stage.addActor( background );
-	}
-
-	private void loadSword() {
-		Image sword = new Image( Assets.getTextureRegion( "homeSword" ));
-		sword.width = SWORD_W;
-		sword.height = SWORD_H;
-		sword.x = ( Constants.SIZE_W - sword.width ) / 2;
-		sword.y = ( Constants.SIZE_H - sword.height ) / 1.5f;;
-		stage.addActor( sword );
-	}
-
-	private void loadButtons() {
-		int space = 30;
-		int aux = ( ( Constants.SIZE_W - BUTTON_W * 3 ) - space * 2 ) / 2;
-		int pos_y = 130;
-
-		Button new_game = new Button(
-			Assets.getFrame( "btnNewGame" + Constants.LANGUAGE.toUpperCase(), 1 ),
-			Assets.getFrame( "btnNewGame" + Constants.LANGUAGE.toUpperCase(), 2 ) );
-
-		new_game.width = BUTTON_W;
-		new_game.height = BUTTON_H;
-		new_game.x = aux;
-		new_game.y = pos_y;
-
-		new_game.setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) {
-				Assets.playSound( "button", false );
-
-				Timeline line = Timeline.createSequence();
-				line.push( Tween.to( black, ImageAlphaAccessor.POSITION_X, 0.6f ).target(1).ease( Linear.INOUT ) );
-				line.push( Tween.call( new TweenCallback() {
-					public void onEvent(int type, BaseTween<?> source) {
-						game.changeScreen( Constants.MAP_SCREEN );
-					}
-				} ) );
-				line.push( Tween.to( black, ImageAlphaAccessor.POSITION_X, 0.5f ).target(0).ease( Linear.INOUT ) );
-
-				line.start( manager );
-			}
-		});
-
-		Button continue_game = new Button(
-				Assets.getFrame( "btnContinueGame" + Constants.LANGUAGE.toUpperCase(), 2 ),
-				Assets.getFrame( "btnContinueGame" + Constants.LANGUAGE.toUpperCase(), 2 ) );
-
-		continue_game.width = BUTTON_W;
-		continue_game.height = BUTTON_H;
-		continue_game.x = aux + BUTTON_W + space;
-		continue_game.y = pos_y;
-
-		Button exit_game = new Button(
-				Assets.getFrame( "btnExitGame" + Constants.LANGUAGE.toUpperCase(), 1 ),
-				Assets.getFrame( "btnExitGame" + Constants.LANGUAGE.toUpperCase(), 2 ) );
-
-		exit_game.width = BUTTON_W;
-		exit_game.height = BUTTON_H;
-		exit_game.x = Constants.SIZE_W - BUTTON_W - aux;
-		exit_game.y = pos_y;
-
-		exit_game.setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) {
-				Assets.playSound( "button", false );
-
-				Timeline line = Timeline.createSequence();
-				line.push( Tween.to( black, ImageAlphaAccessor.POSITION_X, 0.5f ).target(1.f).ease( Linear.INOUT ) );
-				line.push( Tween.call( new TweenCallback() {
-					public void onEvent(int type, BaseTween<?> source) {
-						Gdx.app.exit();
-					}
-				} ) );
-
-				line.start( manager );
-			}
-		});
-
-		stage.addActor( new_game );
-		stage.addActor( continue_game );
-		stage.addActor( exit_game );
 	}
 
 	public void loadBlack() {
@@ -163,12 +77,65 @@ public class HomeScreen implements Screen {
 
 	public void show() {
 		Gdx.input.setInputProcessor( stage );
+		Tween.registerAccessor( Image.class, new ImageAlphaAccessor() );
+
+		black.color.a = 1;
+		Timeline line = Timeline.createSequence();
+		line.push( Tween.to( black, ImageAlphaAccessor.POSITION_X, 0.5f ).target(0.f).ease( Linear.INOUT ) );
+		line.start( manager );
+	}
+
+	public void changeScreen( int id ) {
+		game.changeScreen( id );
+	}
+
+	public void showOptionsWindow() {
+		home_window.visible = false;
+
+		if( options_window != null )
+			stage.removeActor( options_window );
+
+		options_window = new OptionsWindow( this, black, manager );
+		stage.addActor( options_window );
+	}
+
+	public void showLevelsWindow() {
+		home_window.visible = false;
+
+		if( levels_window != null )
+			stage.removeActor( levels_window );
+
+		levels_window = new LevelsWindow( this, black, manager );
+		stage.addActor( levels_window );
+	}
+
+	public void showHomeWindow( boolean update ) {
+		home_window.visible = true;
+
+		if( options_window != null )
+			options_window.visible = false;
+
+		if( levels_window != null )
+			levels_window.visible = false;
+
+		if( update ) {
+			stage.removeActor( home_window );
+			home_window = new HomeWindow( this, black, manager );
+			stage.addActor( home_window );
+		}
+	}
+
+	public void setBlackTop() {
+		stage.removeActor( black );
+		stage.addActor( black );
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
-
+		/*// Save aspect ratio
+		stage.setViewport( Constants.SIZE_W, Constants.SIZE_H, false );
+		float crop_x = ( Constants.SIZE_W - stage.getCamera().viewportWidth) / 2;
+		stage.getCamera().translate( crop_x, 0, 0 );*/
 	}
 
 	@Override

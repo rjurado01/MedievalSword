@@ -3,10 +3,13 @@ package com.modules.map;
 import java.util.ArrayList;
 import java.util.List;
 
+import aurelienribon.tweenengine.Tween;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Army;
 import com.game.Assets;
 import com.game.Constants;
@@ -24,6 +27,8 @@ import com.modules.map.terrain.ResourcePile;
 import com.modules.map.terrain.ResourceStructure;
 import com.modules.map.terrain.Terrain;
 import com.modules.map.ui.MapUserInterface;
+import com.utils.HeroAccessor;
+import com.utils.ImageAlphaAccessor;
 
 /**
  * Screen that initializes, updates and renders the map.
@@ -169,10 +174,19 @@ public class MapScreen implements Screen {
 	}
 
 	public void resize(int width, int height) {
-		// TODO Auto-generated method stub
+		/*terrain_stage.setViewport( Constants.SIZE_W, Constants.SIZE_H, false );
+		float crop_x1 = ( Constants.SIZE_W - terrain_stage.getCamera().viewportWidth) / 2;
+		terrain_stage.getCamera().translate( crop_x1, 0, 0 );
+
+		ui_stage.setViewport( Constants.SIZE_W, Constants.SIZE_H, false );
+		float crop_x2 = ( Constants.SIZE_W - ui_stage.getCamera().viewportWidth) / 2;
+		ui_stage.getCamera().translate( crop_x2, 0, 0 );*/
 	}
 
 	public void show() {
+		Tween.registerAccessor( MapController.class, new HeroAccessor() );
+		Tween.registerAccessor( Image.class, new ImageAlphaAccessor() );
+
 		if( controller == null )
 			controller = new MapController( game, players, terrain, ui, objectives );
 		else

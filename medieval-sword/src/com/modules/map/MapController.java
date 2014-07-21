@@ -11,7 +11,6 @@ import aurelienribon.tweenengine.equations.Linear;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Assets;
 import com.game.Constants;
 import com.game.MyGdxGame;
@@ -36,16 +35,14 @@ import com.modules.map.ui.CastleInfoPanel;
 import com.modules.map.ui.CreaturesGroupPanel;
 import com.modules.map.ui.HeroPanel;
 import com.modules.map.ui.MapUserInterface;
-import com.utils.HeroAccessor;
-import com.utils.ImageAlphaAccessor;
 import com.utils.StackViewAccessor;
 import com.utils.Vector2i;
 
 public class MapController {
 
 	/* EVENTS INFO */
-	static Object objectEvent = null;
-	static int typeEvent = -1;
+	static Object objectEvent;
+	static int typeEvent;
 
 	/* STATUS */
 	static final int NORMAL = 0;
@@ -83,7 +80,7 @@ public class MapController {
 	HeroPath hero_path;
 	SquareTerrain attack_square;
 
-	static int status = NORMAL; 	// Semaphore
+	static int status; 	// Semaphore
 
 
 	public MapController( MyGdxGame game, List<Player> players, Terrain terrain,
@@ -94,10 +91,12 @@ public class MapController {
 		this.ui = ui;
 		this.objectives = objectives;
 
+		objectEvent = null;
+		typeEvent = -1;
+		status = NORMAL;
+
 		hero_path = new HeroPath( terrain );
 		manager = new TweenManager();
-		Tween.registerAccessor( MapController.class, new HeroAccessor() );
-		Tween.registerAccessor( Image.class, new ImageAlphaAccessor() );
 
 		Assets.playMusic( Constants.MUSIC_MAP );
 		//terrain.centerCamera( new Vector2(1800,1500) );
@@ -305,7 +304,7 @@ public class MapController {
 			}));
 
 			Assets.playSound("hero_walk", true );
-
+			selected_hero.removePathMarked();
 			line.start( manager );
 		}
 	}
@@ -495,7 +494,7 @@ public class MapController {
 
 		return new TweenCallback() {
 			public void onEvent( int type, BaseTween<?> source ) {
-				ui.blackAnimation( manager, battle_callback );
+				ui.showBlackAnimation( manager, battle_callback );
 			}
 		};
 	}
@@ -591,7 +590,7 @@ public class MapController {
 	 * Return from battle module to map module
 	 */
 	public void returnFromBattle() {
-		ui.hideBlack();
+		ui.hideBlackAnimation( manager, null );
 
 		// player has won the battle
 		if( selected_hero.getArmy().getStacks().size() > 0 ) {
@@ -605,7 +604,6 @@ public class MapController {
 
 		if( selected_hero != null ) {
 			Assets.playSound("square_selected", false);
-
 			Vector2i square_number = structure.getUseSquareNumber();
 
 			if( hero_path.isPathMarked() && hero_path.isValidDestination( square_number ) ) {
@@ -680,6 +678,7 @@ public class MapController {
 
 	private void checkCastleEvent( TopCastle castle ) {
 		selected_castle = castle;
+		selected_group = null;
 		ui.getHUD().selectCastle( castle );
 		Assets.playSound("square_selected", false);
 

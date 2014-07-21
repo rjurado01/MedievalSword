@@ -73,7 +73,7 @@ public class CreaturesGroup {
 		if( amount < 20 )
 			return "1-20";
 		else if( amount < 50)
-			return "2'-50";
+			return "20-50";
 		else if( amount < 100)
 			return "50 - 100";
 		else

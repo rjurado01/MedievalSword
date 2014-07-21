@@ -108,7 +108,7 @@ public class BoardPathFinding {
 	}
 
 	private void createWayList( SquareBoard father ) {
-		if( father != null & father.getFather() != null
+		if( father != null && father.getFather() != null
 				&& father.getFather().getFather() != null )
 			createWayList( father.getFather() );
 

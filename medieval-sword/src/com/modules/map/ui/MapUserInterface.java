@@ -109,7 +109,7 @@ public class MapUserInterface {
 		objectives_panel.completeAllObjectives();
 	}
 
-	public void blackAnimation( TweenManager manager, TweenCallback callback ) {
+	public void showBlackAnimation( TweenManager manager, TweenCallback callback ) {
 		stage.addActor( black );
 
 		Timeline line = Timeline.createSequence();
@@ -118,8 +118,9 @@ public class MapUserInterface {
 		line.start( manager );
 	}
 
-	public void hideBlack() {
-		black.color.a = 0;
-		stage.removeActor( black );
+	public void hideBlackAnimation( TweenManager manager, TweenCallback callback ) {
+		Timeline line = Timeline.createSequence();
+		line.push( Tween.to( black, ImageAlphaAccessor.POSITION_X, 0.5f ).target(0).ease( Linear.INOUT ) );
+		line.start( manager );
 	}
 }

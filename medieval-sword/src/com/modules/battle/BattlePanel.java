@@ -23,6 +23,8 @@ public class BattlePanel extends Group {
 	Button settings;
 
 	Image background;
+	Image shield_block;
+	Image settings_block;
 
 	float free_space;
 
@@ -68,6 +70,18 @@ public class BattlePanel extends Group {
 			}
 		});
 
+    // used for block shield button while enemy turn
+		shield_block = new Image( Assets.getTextureRegion( "black" ) );
+		shield_block.height = shield.height;
+		shield_block.width = shield.width;
+		shield_block.x = shield.x;
+		shield_block.y = shield.y;
+		shield_block.color.a = 0.5f;
+
+		shield_block.setClickListener( new ClickListener() {
+			public void click(Actor actor, float x, float y) {}
+		});
+
 		addActor( shield );
 	}
 
@@ -108,5 +122,27 @@ public class BattlePanel extends Group {
 		} );
 
 		addActor( settings );
+
+		settings_block = new Image( Assets.getTextureRegion( "black" ) );
+		settings_block.height = settings.height;
+		settings_block.width = settings.width;
+		settings_block.x = settings.x;
+		settings_block.y = settings.y;
+		settings_block.color.a = 0.5f;
+
+		settings_block.setClickListener( new ClickListener() {
+			public void click(Actor actor, float x, float y) {}
+		});
+
+	}
+
+	public void blockPanel() {
+		addActor( shield_block );
+		addActor( settings_block );
+	}
+
+	public void unlockPanel() {
+		removeActor( shield_block );
+		removeActor( settings_block );
 	}
 }

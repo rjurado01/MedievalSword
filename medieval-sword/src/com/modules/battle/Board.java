@@ -194,9 +194,8 @@ public class Board
 	public void deleteUnreachableSquares( Stack stack ) {
 		for( int y = 0; y < BattleConstants.NS_Y; y++ )
 			for( int x = 0; x < BattleConstants.NS_X; x++ ) {
-				if( getSquare(x, y).isAvailable() &&
-						!path_finding.checkWay( stack.getSquare(),
-								getSquare(x, y), stack.getMovility() ) )
+				if( getSquare(x, y).isAvailable() && !path_finding.checkWay(
+						stack.getSquare(), getSquare(x, y), stack.getMovility() ) )
 					matrix[y][x].setNormalOn();
 			}
 	}
@@ -278,5 +277,94 @@ public class Board
 				if( matrix[y][x].isAvailable() )
 					matrix[y][x].setAvailableOn();
 
+	}
+
+	public SquareBoard getNextSquare( int battle_side, SquareBoard unit_square ) {
+		List<SquareBoard> enemies_squares = new ArrayList<SquareBoard>();
+		SquareBoard new_square = null;
+		float min = 20;
+
+		// get all enemies squares
+		for( int y = 0; y < BattleConstants.NS_Y; y++ )
+			for( int x = 0; x < BattleConstants.NS_X; x++ )
+				if( matrix[y][x].hasEnemy( battle_side ) )
+					enemies_squares.add( matrix[y][x] );
+
+		for( int y = 0; y < BattleConstants.NS_Y; y++ )
+			for( int x = 0; x < BattleConstants.NS_X; x++ )
+				if( matrix[y][x].isAvailable() ) {
+					if( new_square == null )
+						new_square = matrix[y][x];
+					else {
+						for( SquareBoard enemy_square : enemies_squares ) {
+							float value = Math.abs( enemy_square.getNumber().x - matrix[y][x].getNumber().x ) +
+									Math.abs( enemy_square.getNumber().y - matrix[y][x].getNumber().y );
+
+							if( value < min ) {
+								min = value;
+								new_square = matrix[y][x];
+							}
+						}
+					}
+				}
+
+		return new_square;
+	}
+
+	public SquareBoard nearEnemySquare( int battle_side, SquareBoard unit_square ) {
+		SquareBoard new_square = null;
+		float min = 20;
+
+		for( int y = 0; y < BattleConstants.NS_Y; y++ )
+			for( int x = 0; x < BattleConstants.NS_X; x++ )
+				if( matrix[y][x].hasEnemyOn() ) {
+					float value = Math.abs( unit_square.getNumber().x - matrix[y][x].getNumber().x ) +
+							Math.abs( unit_square.getNumber().y - matrix[y][x].getNumber().y );
+
+					if( value < min ) {
+						min = value;
+						new_square = matrix[y][x];
+					}
+				}
+
+		return new_square;
+	}
+
+	public SquareBoard nearEnemySquareAvailable( int battle_side, SquareBoard unit_square ) {
+		SquareBoard new_square = null;
+		float min = 20;
+
+		for( int y = 0; y < BattleConstants.NS_Y; y++ )
+			for( int x = 0; x < BattleConstants.NS_X; x++ )
+				if( matrix[y][x].isAvailable() && matrix[y][x].hasEnemy( battle_side ) ) {
+					float value = Math.abs( unit_square.getNumber().x - matrix[y][x].getNumber().x ) +
+							Math.abs( unit_square.getNumber().y - matrix[y][x].getNumber().y );
+
+					if( value < min ) {
+						min = value;
+						new_square = matrix[y][x];
+					}
+				}
+
+		return new_square;
+	}
+
+	public SquareBoard nearEnemySquareAttack( int battle_side, SquareBoard unit_square ) {
+		SquareBoard new_square = null;
+		float min = 20;
+
+		for( int y = 0; y < BattleConstants.NS_Y; y++ )
+			for( int x = 0; x < BattleConstants.NS_X; x++ )
+				if( matrix[y][x].isAvailableForAttack() ) {
+					float value = Math.abs( unit_square.getNumber().x - matrix[y][x].getNumber().x ) +
+							Math.abs( unit_square.getNumber().y - matrix[y][x].getNumber().y );
+
+					if( value < min ) {
+						min = value;
+						new_square = matrix[y][x];
+					}
+				}
+
+		return new_square;
 	}
 }

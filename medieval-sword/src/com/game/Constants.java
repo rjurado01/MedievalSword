@@ -21,12 +21,13 @@ public class Constants {
 	public static final int DOWN = 3;
 
 	/* LANGUAGES */
-	public static final int LANGUAGE_EN = 0;
-	public static final int LANGUAGE_ES = 1;
+	public static final int LANGUAGE_CODE_EN = 0;
+	public static final int LANGUAGE_CODE_ES = 1;
+	public static final String LANGUAGES [] = { "en", "es" };
 
 	/* GENERAL */
-	public static final String LANGUAGE = "en";
-	public static final int LANGUAGE_CODE = LANGUAGE_EN;
+	public static String LANGUAGE = "es";
+	public static int LANGUAGE_CODE = LANGUAGE_CODE_ES;
 	public static final int UNDEFINED = -1;
 	public static final float FONT1_WIDTH = 7.7f;
 	public static final int FONT1_HEIGHT = 8;
@@ -69,4 +70,9 @@ public class Constants {
 	/* MUSIC */
 	public static final String MUSIC_MAP = "map_music";
 	public static final String MUSIC_BATTLE = "battle_music";
+
+	public static void setLanguage( int code ) {
+		LANGUAGE_CODE = code;
+		LANGUAGE = LANGUAGES[ code ];
+	}
 }

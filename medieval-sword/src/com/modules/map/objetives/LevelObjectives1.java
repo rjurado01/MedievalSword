@@ -16,7 +16,7 @@ public class LevelObjectives1 extends LevelObjectives {
 		descriptions[0].addString( "es", "Captura un castillo" );
 		descriptions[0].addString( "en", "Capture a castle" );
 
-		descriptions[1].addString( "es", "Construye un ayuntamiento" );
+		descriptions[1].addString( "es", "Construye una alcaldia" );
 		descriptions[1].addString( "en", "Build a Town Hall" );
 	}
 

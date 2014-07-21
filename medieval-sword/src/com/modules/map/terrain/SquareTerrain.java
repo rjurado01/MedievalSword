@@ -172,7 +172,7 @@ public class SquareTerrain extends Group {
 			else if( color == Constants.BLUE )
 				return MiniMap.BLUE;
 			else
-				return MiniMap.WHITE;
+				return MiniMap.GREY;
 		}
 		else
 			return MiniMap.GRASS;

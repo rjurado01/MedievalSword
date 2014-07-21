@@ -62,6 +62,11 @@ public class ExitAlert extends Group {
 		alpha.height = Constants.SIZE_H;
 		alpha.width = Constants.SIZE_W;
 		alpha.color.a = 0.5f;
+
+		alpha.setClickListener( new ClickListener() {
+			public void click(Actor actor, float x, float y) {}
+		});
+
 		addActor( alpha );
 	}
 

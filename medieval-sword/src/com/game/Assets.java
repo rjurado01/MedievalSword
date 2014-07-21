@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
@@ -44,7 +45,10 @@ public class Assets {
 	public static LabelStyle font_black;
 
 	// Levels
-	int level1[][];
+	public static Level levels[];
+
+	// Configuration
+	static Preferences config;
 
 	// MiniMap textures
 	public static Map<Integer, Texture> minimap_textures;
@@ -60,6 +64,8 @@ public class Assets {
 		loadMiniMapTextures();
 		loadMusic();
 		loadSounds();
+		loadConfiguration();
+		loadLevels();
 	}
 
 	public static TextureRegion getTextureRegion( String name ) {
@@ -97,7 +103,7 @@ public class Assets {
         pixmap.fillRectangle(0, 0, 2, 2);
 		minimap_textures.put( MiniMap.WHITE,  new Texture( pixmap, Format.RGB888, false ) );
 
-        pixmap.setColor( new Color(0.68f, 0.25f, 0.13f, 1) );
+        pixmap.setColor( new Color(0.9f, 0.9f, 0.9f, 1) );
         pixmap.fillRectangle(0, 0, 2, 2);
 		minimap_textures.put( MiniMap.ROAD,  new Texture( pixmap, Format.RGB888, false ) );
 
@@ -134,6 +140,7 @@ public class Assets {
 
 	public static void playMusic( String name ) {
 		if( Constants.MUSIC_ON && music.containsKey( name ) ) {
+			music.get( name ).setVolume(1);
 			music.get( name ).setLooping( true );
 			music.get( name ).play();
 		}
@@ -187,6 +194,7 @@ public class Assets {
 		Gson gson = new Gson();
 
 		String file = "levels/level" + Integer.toString( level_number ) + ".json";
+		System.out.println(file);
 		Level level = gson.fromJson( Gdx.files.internal( file ).readString(), Level.class );
 
 		return level;
@@ -233,5 +241,20 @@ public class Assets {
 
 	public static Unit getUnit( int id ) {
 		return units.get(id);
+	}
+
+	private static void loadConfiguration() {
+		config = Gdx.app.getPreferences("config");
+		Constants.setLanguage( config.getInteger("language") );
+	}
+
+	public static void saveConfiguration() {
+		config.putInteger("language", Constants.LANGUAGE_CODE);
+		config.flush();
+	}
+
+	private static void loadLevels() {
+		levels = new Level[1];
+		levels[0] = getLevel(1);
 	}
 }

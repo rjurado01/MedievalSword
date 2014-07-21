@@ -1,6 +1,5 @@
 package com.modules.map.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -27,7 +26,7 @@ public class ObjectivesPanel extends Group {
 	Image check_objectives [];
 	Button exit_btn;
 
-	String objectives_msg [] = { "OBJECTIVES", "OBJECTIVES" };
+	String objectives_msg [] = { "OBJECTIVES", "OBJETIVOS" };
 	String victory_msg [] = { "VICTORY !!", "VICTORIA !!" };
 	String defeat_msg [] = { "DEFEAT", "DERROTA" };
 
@@ -160,7 +159,7 @@ public class ObjectivesPanel extends Group {
 		exit_btn.setClickListener( new ClickListener() {
 			public void click(Actor actor, float x, float y) {
 				Assets.playSound("button", false);
-				Gdx.app.exit();
+				MapController.addEvent( MapConstants.EXIT_GAME, null );
 			}
 		});
 
