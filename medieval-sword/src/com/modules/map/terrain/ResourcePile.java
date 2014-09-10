@@ -14,44 +14,44 @@ import com.utils.Vector2i;
  * When hero get it, add resources to hero player.
  */
 public abstract class ResourcePile {
-	protected int amount;
-	int type;
+  public int amount;
+  public int type;
 
-	public Vector2i square_position_number;
-	public String texture_name;
-	public Vector2i size;
-	public Vector2i position_correction;
+  public Vector2i square_position_number;
+  public String texture_name;
+  public Vector2i size;
+  public Vector2i position_correction;
 
-	Image image;
+  Image image;
 
-	public ResourcePile() {
-		position_correction = new Vector2i(0,0);
-	}
+  public ResourcePile() {
+    position_correction = new Vector2i(0,0);
+  }
 
-	protected void createActor() {
-		image = new Image( Assets.getTextureRegion( texture_name ) );
+  protected void createActor() {
+    image = new Image( Assets.getTextureRegion( texture_name ) );
 
-		image.x = MapConstants.SQUARE_TERRAIN_W * square_position_number.x
-					+ position_correction.x;
-		image.y = MapConstants.SQUARE_TERRAIN_H * square_position_number.y
-					+ position_correction.y;
+    image.x = MapConstants.SQUARE_TERRAIN_W * square_position_number.x
+      + position_correction.x;
+    image.y = MapConstants.SQUARE_TERRAIN_H * square_position_number.y
+      + position_correction.y;
 
-		image.width = size.x;
-		image.height = size.y;
+    image.width = size.x;
+    image.height = size.y;
 
-		image.setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) { clicked(); };
-		});
-	}
+    image.setClickListener( new ClickListener() {
+      public void click(Actor actor, float x, float y) { clicked(); };
+    });
+  }
 
-	public Image getActor() {
-		return image;
-	}
+  public Image getActor() {
+    return image;
+  }
 
-	protected void clicked() {
-		MapController.addEvent( MapConstants.RESOURCE_PILE, this );
-	};
+  protected void clicked() {
+    MapController.addEvent( MapConstants.RESOURCE_PILE, this );
+  };
 
-	public abstract void use( Player player );
+  public abstract void use( Player player );
 
 }

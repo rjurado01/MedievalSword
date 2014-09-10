@@ -5,6 +5,9 @@ import com.modules.map.MapController;
 import com.modules.map.terrain.Structure;
 import com.utils.Vector2i;
 
+/**
+ * View of castle (contains position, size and texture)
+ */
 public class TopCastleView extends Structure {
 
 	TopCastle top_castle;

@@ -10,55 +10,55 @@ import com.game.Assets;
  */
 public class CustomAnimation {
 
-	float actual_time;
-	float duration;
+  float actual_time;
+  float duration;
 
-	Animation animation;
-	CallBack callback = null;
-	String sound_name;
+  Animation animation;
+  CallBack callback = null;
+  String sound_name;
 
 
-	/**
-	 * If duration == 0, set animation duration (execute only one time)
-	 * @param string
-	 */
-	public CustomAnimation( Animation animation, float duration, CallBack callback, String sound ) {
-		this.animation = animation;
-		this.duration = duration > 0 ? duration : animation.animationDuration;
-		this.actual_time = 0;
-		this.callback = callback;
-		this.sound_name = sound;
-	}
+  /**
+   * If duration == 0, set animation duration (execute only one time)
+   * @param string
+   */
+  public CustomAnimation( Animation animation, float duration, CallBack callback, String sound ) {
+    this.animation = animation;
+    this.duration = duration > 0 ? duration : animation.animationDuration;
+    this.actual_time = 0;
+    this.callback = callback;
+    this.sound_name = sound;
+  }
 
-	public void increaseTime(float time) {
-		if( actual_time == 0 && sound_name != null )
-			Assets.playSound( sound_name, false );
+  public void increaseTime(float time) {
+    if( actual_time == 0 && sound_name != null )
+      Assets.playSound( sound_name, false );
 
-		actual_time += time;
-	}
+    actual_time += time;
+  }
 
-	public TextureRegion getCurrentFrame() {
-		return animation.getKeyFrame( actual_time );
-	}
+  public TextureRegion getCurrentFrame() {
+    return animation.getKeyFrame( actual_time );
+  }
 
-	public boolean isFinished() {
-		if( actual_time >= duration ) {
-			executeCallback();
-			return true;
-		}
-		else
-			return false;
-	}
+  public boolean isFinished() {
+    if( actual_time >= duration ) {
+      executeCallback();
+      return true;
+    }
+    else
+      return false;
+  }
 
-	private void executeCallback() {
-		if( callback != null )
-			callback.completed();
-	}
+  private void executeCallback() {
+    if( callback != null )
+      callback.completed();
+  }
 
-	/**
-	 * Add callback function to be executed when animation finishes.
-	 */
-	public void addCallBack( CallBack callback ) {
-		this.callback = callback;
-	}
+  /**
+   * Add callback function to be executed when animation finishes.
+   */
+  public void addCallBack( CallBack callback ) {
+    this.callback = callback;
+  }
 }

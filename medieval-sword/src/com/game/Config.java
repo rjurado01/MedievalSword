@@ -1,5 +1,5 @@
 package com.game;
 
 public class Config {
-	int language;
+  int language;
 }

@@ -11,25 +11,32 @@ import com.utils.Vector2i;
  */
 public abstract class ResourceStructure extends Structure {
 
-	protected Player owner;
+  public Player owner;
 
-	public ResourceStructure( Vector2i square_number ) {
-		super( 1, square_number );
-		squares_size = new Vector2i( 2, 2 );
-	}
+  public ResourceStructure( Vector2i square_number ) {
+    super( 1, square_number );
+    squares_size = new Vector2i( 2, 2 );
+  }
 
-	public abstract void turnAction();
+  public abstract void turnAction();
 
-	protected void clicked() {
-		MapController.addEvent( MapConstants.RESOURCE_STRUCTURE, this );
-	}
+  protected void clicked() {
+    MapController.addEvent( MapConstants.RESOURCE_STRUCTURE, this );
+  }
 
-	/**
-	 * Called when player captured it
-	 * @param player the player who captured it
-	 */
-	public void use( Player player ) {
-		owner = player;
-		showFlag( player.color );
-	}
+  /**
+   * Called when player captured it
+   * @param player the player who captured it
+   */
+  public void use( Player player ) {
+    owner = player;
+    showFlag( player.color );
+  }
+
+  public int getOwnerId() {
+    if( owner != null )
+      return owner.id;
+    else
+      return -1;
+  }
 }

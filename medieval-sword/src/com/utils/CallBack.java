@@ -5,6 +5,6 @@ package com.utils;
  */
 public interface CallBack {
 
-	public void completed ();
-	
+  public void completed ();
+
 }

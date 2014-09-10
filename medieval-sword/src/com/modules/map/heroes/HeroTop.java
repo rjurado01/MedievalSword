@@ -18,170 +18,178 @@ import com.utils.Vector2i;
  * It includes the Hero type and the HeroView (representation in the map)
  */
 public class HeroTop {
-	Hero hero;
-	HeroView view;
-	int color;
-	int orientation;
-	int level;
+  Hero hero;
+  HeroView view;
+  int color;
+  int orientation;
+  int level;
 
-	ArrayList<CustomAnimation> actions_queue;
-	Army army;
-	SquareTerrain square;
-	Player player;
+  ArrayList<CustomAnimation> actions_queue;
+  Army army;
+  SquareTerrain square;
+  Player player;
 
-	List<Vector2i> path_marked;	// last path marked
+  List<Vector2i> path_marked;	// last path marked
 
-	public HeroTop( Player player, Hero hero, int color ) {
-		this.player = player;
-		this.hero = hero;
-		this.color = color;
-		this.level = 1;
+  public HeroTop( Player player, Hero hero, int color ) {
+    this.player = player;
+    this.hero = hero;
+    this.color = color;
+    this.level = 1;
 
-		actions_queue = new ArrayList<CustomAnimation>();
-		view = new HeroView( this, hero.getSize() );
-		view.setRegion( hero.textures.get( "normal3" + color ) );
-		army = new Army();
-	}
+    actions_queue = new ArrayList<CustomAnimation>();
+    view = new HeroView( this, hero.getSize() );
+    view.setRegion( hero.textures.get( "normal3" + color ) );
+    army = new Army();
+  }
 
-	public void setPosition( Vector2 position ) {
-		view.setPosition( position );
-	}
+  public void setPosition( Vector2 position ) {
+    view.setPosition( position );
+  }
 
-	public int getDefense() {
-		return hero.defense;
-	}
+  public int getDefense() {
+    return hero.defense;
+  }
 
-	public void setDefense(int defense) {
-		hero.defense = defense;
-	}
+  public void setDefense(int defense) {
+    hero.defense = defense;
+  }
 
-	public int getAttack() {
-		return hero.attack;
-	}
+  public int getAttack() {
+    return hero.attack;
+  }
 
-	public void setAttack(int attack) {
-		hero.attack = attack;
-	}
+  public void setAttack(int attack) {
+    hero.attack = attack;
+  }
 
-	public int getMobility() {
-		return hero.mobility;
-	}
+  public int getMobility() {
+    return hero.mobility;
+  }
 
-	public int getActualMobility() {
-		return hero.actual_mobility;
-	}
+  public int getActualMobility() {
+    return hero.actual_mobility;
+  }
 
-	public String getName() {
-		return hero.name;
-	}
+  public String getName() {
+    return hero.name;
+  }
 
-	public void decreaseMobility() {
-		hero.actual_mobility -= 1;
-	}
+  public int getOwnerId() {
+    return player.id;
+  }
 
-	public void resetMovility() {
-		hero.actual_mobility = hero.mobility;
-	}
+  public void decreaseMobility() {
+    hero.actual_mobility -= 1;
+  }
 
-	public void setActualMobility( int actual_mobility ) {
-		hero.actual_mobility = actual_mobility;
-	}
+  public void resetMovility() {
+    hero.actual_mobility = hero.mobility;
+  }
 
-	public int getPower() {
-		return hero.power;
-	}
+  public void setActualMobility( int actual_mobility ) {
+    hero.actual_mobility = actual_mobility;
+  }
 
-	public void setMobility(int mobility) {
-		hero.mobility = mobility;
-	}
+  public int getPower() {
+    return hero.power;
+  }
 
-	public Army getArmy() {
-		return army;
-	}
+  public void setMobility(int mobility) {
+    hero.mobility = mobility;
+  }
 
-	public void setSquareTerrain( SquareTerrain square ) {
-		if( this.square != null )
-			this.square.setFree();
+  public Army getArmy() {
+    return army;
+  }
 
-		this.square = square;
-		this.square.setTopHero( this );
-		this.view.setPosition( square.getPosition() );
-	}
+  public void setSquareTerrain( SquareTerrain square ) {
+    if( this.square != null )
+      this.square.setFree();
 
-	public SquareTerrain getSquareTerrain() {
-		return square;
-	}
+    this.square = square;
+    this.square.setTopHero( this );
+    this.view.setPosition( square.getPosition() );
+  }
 
-	public Actor getView() {
-		return view;
-	}
+  public SquareTerrain getSquareTerrain() {
+    return square;
+  }
 
-	public void updateActions( float time ) {
-		if( actions_queue.size() > 0 ) {
-			updateCurrentAction( time );
-			updateActionFrame();
-		}
-	}
+  public Actor getView() {
+    return view;
+  }
 
-	private void updateCurrentAction( float time ) {
-		if( actions_queue.get( 0 ).isFinished() ) {
-			actions_queue.remove(0);
-		}
-		else
-			actions_queue.get( 0 ).increaseTime( time );
-	}
+  public void updateActions( float time ) {
+    if( actions_queue.size() > 0 ) {
+      updateCurrentAction( time );
+      updateActionFrame();
+    }
+  }
 
-	private void updateActionFrame() {
-		if( actions_queue.size() > 0 ) {
-			view.setRegion( actions_queue.get(0).getCurrentFrame() );
-		}
-	}
+  private void updateCurrentAction( float time ) {
+    if( actions_queue.get( 0 ).isFinished() ) {
+      actions_queue.remove(0);
+    }
+    else
+      actions_queue.get( 0 ).increaseTime( time );
+  }
 
-	public void addWalkAction( int orientation ) {
-		hero.walkAction( this, orientation );
-	}
+  private void updateActionFrame() {
+    if( actions_queue.size() > 0 ) {
+      view.setRegion( actions_queue.get(0).getCurrentFrame() );
+    }
+  }
 
-	public void addAction( CustomAnimation action ) {
-		actions_queue.add( action );
-	}
+  public void addWalkAction( int orientation ) {
+    hero.walkAction( this, orientation );
+  }
 
-	public int getColor() {
-		return color;
-	}
+  public void addAction( CustomAnimation action ) {
+    actions_queue.add( action );
+  }
 
-	public void addStack( Stack stack ) {
-		army.addStack( stack );
-	}
+  public int getColor() {
+    return color;
+  }
 
-	public void select() {
-		player.selectHero( this );
-	}
+  public void addStack( Stack stack ) {
+    army.addStack( stack );
+  }
 
-	public void unselect() {
-		player.unselectHero();
-	}
+  public void select() {
+    player.selectHero( this );
+  }
 
-	public TextureRegion getIconTextureRegion() {
-		return hero.getIconTextureRegion( color );
-	}
+  public void unselect() {
+    player.unselectHero();
+  }
 
-	public int getLevel() {
-		return level;
-	}
+  public TextureRegion getIconTextureRegion() {
+    return hero.getIconTextureRegion( color );
+  }
 
-	public void setPathMarked( List<Vector2i> path_marked ) {
-		this.path_marked = path_marked;
-	}
+  public int getLevel() {
+    return level;
+  }
 
-	public List<Vector2i> getPathMarked() {
-		return path_marked;
-	}
+  public void setPathMarked( List<Vector2i> path_marked ) {
+    this.path_marked = path_marked;
+  }
 
-	public void removePathMarked() {
-		path_marked = null;
-	}
+  public List<Vector2i> getPathMarked() {
+    return path_marked;
+  }
 
-	public int getVision() {
-		return hero.vision;
-	}
+  public void removePathMarked() {
+    path_marked = null;
+  }
+
+  public int getVision() {
+    return hero.vision;
+  }
+
+  public int getType() {
+    return hero.type;
+  }
 }

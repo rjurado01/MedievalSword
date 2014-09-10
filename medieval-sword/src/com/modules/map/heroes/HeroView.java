@@ -13,30 +13,30 @@ import com.utils.Vector2i;
  */
 public class HeroView extends Image {
 
-	HeroTop hero;
+  HeroTop hero;
 
-	public HeroView( HeroTop hero, Vector2i size ) {
-		this.hero = hero;
-		this.width = size.x;
-		this.height = size.y;
+  public HeroView( HeroTop hero, Vector2i size ) {
+    this.hero = hero;
+    this.width = size.x;
+    this.height = size.y;
 
-		setClickListener( new ClickListener() {
-			public void click(Actor actor, float x, float y) {
-				clicked();
-			}
-		});
-	}
+    setClickListener( new ClickListener() {
+      public void click(Actor actor, float x, float y) {
+        clicked();
+      }
+    });
+  }
 
-	private void clicked() {
-		MapController.addEvent( MapConstants.HERO, hero );
-	}
+  private void clicked() {
+    MapController.addEvent( MapConstants.HERO, hero );
+  }
 
-	public Vector2 getPosition() {
-		return new Vector2(x, y);
-	}
+  public Vector2 getPosition() {
+    return new Vector2(x, y);
+  }
 
-	public void setPosition( Vector2 pos ) {
-		this.x = pos.x + MapConstants.SQUARE_X_POSITION;
-		this.y = pos.y + MapConstants.SQUARE_Y_POSITION;
-	}
+  public void setPosition( Vector2 pos ) {
+    this.x = pos.x + MapConstants.SQUARE_X_POSITION;
+    this.y = pos.y + MapConstants.SQUARE_Y_POSITION;
+  }
 }

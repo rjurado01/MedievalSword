@@ -12,22 +12,25 @@ import com.terrain.TreeCut1;
 import com.terrain.Plant1;
 import com.terrain.Plant2;
 
+/**
+ * Save an instance of each type of map object
+ */
 public class MapObjectsTypes {
-	Map<Integer, MapObject> objects;
+  Map<Integer, MapObject> objects;
 
-	public MapObjectsTypes() {
-		objects = new HashMap<Integer, MapObject>();
+  public MapObjectsTypes() {
+    objects = new HashMap<Integer, MapObject>();
 
-		objects.put( MapConstants.TREE_1, new Tree1() );
-		objects.put( MapConstants.TREE_2, new Tree2() );
-		objects.put( MapConstants.PLANT_1, new Plant1() );
-		objects.put( MapConstants.PLANT_2, new Plant2() );
-		objects.put( MapConstants.TREE_CUT_1, new TreeCut1() );
-		objects.put( MapConstants.ROCK_1, new Rock1() );
-		objects.put( MapConstants.ROCK_2, new Rock2() );
-	}
+    objects.put( MapConstants.TREE_1, new Tree1() );
+    objects.put( MapConstants.TREE_2, new Tree2() );
+    objects.put( MapConstants.PLANT_1, new Plant1() );
+    objects.put( MapConstants.PLANT_2, new Plant2() );
+    objects.put( MapConstants.TREE_CUT_1, new TreeCut1() );
+    objects.put( MapConstants.ROCK_1, new Rock1() );
+    objects.put( MapConstants.ROCK_2, new Rock2() );
+  }
 
-	public MapObject getMapObject( int type ) {
-		return objects.get( type );
-	}
+  public MapObject getMapObject( int type ) {
+    return objects.get( type );
+  }
 }

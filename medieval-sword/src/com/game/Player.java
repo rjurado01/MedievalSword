@@ -9,73 +9,75 @@ import com.modules.map.heroes.HeroTop;
  */
 public class Player {
 
-	public int id;
-	public int color;
+  public int id;
+  public int color;
 
-	public int gold;
-	public int wood;
-	public int stone;
+  public int gold;
+  public int wood;
+  public int stone;
 
-	private Array<HeroTop> heroes;
-	private HeroTop hero_selected;
+  public boolean human;
 
-	public Player( int color ) {
-		gold = 0;
-		wood = 0;
-		heroes = new Array<HeroTop>();
-		this.color = color;
-	}
+  private Array<HeroTop> heroes;
+  private HeroTop hero_selected;
 
-	public void addHero( HeroTop hero ) {
-		heroes.add( hero );
-	}
+  public Player( int color ) {
+    gold = 0;
+    wood = 0;
+    heroes = new Array<HeroTop>();
+    this.color = color;
+  }
 
-	public void removeHero( HeroTop hero ) {
-		heroes.removeValue( hero, true );
-	}
+  public void addHero( HeroTop hero ) {
+    heroes.add( hero );
+  }
 
-	public HeroTop getHeroSelected() {
-		return hero_selected;
-	}
+  public void removeHero( HeroTop hero ) {
+    heroes.removeValue( hero, true );
+  }
 
-	public Array<HeroTop> getHeroes() {
-		return heroes;
-	}
+  public HeroTop getHeroSelected() {
+    return hero_selected;
+  }
 
-	public boolean isHeroSelected() {
-		if( hero_selected == null )
-			return false;
-		else
-			return true;
-	}
+  public Array<HeroTop> getHeroes() {
+    return heroes;
+  }
 
-	public void update( float deltaTime ) {
-		if( hero_selected != null )
-			hero_selected.updateActions( deltaTime );
-	}
+  public boolean isHeroSelected() {
+    if( hero_selected == null )
+      return false;
+    else
+      return true;
+  }
 
-	public void unselectHero() {
-		hero_selected = null;
-	}
+  public void update( float deltaTime ) {
+    if( hero_selected != null )
+      hero_selected.updateActions( deltaTime );
+  }
 
-	public void selectHero( HeroTop hero ) {
-		hero_selected = hero;
-	}
+  public void unselectHero() {
+    hero_selected = null;
+  }
 
-	public void passTurn() {
-		for( HeroTop hero : heroes )
-			hero.resetMovility();
-	}
+  public void selectHero( HeroTop hero ) {
+    hero_selected = hero;
+  }
 
-	public void addGold( int amount ) {
-		gold += amount;
-	}
+  public void passTurn() {
+    for( HeroTop hero : heroes )
+      hero.resetMovility();
+  }
 
-	public void addStone( int amount ) {
-		stone += amount;
-	}
+  public void addGold( int amount ) {
+    gold += amount;
+  }
 
-	public void addWood( int amount ) {
-		wood += amount;
-	}
+  public void addStone( int amount ) {
+    stone += amount;
+  }
+
+  public void addWood( int amount ) {
+    wood += amount;
+  }
 }

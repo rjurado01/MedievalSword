@@ -79,6 +79,13 @@ public class TopCastle {
 		return owner;
 	}
 
+	public int getOwnerId() {
+	  if( owner != null )
+        return owner.id;
+	  else
+	    return Constants.NEUTRAL;
+    }
+
 	/**
 	 * Add bought units to castle army
 	 *
@@ -187,11 +194,19 @@ public class TopCastle {
 	}
 
 	public boolean isBuilt( int position, int level ) {
-		for( TopCastleBuilding building : buildings ) {
-			if( building.getPositionNumber() == position && building.level >= level )
-				return true;
-		}
+    for( TopCastleBuilding building : buildings ) {
+      if( building.getPositionNumber() == position && building.level >= level )
+        return true;
+	  }
 
-		return false;
+	  return false;
+	}
+
+	public int getNumberUnits(int position) {
+	  return units.get(position).number_units;
+	}
+
+	public int getBuildingLevel(int position) {
+	  return buildings.get(position).level;
 	}
 }

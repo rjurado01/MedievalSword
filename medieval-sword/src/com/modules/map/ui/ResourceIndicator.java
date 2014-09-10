@@ -12,60 +12,60 @@ import com.game.Assets;
  * It is used in the HUD for show the player resources.
  */
 public class ResourceIndicator extends Group {
-	public static final int SIZE_H = 36;
-	public static final int SIZE_W = 144;
+  public static final int SIZE_H = 36;
+  public static final int SIZE_W = 144;
 
-	Image background;
-	Image icon;
-	Label text;
+  Image background;
+  Image icon;
+  Label text;
 
-	public ResourceIndicator( int x, int y ) {
-		background = new Image(Assets.getTextureRegion( "rect" ) );
-		background.height = SIZE_H;
-		background.width = SIZE_W;
+  public ResourceIndicator( int x, int y ) {
+    background = new Image(Assets.getTextureRegion( "rect" ) );
+    background.height = SIZE_H;
+    background.width = SIZE_W;
 
-		text = new Label( "0", Assets.font2 );
-		text.x = 70;
-		text.y = 5;
+    text = new Label( "0", Assets.font2 );
+    text.x = 70;
+    text.y = 5;
 
-		addActor( background );
-		addActor( text );
+    addActor( background );
+    addActor( text );
 
-		this.x = x;
-		this.y = y;
-	}
+    this.x = x;
+    this.y = y;
+  }
 
-	public ResourceIndicator( Vector2 position ) {
-		background = new Image(Assets.getTextureRegion( "rect" ) );
-		background.height = 36;
-		background.width = 144;
+  public ResourceIndicator( Vector2 position ) {
+    background = new Image(Assets.getTextureRegion( "rect" ) );
+    background.height = 36;
+    background.width = 144;
 
-		text = new Label( "0", Assets.font2 );
-		text.x = 70;
-		text.y = 5;
+    text = new Label( "0", Assets.font2 );
+    text.x = 70;
+    text.y = 5;
 
-		addActor( background );
-		addActor( text );
+    addActor( background );
+    addActor( text );
 
-		this.x = position.x;
-		this.y = position.y;
-	}
+    this.x = position.x;
+    this.y = position.y;
+  }
 
-	public void setIcon( TextureRegion icon_region ) {
-		icon = new Image( icon_region );
-		icon.width = 32;
-		icon.height = 32;
-		icon.x = 20;
-		icon.y = 2;
+  public void setIcon( TextureRegion icon_region ) {
+    icon = new Image( icon_region );
+    icon.width = 32;
+    icon.height = 32;
+    icon.x = 20;
+    icon.y = 2;
 
-		addActor( icon );
-	}
+    addActor( icon );
+  }
 
-	public void updateText( String new_text ) {
-		text.setText( new_text );
-	}
+  public void updateText( String new_text ) {
+    text.setText( new_text );
+  }
 
-	public void updateText( int amount ) {
-		text.setText( Integer.toString( amount ) );
-	}
+  public void updateText( int amount ) {
+    text.setText( Integer.toString( amount ) );
+  }
 }
