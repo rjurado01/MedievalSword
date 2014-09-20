@@ -11,6 +11,7 @@ import aurelienribon.tweenengine.equations.Linear;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.game.Assets;
 import com.game.Constants;
 import com.game.MyGdxGame;
@@ -35,6 +36,7 @@ import com.modules.map.ui.CastleInfoPanel;
 import com.modules.map.ui.CreaturesGroupPanel;
 import com.modules.map.ui.HeroPanel;
 import com.modules.map.ui.MapUserInterface;
+import com.utils.ImageAlphaAccessor;
 import com.utils.StackViewAccessor;
 import com.utils.Vector2i;
 
@@ -829,7 +831,7 @@ public class MapController {
   }
 
   private void checkObjectives() {
-    int aux = objectives.checkObjetives( getTurnPlayer(), terrain.getCastles() );
+    int aux = objectives.checkObjetives( getTurnPlayer(), terrain.getCastles(), creatures );
 
     if( aux == Constants.OBJ_WIN ) {
       Timeline line = Timeline.createSequence();
@@ -838,6 +840,7 @@ public class MapController {
       line.push( Tween.call( new TweenCallback() {
         public void onEvent(int type, BaseTween<?> source) {
           ui.completeAllObjectives();
+          MapInputProcessor.activatePanel();
           ui.showEndPanel(true);
           Assets.stopMusic( Constants.MUSIC_MAP );
           Assets.playSound( "battle_win", false );
@@ -854,5 +857,20 @@ public class MapController {
       ui.completeObjective( aux );
       Assets.playSound( "objective_completed", false );
     }
+  }
+
+  public void playTransition() {
+    Image black = new Image( Assets.getTextureRegion( "black" ) );
+    black.width = Constants.SIZE_W;
+    black.height = Constants.SIZE_H;
+    black.x = 0;
+    black.y = 0;
+    black.color.a = 1;
+
+    ui.getStage().addActor( black );
+
+    Timeline line = Timeline.createSequence();
+    line.push( Tween.to( black, ImageAlphaAccessor.POSITION_X, 1f ).target(0.f).ease( Linear.INOUT ) );
+    line.start( manager );
   }
 }

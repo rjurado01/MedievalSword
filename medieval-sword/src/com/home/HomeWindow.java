@@ -70,16 +70,6 @@ public class HomeWindow extends Group {
       public void click(Actor actor, float x, float y) {
         Assets.playSound( "button", false );
         screen.showLevelsWindow();
-
-        /*Timeline line = Timeline.createSequence();
-          line.push( Tween.to( black, ImageAlphaAccessor.POSITION_X, 0.6f ).target(1).ease( Linear.INOUT ) );
-          line.push( Tween.call( new TweenCallback() {
-          public void onEvent(int type, BaseTween<?> source) {
-          screen.changeScreen( Constants.MAP_SCREEN );
-          }
-          } ) );
-
-          line.start( manager );*/
       }
     });
 
@@ -94,6 +84,7 @@ public class HomeWindow extends Group {
 
     continue_game.setClickListener( new ClickListener() {
       public void click(Actor actor, float x, float y) {
+        Assets.playSound( "button", false );
         Timeline line = Timeline.createSequence();
         line.push( Tween.to( black, ImageAlphaAccessor.POSITION_X, 0.5f ).target(1.f).ease( Linear.INOUT ) );
         line.start( manager );

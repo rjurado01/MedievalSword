@@ -21,6 +21,7 @@ import com.modules.castle.TopCastle;
 import com.modules.map.heroes.CreaturesGroup;
 import com.modules.map.heroes.HeroTop;
 import com.modules.map.objetives.LevelObjectives;
+import com.modules.map.objetives.LevelObjectives2;
 import com.modules.map.objetives.LevelObjectives1;
 import com.modules.map.terrain.MapObjectsTypes;
 import com.modules.map.terrain.ResourcePile;
@@ -93,8 +94,19 @@ public class MapScreen implements Screen {
   }
 
   private void loadObjectives() {
+    System.out.println(level.level);
     if( level.level == 1 ) {
       objectives = new LevelObjectives1();
+
+      if( level.objectives_completed != null ) {
+        for( int i = 0; i < objectives.getNumber(); i++ ) {
+          if( level.objectives_completed[i] == 1 )
+            objectives.setCompleted(i);
+        }
+      }
+    }
+    else if( level.level == 2 ) {
+      objectives = new LevelObjectives2();
 
       if( level.objectives_completed != null ) {
         for( int i = 0; i < objectives.getNumber(); i++ ) {
@@ -196,8 +208,10 @@ public class MapScreen implements Screen {
     Tween.registerAccessor( MapController.class, new HeroAccessor() );
     Tween.registerAccessor( Image.class, new ImageAlphaAccessor() );
 
-    if( controller == null )
+    if( controller == null ) {
       controller = new MapController( game, players, terrain, ui, objectives, creatures );
+      controller.playTransition();
+    }
     else
       controller.returnFromBattle();
 

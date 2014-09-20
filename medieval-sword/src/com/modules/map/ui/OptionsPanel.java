@@ -110,6 +110,13 @@ public class OptionsPanel extends Group {
     save_btn.setClickListener( new ClickListener() {
       public void click(Actor actor, float x, float y) {
         MapController.addEvent( MapConstants.SAVE_GAME, null );
+
+        SaveAlert alert = new SaveAlert(
+            new Vector2i( Constants.SIZE_W - Constants.HUD_WIDTH, Constants.SIZE_H),
+            new Vector2i( Constants.HUD_WIDTH, 0 ), panel_actor );
+          alert.show( stage );
+
+          panel_actor.visible = false;
       }
     });
 

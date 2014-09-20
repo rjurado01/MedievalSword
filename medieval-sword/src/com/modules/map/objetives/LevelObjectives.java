@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.game.Player;
 import com.modules.castle.TopCastle;
+import com.modules.map.heroes.CreaturesGroup;
 import com.utils.LocalizedString;
 
 /**
@@ -32,7 +33,8 @@ public abstract class LevelObjectives {
 
   protected abstract void loadDescriptions();
 
-  public abstract int checkObjetives( Player player, List <TopCastle> castles );
+  public abstract int checkObjetives( Player player, List <TopCastle> castles,
+      List<CreaturesGroup> creatures );
 
   public LocalizedString getDescription( int n ) {
     return descriptions[n];

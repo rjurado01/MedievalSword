@@ -31,6 +31,10 @@ public class MyGdxGame extends Game {
     }
   }
 
+  public boolean isValidLevel( int n_level ) {
+    return n_level < Assets.levels.length;
+  }
+
   public void loadSavedGame() {
     mapScreen = new MapScreen( this, Assets.getSavedLevel() );
     changeScreen( Constants.MAP_SCREEN );

@@ -253,8 +253,9 @@ public class Assets {
   }
 
   private static void loadLevels() {
-    levels = new Level[1];
+    levels = new Level[2];
     levels[0] = getLevel(1);
+    levels[1] = getLevel(2);
   }
 
   public static void saveLevel(Terrain terrain, List<Player> players,
