@@ -52,6 +52,7 @@ public class LevelsWindow extends Group {
 
     exit_btn.setClickListener( new ClickListener() {
       public void click(Actor actor, float x, float y) {
+        Assets.playSound( "button", false );
         screen.showHomeWindow( false );
       }
     });
@@ -66,11 +67,18 @@ public class LevelsWindow extends Group {
       Vector2i position = new Vector2i( 0, row1_y - 80 * i );
 
       if( i < Assets.levels.length )
-        button = new LevelButton(i, position, screen, (i + 1), true );
+        button = new LevelButton(i, position, this, true );
       else
-        button = new LevelButton(i, position, screen, (i + 1), false );
+        button = new LevelButton(i, position, this, false );
 
       addActor( button );
+    }
+  }
+
+  public void runLevel(final int level) {
+    if( screen.game.isValidLevel(level) ) {
+      Assets.playSound( "button", false );
+      screen.game.loadNewLevel(level);
     }
   }
 }

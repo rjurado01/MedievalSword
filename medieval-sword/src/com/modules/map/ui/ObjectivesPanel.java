@@ -60,7 +60,7 @@ public class ObjectivesPanel extends Group {
 
   private void createTitle() {
     title_label = new Label( objectives_msg[ Constants.LANGUAGE_CODE ], Assets.skin );
-    title_label.x = background.x + ( SIZE_W - title_label.width ) / 2;
+    title_label.x = background.x + 80;
     title_label.y = background.y + height - 70;
 
     addActor( title_label );
@@ -83,7 +83,7 @@ public class ObjectivesPanel extends Group {
           Assets.skin );
 
       objetive_label.x = check_objectives[i].x + 30;
-      objetive_label.y = check_objectives[i].y - 4;
+      objetive_label.y = check_objectives[i].y - (objetive_label.height - 22) ;
 
       addActor( check_objectives[i] );
       addActor( objetive_label );
@@ -134,10 +134,10 @@ public class ObjectivesPanel extends Group {
 
     result_background.width = 140;
     result_background.height = 32;
-    result_background.x = ( SIZE_W - result_background.width ) / 2;
+    result_background.x = background.x + 80;
     result_background.y = title_label.y - 2;
 
-    title_label.x = ( SIZE_W - title_label.getText().length() * Constants.FONT1_WIDTH ) / 2;
+    title_label.x = result_background.x + ( result_background.width - title_label.width ) / 2;
     addActor( result_background );
     addActor( title_label );
 

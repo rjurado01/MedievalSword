@@ -19,7 +19,7 @@ public class LevelButton extends Group {
 
   String titles [] = { "Level", "Nivel" };
 
-  public LevelButton(int lvl, Vector2i position, final HomeScreen screen, int n, boolean active) {
+  public LevelButton(int lvl, Vector2i position, final LevelsWindow lvl_window, boolean active) {
     this.level = lvl;
 
     title_back = new Button(
@@ -31,7 +31,7 @@ public class LevelButton extends Group {
           Assets.getTextureRegion("rect"),
           Assets.getTextureRegion("rectBlack"));
 
-      title = new Label(titles[Constants.LANGUAGE_CODE] + " " + n, Assets.font2);
+      title = new Label(titles[Constants.LANGUAGE_CODE] + " " + (level + 1), Assets.font2);
     }
     else {
       title_back = new Button(
@@ -49,7 +49,7 @@ public class LevelButton extends Group {
 
     title_back.setClickListener(new ClickListener() {
       public void click(Actor actor, float x, float y) {
-        screen.game.loadNewLevel(level);
+        lvl_window.runLevel(level);
       }
     });
 
