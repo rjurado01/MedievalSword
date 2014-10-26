@@ -1,5 +1,5 @@
 {
-  "level":2,
+  "level":1,
   "terrain": {
     "SQUARES_X":14,
     "SQUARES_Y":12,
@@ -36,7 +36,7 @@
   ],
   "resource_piles":[
     {"square_number":{"x":3,"y":1},"amount":10,"type":1},
-    {"square_number":{"x":0,"y":11},"amount":500,"type":0}
+    {"square_number":{"x":0,"y":7},"amount":500,"type":0}
   ],
   "players":[
     {
@@ -57,9 +57,8 @@
           "type":1,
           "cpu":false,
           "stacks":[
-            {"type":11,"number":10},
             {"type":12,"number":10},
-            {"type":11,"number":10}
+            {"type":11,"number":5}
           ]
         }
       ]
@@ -97,7 +96,7 @@
       "square_number":{"x":8,"y":8},
       "stacks":[],
       "buildings_levels": [0,-1,0,1,-1,0,-1,-1],
-      "number_units": [2,0,0,0,0]
+      "number_units": [15,0,0,0,0]
     }
   ]
 }

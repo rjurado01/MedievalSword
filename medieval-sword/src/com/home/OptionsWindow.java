@@ -101,6 +101,8 @@ public class OptionsWindow extends Group {
         else {
           screen.showHomeWindow( false );
         }
+        
+        Assets.playSound("button", false);
       }
     });
 

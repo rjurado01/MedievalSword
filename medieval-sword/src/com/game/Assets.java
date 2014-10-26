@@ -12,7 +12,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -171,10 +170,54 @@ public class Assets {
   private static void loadSounds() {
     sounds = new HashMap<String, Sound>();
 
-    FileHandle dirHandle = Gdx.files.internal("./bin/sounds");
-    for (FileHandle entry: dirHandle.list()) {
-      sounds.put( entry.nameWithoutExtension(), Gdx.audio.newSound( entry ) );
-    }
+    sounds.put( "arrow",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/arrow.ogg")) );
+    sounds.put( "battle_lost",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/battle_lost.ogg")) );
+    sounds.put( "battle_turn",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/battle_turn.ogg")) );
+    sounds.put( "battle_win",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/battle_win.ogg")) );
+    sounds.put( "body_impact",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/body_impact.ogg")) );
+    sounds.put( "build",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/build.ogg")) );
+    sounds.put( "button",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/button.ogg")) );
+    sounds.put( "button2",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/button2.ogg")) );
+    sounds.put( "buy",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/buy.ogg")) );
+    sounds.put( "capture_structure",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/capture_structure.ogg")) );
+    sounds.put( "chainmail1",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/chainmail1.ogg")) );
+    sounds.put( "chainmail2",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/chainmail1.ogg")) );
+    sounds.put( "clock",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/clock.ogg")) );
+    sounds.put( "gold_pile",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/gold_pile.ogg")) );
+    sounds.put( "hero_walk",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/hero_walk.ogg")) );
+    sounds.put( "objective_completed",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/objective_completed.ogg")) );
+    sounds.put( "pass_all",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/pass_all.ogg")) );
+    sounds.put( "slight_screem",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/slight_screem.ogg")) );
+    sounds.put( "slight_screem2",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/slight_screem2.ogg")) );
+    sounds.put( "square_selected",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/square_selected.ogg")) );
+    sounds.put( "stone_pile",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/stone_pile.ogg")) );
+    sounds.put( "unit_walk",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/unit_walk.ogg")) );
+    sounds.put( "villager_attack",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/villager_attack.ogg")) );
+    sounds.put( "wood_pile",
+        Gdx.audio.newSound( Gdx.files.internal("sounds/wood_pile.ogg")) );
   }
 
   public static void playSound( String name, boolean loop ) {
