@@ -24,8 +24,8 @@ Right click the desktop project, Run As -> Java Application. Select the desktop 
 
 ### Libreries
 
-* [libgdx](http://code.google.com/p/libgdx/)
-* [tween-engine](http://code.google.com/p/libgdx/)
+* [libgdx](https://github.com/libgdx/libgdx/)
+* [tween-engine](https://github.com/dorkbox/TweenEngine)
 * [gson](https://code.google.com/p/google-gson/)
 
 
